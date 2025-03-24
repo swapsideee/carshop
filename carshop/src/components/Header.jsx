@@ -1,26 +1,30 @@
 "use client";
 
 import Link from "next/link";
+import { ShoppingCart } from 'lucide-react';
 
 export default function Header() {
   return (
     <header className="bg-white shadow-md py-4 px-6 flex justify-between items-center sticky top-0 z-50">
-      <h1 className="text-2xl font-bold text-gray-800">
+      <Link href="/"><h1 className="text-2xl font-bold text-gray-800">
         CarShop
-      </h1>
-      <nav className="space-x-4">
-        <Link href="/" className="text-gray-700 hover:text-blue-600 transition">
-          Главная
-        </Link>
+      </h1> </Link>
+      <nav className="flex items-center space-x-4">
         <Link href="/products" className="text-gray-700 hover:text-blue-600 transition">
           Каталог
         </Link>
         <Link href="/contacts" className="text-gray-700 hover:text-blue-600 transition">
-          Контакты
+          Контакт
         </Link>
         <Link href="/reviews" className="text-gray-700 hover:text-blue-600 transition">
-          Отзывы
+          Відгуки
         </Link>
+        <Link href="/cart">
+  <div className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition cursor-pointer">
+    <span>Кошик</span>
+    <ShoppingCart className="w-5 h-5" />
+  </div>
+</Link>
       </nav>
     </header>
   );
