@@ -1,3 +1,5 @@
+import Banner from "@/components/Banner";
+
 export default function Home() {
     return (
       <section className="text-center py-12">
@@ -12,6 +14,7 @@ export default function Home() {
           >
             Перейти в каталог
           </a>
+          <Banner />
         </div>
       </section>
     );

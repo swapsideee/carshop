@@ -1,7 +1,6 @@
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Bunner from "@/components/Bunner";
 
 export const metadata = 
 {
@@ -15,9 +14,8 @@ export default function RootLayout({ children }) {
       <body className="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
         <Header />
         <main className="p-4 max-w-7xl mx-auto flex-grow">{children}</main>
-         <Bunner/>
         <Footer />
       </body>
     </html>
   );
-} 
+}
