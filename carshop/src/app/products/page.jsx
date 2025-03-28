@@ -9,8 +9,6 @@ export default function ProductsPage()
   const [filters, setFilters] = useState({
     brand: "",
     model: "",
-    minPrice: "",
-    maxPrice: "",
   });
 
   useEffect(() => 
@@ -19,8 +17,6 @@ export default function ProductsPage()
 
     if (filters.brand) query.append("brand", filters.brand);
     if (filters.model) query.append("model", filters.model);
-    if (filters.minPrice) query.append("min", filters.minPrice);
-    if (filters.maxPrice) query.append("max", filters.maxPrice);
 
     fetch(`/api/products?${query.toString()}`)
       .then((res) => res.json())

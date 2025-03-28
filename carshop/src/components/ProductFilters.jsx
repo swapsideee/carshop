@@ -9,8 +9,6 @@ export default function ProductFilters({ onChange })
   const [filters, setFilters] = useState({
     brand: "",
     model: "",
-    minPrice: "",
-    maxPrice: "",
   });
 
   useEffect(() => 
@@ -73,24 +71,6 @@ export default function ProductFilters({ onChange })
           </option>
         ))}
       </select>
-
-      <input
-        type="number"
-        name="minPrice"
-        value={filters.minPrice}
-        placeholder="Мін. ціна"
-        onChange={handleChange}
-        className="border p-2 rounded"
-      />
-
-      <input
-        type="number"
-        name="maxPrice"
-        value={filters.maxPrice}
-        placeholder="Макс. ціна"
-        onChange={handleChange}
-        className="border p-2 rounded"
-      />
     </div>
   );
 }
