@@ -38,7 +38,9 @@ export default async function BrandPage({ params })
 
         {products.length === 0 && 
         (
-          <p className="text-gray-500">Наразі немає товарів для цього бренду.</p>
+          <p className="text-gray-500">
+            Наразі немає товарів для цього бренду.
+          </p>
         )}
       </div>
     </section>
