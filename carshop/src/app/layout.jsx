@@ -8,7 +8,8 @@ export const metadata =
   description: "Продажа подкрылков для авто"
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }) 
+{
   return (
     <html lang="ru">
       <body className="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
