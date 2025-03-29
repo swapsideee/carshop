@@ -18,7 +18,7 @@ export default function Contacts()
           <Mail className="w-6 h-6 text-gray-600" />
           <a
             href="mailto:Vadi-Avto@ukr.net"
-            className="text-lg underline hover:text-blue-600 transition"
+            className="text-lg no-underline hover:text-gray-500 transition"
           >
             Vadi-Avto@ukr.net
           </a>

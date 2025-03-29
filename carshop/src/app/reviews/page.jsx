@@ -24,7 +24,7 @@ export default function ReviewsPage()
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setShowForm(!showForm)}
-            className="bg-lime-700 text-white px-8 py-3 rounded-lg font-medium hover:bg-lime-600 transition-colors duration-200"
+            className="bg-lime-700 text-gray-700 px-8 py-3 rounded-lg font-medium hover:bg-lime-600 transition-colors duration-200"
           >
             {showForm ? "Сховати форму" : "Залишити відгук"}
           </motion.button>
