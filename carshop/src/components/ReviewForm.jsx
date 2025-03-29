@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export default function ReviewForm() 
@@ -9,9 +9,19 @@ export default function ReviewForm()
     name: "",
     rating: 0,
     comment: "",
+    product_id: "",
   });
+  const [products, setProducts] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+
+  useEffect(() => 
+  {
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch((error) => console.error("Error fetching products:", error));
+  }, []);
 
   const handleSubmit = async (e) => 
   {
@@ -31,8 +41,11 @@ export default function ReviewForm()
 
       if (response.ok) 
       {
-        setSubmitStatus({ type: "success", message: "Дякуємо за ваш відгук! Він буде опублікований після модерації." });
-        setFormData({ name: "", rating: 0, comment: "" });
+        setSubmitStatus({ 
+          type: "success", 
+          message: data.message 
+        });
+        setFormData({ name: "", rating: 0, comment: "", product_id: "" });
       } 
       else 
       {
@@ -73,6 +86,26 @@ export default function ReviewForm()
         </div>
 
         <div>
+          <label htmlFor="product" className="block text-sm font-medium text-black mb-2">
+            Оберіть товар
+          </label>
+          <select
+            id="product"
+            value={formData.product_id}
+            onChange={(e) => setFormData({ ...formData, product_id: e.target.value })}
+            className="w-full px-4 py-2 border border-indigo-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            required
+          >
+            <option value="">Оберіть товар</option>
+            {products.map((product) => (
+              <option key={product.id} value={product.id}>
+                {product.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
           <label className="block text-sm font-medium text-black mb-2">
             Оцінка
           </label>
@@ -102,7 +135,7 @@ export default function ReviewForm()
             value={formData.comment}
             onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
             rows="4"
-            className="w-full px-4 py-2 border border-indigo-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-indigo-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
             required
           />
         </div>
@@ -125,7 +158,7 @@ export default function ReviewForm()
           className={`w-full py-3 px-4 rounded-lg text-white font-medium ${
             isSubmitting
               ? "bg-black cursor-not-allowed"
-              : "bg-lime-600 "
+              : "bg-black"
           } transition-colors duration-200`}
         >
           {isSubmitting ? "Відправка..." : "Відправити відгук"}
@@ -133,4 +166,4 @@ export default function ReviewForm()
       </form>
     </motion.div>
   );
-} 
+}

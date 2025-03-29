@@ -4,7 +4,8 @@ export async function GET()
 {
   try 
   {
-    const [rows] = await db.query(`
+    const [rows] = await db.query
+    (`
       SELECT id, name, rating, comments, created_at 
       FROM reviews 
       WHERE status = 'approved' 
@@ -45,13 +46,21 @@ export async function POST(req)
       );
     }
 
-    await db.query(
+    const status = rating >= 4 ? "approved" : "pending";
+
+    await db.query
+    (
       "INSERT INTO reviews (name, rating, comments, status) VALUES (?, ?, ?, ?)",
-      [name, rating, comment, "pending"]
+      [name, rating, comment, status]
     );
 
-    return new Response(
-      JSON.stringify({ message: "Review added for moderation" }), 
+    const message = status === "approved" 
+      ? "Дякуємо за ваш позитивний відгук! Він вже опублікований." 
+      : "Дякуємо за ваш відгук! Він буде опублікований найближчим часом.";
+
+    return new Response
+    (
+      JSON.stringify({ message }), 
       { 
         status: 201,
         headers: { "Content-Type": "application/json" },
