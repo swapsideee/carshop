@@ -16,7 +16,8 @@ export async function GET(req)
             });
         }
 
-        const [models] = await db.query(
+        const [models] = await db.query
+        (
             "SELECT DISTINCT model FROM products WHERE brand_slug = ?",
             [brand]
         );
