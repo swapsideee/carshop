@@ -6,14 +6,7 @@ import Link from "next/link";
 
 export default function Banner() 
 {
-  const [brands, setBrands] = useState([]);
-
-  useEffect(() => {
-    fetch("/api/brands")
-      .then((res) => res.json())
-      .then((data) => setBrands(data))
-      .catch((error) => console.error("Error while loading brands:", error));
-  }, []);
+  const [brands] = useState([]);
 
   const containerVariants = 
   {
