@@ -4,8 +4,7 @@ import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function Header() 
-{
+export default function Header() {
   return (
     <motion.header
       initial={{ y: -50, opacity: 0 }}

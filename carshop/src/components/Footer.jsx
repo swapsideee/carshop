@@ -1,5 +1,4 @@
-export default function Footer() 
-{
+export default function Footer() {
   return (
     <footer className="bg-lime-600 shadow-md text-gray-900 mt-16 py-6 text-center text-sm">
       <p>@ {new Date().getFullYear()} CarShop. Усі права захищені</p>
