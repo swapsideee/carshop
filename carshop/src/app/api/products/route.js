@@ -1,33 +1,19 @@
 import { db } from '@/lib/db';
+import { getAllProducts } from '@/lib/queries/products';
+import { ErrorHandler } from '@/lib/utils/errorHandler';
 
-export async function GET(req) {
+export const GET = ErrorHandler(async (req) => {
     const { searchParams } = new URL(req.url);
     const brand = searchParams.get('brand');
     const sort = searchParams.get('sort') ?? 'asc';
     const sortBy = searchParams.get('sort_by') ?? 'price_pair';
 
-    try {
-        let query = 'SELECT * FROM products';
-        const params = [];
+    const { query, params } = getAllProducts({
+        brand,
+        sortBy,
+        sortOrder: sort === 'desc' ? 'DESC' : 'ASC',
+    });
 
-        if (brand) {
-            query += ' WHERE brand_slug = ?';
-            params.push(brand);
-        }
-
-        const validSortColumns = ['price_pair', 'model'];
-        const safeSortBy = validSortColumns.includes(sortBy) ? sortBy : 'price_pair';
-        const safeSortOrder = sort === 'desc' ? 'DESC' : 'ASC';
-
-        query += ` ORDER BY ${safeSortBy} ${safeSortOrder}`;
-
-        const [rows] = await db.query(query, params);
-        return Response.json(rows);
-    }
-    catch (err) {
-        console.error('DB error:', err);
-        return new Response(JSON.stringify({ error: 'Failed to fetch products' }), {
-            status: 500,
-        });
-    }
-}
+    const [rows] = await db.query(query, params);
+    return Response.json(rows);
+});
