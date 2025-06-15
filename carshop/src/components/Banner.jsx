@@ -59,9 +59,8 @@ export default function Banner() {
                   <img
                     src={brand.image}
                     alt={brand.slug}
-                    className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                    className="max-h-full max-w-full object-contain transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
                 <div className="mt-4 text-center">
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">

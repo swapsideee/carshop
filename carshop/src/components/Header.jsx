@@ -16,7 +16,7 @@ export default function Header() {
       className="bg-lime-600 shadow-md py-4 px-6 flex justify-between items-center sticky top-0 z-50"
     >
       <Link href="/">
-        <h1 className="text-2xl font-bold text-gray-900">CarShop</h1>
+        <h1 className="text-2xl font-bold text-gray-900">VADI-AVTO</h1>
       </Link>
       <nav className="hidden md:flex items-center space-x-4">
         <Link
@@ -29,7 +29,7 @@ export default function Header() {
           href="/contacts"
           className="text-gray-900 hover:text-green-100 transition-colors duration-300"
         >
-          Контакт
+          Зв'язок
         </Link>
         <Link
           href="/reviews"
@@ -72,7 +72,7 @@ export default function Header() {
               className="text-gray-900 hover:text-green-100 transition-colors duration-300"
               onClick={() => setMenuOpen(false)}
             >
-              Контакт
+              Зв'язок
             </Link>
             <Link
               href="/reviews"

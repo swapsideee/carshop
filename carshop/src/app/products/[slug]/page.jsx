@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 
-export default async function ProductPage({ params }) {
-  const { slug } = params;
+export default async function ProductPage(props) {
+  const { slug } = props.params;
 
   const res = await fetch(`http://localhost:3000/api/products?brand=${slug}`, {
     next: { revalidate: 60 },
