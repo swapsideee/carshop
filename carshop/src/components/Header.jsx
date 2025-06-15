@@ -16,7 +16,7 @@ export default function Header() {
       className="bg-lime-600 shadow-md py-4 px-6 flex justify-between items-center sticky top-0 z-50"
     >
       <Link href="/">
-        <h1 className="text-2xl font-bold text-gray-900">CarShop</h1>
+        <h1 className="text-2xl font-bold text-gray-900">VADI-AVTO</h1>
       </Link>
       <nav className="hidden md:flex items-center space-x-4">
         <Link
