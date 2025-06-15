@@ -29,7 +29,7 @@ export default function Header() {
           href="/contacts"
           className="text-gray-900 hover:text-green-100 transition-colors duration-300"
         >
-          Контакт
+          Зв'язок
         </Link>
         <Link
           href="/reviews"
@@ -72,7 +72,7 @@ export default function Header() {
               className="text-gray-900 hover:text-green-100 transition-colors duration-300"
               onClick={() => setMenuOpen(false)}
             >
-              Контакт
+              Зв'язок
             </Link>
             <Link
               href="/reviews"
