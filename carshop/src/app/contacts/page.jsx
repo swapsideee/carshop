@@ -1,33 +1,41 @@
 "use client";
-import { useState, useEffect } from "react";
-import React from "react";
 
 const CompanyCard = () => {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 cursor-default">
       <div className="bg-gray-50 rounded-2xl shadow-2xl w-full max-w-3xl p-10 space-y-8">
         <div className="space-y-4">
-          <h2 className="text-center text-3xl font-bold text-gray-800">Контактна інформація</h2>
+          <h2 className="text-center text-3xl font-bold text-gray-800">
+            Контактна інформація
+          </h2>
           <p className="text-lg text-gray-700">
-              <span className="font-medium">Електронна пошта:</span>{" "}
-              <a href="mailto:Vadi-Avto@ukr.net" className="text-gray-700 underline hover:text-gray-500">
+            <span className="font-medium">Електронна пошта:</span>{" "}
+            <a
+              href="mailto:Vadi-Avto@ukr.net"
+              className="text-gray-700 underline hover:text-gray-500"
+            >
               Vadi-Avto@ukr.net
-              </a>
-          </p>
-          <p className="text-lg text-gray-700">
-            <span className="font-medium">Мобільний телефон:</span>{" "}
-            <a href="tel:+380961365299" className="text-gray-700 underline hover:text-gray-500">
-            +38 096 136 5299
             </a>
           </p>
           <p className="text-lg text-gray-700">
-            <span className="font-medium">Адреса:</span> Авторинок "Лоск", 13 ряд, 9 місце
+            <span className="font-medium">Мобільний телефон:</span>{" "}
+            <a
+              href="tel:+380961365299"
+              className="text-gray-700 underline hover:text-gray-500"
+            >
+              +38 096 136 5299
+            </a>
+          </p>
+          <p className="text-lg text-gray-700">
+            <span className="font-medium">Адреса:</span> Авторинок "Лоск", 13
+            ряд, 9 місце
           </p>
           <p className="text-lg text-gray-700">
             <span className="font-medium">Місто:</span> Харків
           </p>
           <p className="text-lg text-gray-700">
-            <span className="font-medium">Години роботи:</span> Пн–Нд, 9:00–13:00
+            <span className="font-medium">Години роботи:</span> Пн–Нд,
+            9:00–13:00
           </p>
         </div>
 
@@ -41,6 +49,7 @@ const CompanyCard = () => {
             allowFullScreen=""
             loading="lazy"
             className="rounded-lg"
+            referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
         </div>
       </div>
