@@ -4,33 +4,35 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-export default function Banner() 
-{
-  const [brands] = useState([]);
+export default function Banner() {
+  const [brands, setBrands] = useState([]);
 
-  const containerVariants = 
-  {
+  useEffect(() => {
+    fetch("/api/brands")
+      .then((res) => res.json())
+      .then((data) => setBrands(data))
+      .catch((err) => console.error("Error loading brands:", err));
+  }, []);
+
+  const containerVariants = {
     hidden: {},
-    visible: 
-    {
-      transition: 
-      {
+    visible: {
+      transition: {
         staggerChildren: 0.05,
         delayChildren: 0.1,
       },
     },
   };
 
-  const itemVariants = 
-  {
+  const itemVariants = {
     hidden: { opacity: 0, y: 10 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
         duration: 0.4,
-        ease: [0.4, 0, 0.2, 1]
-      } 
+        ease: [0.4, 0, 0.2, 1],
+      },
     },
   };
 
@@ -66,7 +68,7 @@ export default function Banner()
                     {brand.name}
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Підкрилки для автомобілей
+                    Підкрилки для бренду {brand.name}
                   </p>
                 </div>
               </div>

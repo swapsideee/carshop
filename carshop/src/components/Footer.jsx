@@ -1,8 +1,18 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 export default function Footer() 
 {
+  const [year, setYear] = useState(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="bg-lime-600 shadow-md text-gray-900 mt-16 py-6 text-center text-sm">
-      <p>@ {new Date().getFullYear()} CarShop. Усі права захищені</p>
+      <p>@ {year} CarShop. Усі права захищені</p>
       <p className="mt-1">
         Зв'язок:{" "}
         <a

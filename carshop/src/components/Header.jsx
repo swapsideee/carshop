@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart } from "lucide-react";
-import { motion } from "framer-motion";
+import { ShoppingCart, Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
-export default function Header() 
-{
+export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <motion.header
       initial={{ y: -50, opacity: 0 }}
@@ -16,7 +18,7 @@ export default function Header()
       <Link href="/">
         <h1 className="text-2xl font-bold text-gray-900">VADI-AVTO</h1>
       </Link>
-      <nav className="flex items-center space-x-4">
+      <nav className="hidden md:flex items-center space-x-4">
         <Link
           href="/products"
           className="text-gray-900 hover:text-green-100 transition-colors duration-300"
@@ -42,6 +44,52 @@ export default function Header()
           </div>
         </Link>
       </nav>
+      <button
+        className="md:hidden text-gray-900"
+        onClick={() => setMenuOpen((v) => !v)}
+        aria-label="Toggle navigation"
+      >
+        {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      </button>
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.nav
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-full left-0 right-0 bg-lime-600 flex flex-col items-start space-y-2 px-6 py-4 shadow-md md:hidden"
+          >
+            <Link
+              href="/products"
+              className="text-gray-900 hover:text-green-100 transition-colors duration-300"
+              onClick={() => setMenuOpen(false)}
+            >
+              Каталог
+            </Link>
+            <Link
+              href="/contacts"
+              className="text-gray-900 hover:text-green-100 transition-colors duration-300"
+              onClick={() => setMenuOpen(false)}
+            >
+              Контакт
+            </Link>
+            <Link
+              href="/reviews"
+              className="text-gray-900 hover:text-green-100 transition-colors duration-300"
+              onClick={() => setMenuOpen(false)}
+            >
+              Відгуки
+            </Link>
+            <Link href="/cart" onClick={() => setMenuOpen(false)}>
+              <div className="flex items-center space-x-2 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer">
+                <span>Кошик</span>
+                <ShoppingCart className="w-5 h-5" />
+              </div>
+            </Link>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

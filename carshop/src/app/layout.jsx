@@ -2,14 +2,17 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-export const metadata = 
-{
+export const metadata = {
   title: "CarShop - Магазин подкрылков",
-  description: "Продажа подкрылков для авто"
+  description: "Продажа подкрылков для авто",
 };
 
-export default function RootLayout({ children }) 
-{
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }) {
   return (
     <html lang="ru">
       <body className="bg-gray-50 text-gray-900 flex flex-col min-h-screen">

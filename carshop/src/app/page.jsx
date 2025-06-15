@@ -3,8 +3,7 @@
 import { motion } from "framer-motion";
 import Banner from "@/components/Banner";
 
-export default function Home() 
-{
+export default function Home() {
   return (
     <motion.section
       className="text-center py-12"
