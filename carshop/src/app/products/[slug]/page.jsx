@@ -1,26 +1,166 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 
-export default async function ProductPage(props) {
-  const { slug } = props.params;
+export default function ProductOrBrandPage() {
+  const params = useParams();
+  const [product, setProduct] = useState(null);
+  const [brandProducts, setBrandProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const res = await fetch(`http://localhost:3000/api/products?brand=${slug}`, {
-    next: { revalidate: 60 },
-  });
+  const isProductId = !isNaN(Number(params.slug));
 
-  if (!res.ok) return notFound();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        if (isProductId) {
+          const response = await fetch(`/api/products/${params.slug}`);
+          const data = await response.json();
+          setProduct(data);
+        } else {
+          const response = await fetch(`/api/products?brand=${params.slug}`);
+          const data = await response.json();
+          setBrandProducts(data);
+        }
+      } catch (err) {
+        console.error("Fetch error:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [params.slug, isProductId]);
 
-  const products = await res.json();
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-zinc-50 py-10">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center text-gray-500 mt-20 text-lg animate-pulse">
+            Завантаження...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isProductId) {
+    return (
+      <div className="min-h-screen bg-zinc-50 py-10">
+        <div className="max-w-7xl mx-auto px-4">
+          <h1 className="text-2xl font-bold mb-6 text-black uppercase">
+            {params.slug}
+          </h1>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+            {brandProducts.length === 0 ? (
+              <div className="text-gray-500">
+                Товарів цього бренду не знайдено.
+              </div>
+            ) : (
+              brandProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  clickable={false}
+                />
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-zinc-50 py-10">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center text-gray-500 mt-20">
+            <h1 className="text-2xl font-bold mb-4">Товар не знайдено</h1>
+            <Link href="/products" className="text-blue-500 hover:underline">
+              Повернутися до каталогу
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
-      <h1 className="text-2xl font-bold mb-6 text-black">
-        Моделі бренду {slug.toUpperCase()}
-      </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+    <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white py-10">
+      <div className="max-w-5xl mx-auto px-4">
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
+          <div className="flex items-center justify-center">
+            <img
+              src={product.image || "/placeholder.png"}
+              alt={product.name}
+              className="rounded-lg max-h-96 object-contain transition-transform duration-300 hover:scale-105"
+            />
+          </div>
+
+          <div className="flex flex-col justify-between">
+            <div>
+              <p className="text-sm text-gray-400 uppercase tracking-wide mb-1">
+                {product.name}
+              </p>
+              <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
+                {product.model}
+              </h1>
+
+              <div className="space-y-3 mb-6">
+                <div>
+                  <p className="text-sm text-gray-600">Ціна за пару:</p>
+                  <p className="text-xl font-semibold">
+                    {product.price_pair !== null ? (
+                      <span className="text-green-600">
+                        {product.price_pair} грн
+                      </span>
+                    ) : (
+                      <span className="text-red-500">Уточнюйте</span>
+                    )}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-sm text-gray-600">Ціна за комплект:</p>
+                  <p className="text-xl font-semibold">
+                    {product.price_set !== null ? (
+                      <span className="text-green-600">
+                        {product.price_set} грн
+                      </span>
+                    ) : (
+                      <span className="text-red-500">Уточнюйте</span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => alert("test button")}
+              className="bg-blue-600 hover:bg-blue-700 text-white text-base py-3 px-6 rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.293 1.293a1 1 0 000 1.414L7 17m10-4l1.293 1.293a1 1 0 010 1.414L17 17m0 0H7"
+                />
+              </svg>
+              Додати в кошик
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

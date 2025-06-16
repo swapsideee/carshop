@@ -1,8 +1,15 @@
-export default function ProductCard({ product }) {
+import Link from "next/link";
+
+export default function ProductCard({ product, clickable = false }) {
   const showName = product.name && product.name !== product.model;
 
-  return (
-    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl hover:scale-[1.01] transition-all duration-300 p-5 flex flex-col items-center text-center">
+  const content = (
+    <div
+      className={
+        "bg-white rounded-2xl shadow-md hover:shadow-xl hover:scale-[1.01] transition-all duration-300 p-5 flex flex-col items-center text-center" +
+        (clickable ? " cursor-pointer" : "")
+      }
+    >
       <div className="w-full aspect-[4/3] bg-white border rounded-lg flex items-center justify-center mb-4">
         <img
           loading="lazy"
@@ -44,5 +51,13 @@ export default function ProductCard({ product }) {
         )}
       </p>
     </div>
+  );
+
+  return clickable ? (
+    <Link href={`/products/${product.id}`} className="block">
+      {content}
+    </Link>
+  ) : (
+    content
   );
 }
