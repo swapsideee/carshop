@@ -69,58 +69,60 @@ export default function AllProductsPage() {
     setQuery("");
   };
 
-  return (
-    <div className="bg-zinc-50 py-10">
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 px-4">
-        <FiltersPanel
-          brands={brands}
-          selectedBrand={selectedBrand}
-          setSelectedBrand={setSelectedBrand}
-          sort={sort}
-          setSort={setSort}
-          query={query}
-          setQuery={setQuery}
-          resetFilters={resetFilters}
-        />
+return (
+  <div className="flex max-w-7xl mx-auto px-4 gap-8">
+    {/* Сайдбар с фильтрами — слева */}
+    <FiltersPanel
+      brands={brands}
+      selectedBrand={selectedBrand}
+      setSelectedBrand={setSelectedBrand}
+      sort={sort}
+      setSort={setSort}
+      query={query}
+      setQuery={setQuery}
+      resetFilters={resetFilters}
+    />
 
-        <main className="flex-1">
-          {isLoading ? (
-            <div className="text-center text-gray-500 mt-20 text-lg animate-pulse">
-              Завантаження товарів
-            </div>
-          ) : filteredProducts.length === 0 ? (
-            <div className="flex flex-col items-center mt-20 text-gray-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-16 w-16 mb-4 text-gray-300"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 3l18 18M9.75 9.75h.008v.008H9.75v-.008zm4.5 0h.008v.008h-.008v-.008zM9.88 15.38a4.501 4.501 0 004.24 0"
-                />
-              </svg>
-              <p className="text-lg">
-                Товари не знайдено за вибраними фільтрами.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  clickable={true}
-                />
-              ))}
-            </div>
-          )}
-        </main>
-      </div>
+    <div className="bg-zinc-50 py-10 rounded-2xl flex-1 shadow-md">
+      <main>
+        {isLoading ? (
+          <div className="text-center text-gray-500 mt-20 text-lg animate-pulse">
+            Завантаження товарів
+          </div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="flex flex-col items-center mt-20 text-gray-500">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-16 w-16 mb-4 text-gray-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 3l18 18M9.75 9.75h.008v.008H9.75v-.008zm4.5 0h.008v.008h-.008v-.008zM9.88 15.38a4.501 4.501 0 004.24 0"
+              />
+            </svg>
+            <p className="text-lg">
+              Не знайдено товарів за вибраними фільтрами.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 px-4">
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                clickable={true}
+              />
+            ))}
+          </div>
+        )}
+      </main>
     </div>
-  );
+  </div>
+);
 }
+

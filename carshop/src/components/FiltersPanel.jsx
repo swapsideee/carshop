@@ -9,7 +9,7 @@ export default function FiltersPanel({
   resetFilters,
 }) {
   return (
-    <aside className="w-full lg:w-64 flex-shrink-0 bg-white p-6 rounded-2xl shadow space-y-5 h-fit">
+    <aside className="w-full lg:w-64 flex-shrink-0 bg-gray-50 p-6 rounded-2xl shadow-xl space-y-5 h-fit cursor-default">
       <h2 className="text-xl font-bold text-gray-900">Фільтри</h2>
 
       <div>
@@ -32,7 +32,7 @@ export default function FiltersPanel({
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className="w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition"
+          className="cursor-pointer w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition"
         >
           <option value="">Обрати</option>
           <option value="asc">Від дешевих до дорогих</option>
@@ -47,7 +47,7 @@ export default function FiltersPanel({
         <select
           value={selectedBrand}
           onChange={(e) => setSelectedBrand(e.target.value)}
-          className="w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition"
+          className="cursor-pointer w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition"
         >
           <option value="">Усі бренди</option>
           {brands.map((b) => (
@@ -60,7 +60,7 @@ export default function FiltersPanel({
 
       <button
         onClick={resetFilters}
-        className="w-full bg-blue-100 text-blue-700 font-medium hover:bg-blue-200 px-4 py-2 rounded-md transition"
+        className="cursor-pointer w-full bg-blue-100 text-blue-700 font-medium hover:bg-blue-200 px-4 py-2 rounded-md transition"
       >
         Скинути фільтри
       </button>

@@ -61,11 +61,12 @@ export default function ProductOrBrandPage() {
               </div>
             ) : (
               brandProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  clickable={false}
-                />
+                <div key={product.id} className="h-full">
+                  <ProductCard
+                    product={product}
+                    clickable={false}
+                  />
+                </div>
               ))
             )}
           </div>
@@ -132,7 +133,7 @@ export default function ProductOrBrandPage() {
                         {product.price_set} грн
                       </span>
                     ) : (
-                      <span className="text-red-500">Уточнюйте</span>
+                      <span className="text-red-500">Уточнiть</span>
                     )}
                   </p>
                 </div>

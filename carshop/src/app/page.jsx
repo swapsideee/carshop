@@ -6,13 +6,13 @@ import Banner from "@/components/Banner";
 export default function Home() {
   return (
     <motion.section
-      className="text-center py-12"
+      className="text-center py-12 cursor-default"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
       <motion.h2
-        className="text-gray-700 text-4xl font-bold mb-4"
+        className="text-gray-700 text-4xl font-bold mb-4 cursor-default"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -20,7 +20,7 @@ export default function Home() {
         Автомобільні підкрилки
       </motion.h2>
       <motion.p
-        className="text-lg text-gray-900 max-w-2xl mx-auto"
+        className="text-lg text-gray-900 max-w-2xl mx-auto cursor-default"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.4 }}
@@ -37,7 +37,7 @@ export default function Home() {
       >
         <a
           href="/products"
-          className="bg-lime-600 text-gray-900 px-6 py-3 rounded-lg text-lg hover:text-green-100 transition-colors duration-300"
+          className="bg-lime-600 text-gray-900 px-6 py-3 rounded-lg text-lg hover:text-green-100 transition-colors duration-300 shadow-md"
         >
           Перейти до каталогу
         </a>

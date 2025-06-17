@@ -37,7 +37,7 @@ export default function Banner() {
   };
 
   return (
-    <div className="mt-14 flex justify-center px-4 sm:px-6 lg:px-8">
+    <div className="mt-14 flex justify-center px-4 sm:px-6 lg:px-8 cursor-default">
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 max-w-7xl w-full"
         variants={containerVariants}
@@ -51,7 +51,7 @@ export default function Banner() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="group relative w-full aspect-square rounded-2xl overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
+            className="group relative w-full aspect-square rounded-2xl overflow-hidden bg-white shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer"
           >
             <Link href={`/products/${brand.slug}`}>
               <div className="w-full h-full flex flex-col items-center justify-center p-6">

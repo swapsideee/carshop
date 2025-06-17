@@ -6,7 +6,7 @@ export default function ProductCard({ product, clickable = false }) {
   const content = (
     <div
       className={
-        "bg-white rounded-2xl shadow-md hover:shadow-xl hover:scale-[1.01] transition-all duration-300 p-5 flex flex-col items-center text-center" +
+        "bg-white rounded-2xl shadow-md cursor-pointer hover:shadow-xl hover:scale-[1.01] transition-all duration-300 p-5 flex flex-col h-full" +
         (clickable ? " cursor-pointer" : "")
       }
     >
@@ -19,45 +19,49 @@ export default function ProductCard({ product, clickable = false }) {
         />
       </div>
 
-      {showName && (
-        <p className="text-xs uppercase text-gray-400 tracking-wide mb-1">
-          {product.name}
+      <div className="flex flex-col flex-grow items-center text-center">
+        {showName && (
+          <p className="text-xs uppercase text-gray-400 tracking-wide mb-1 line-clamp-1">
+            {product.name}
+          </p>
+        )}
+
+        <p className="font-semibold text-base text-gray-800 mb-2 line-clamp-2">
+          {product.model}
         </p>
-      )}
 
-      <p className="font-semibold text-base text-gray-800 mb-2">
-        {product.model}
-      </p>
+        <div className="mt-auto space-y-1">
+          <p className="text-sm text-gray-700">
+            Пара:{" "}
+            {product.price_pair !== null ? (
+              <span className="text-black font-medium">
+                {product.price_pair} грн
+              </span>
+            ) : (
+              <span className="text-red-500 font-bold">Уточнюйте</span>
+            )}
+          </p>
 
-      <p className="text-sm text-gray-700">
-        Пара:{" "}
-        {product.price_pair !== null ? (
-          <span className="text-black font-medium">
-            {product.price_pair} грн
-          </span>
-        ) : (
-          <span className="text-red-500 font-bold">Уточнюйте</span>
-        )}
-      </p>
-
-      <p className="text-sm text-gray-700">
-        Комплект:{" "}
-        {product.price_set !== null ? (
-          <span className="text-black font-medium">
-            {product.price_set} грн
-          </span>
-        ) : (
-          <span className="text-red-500 font-bold">Уточнюйте</span>
-        )}
-      </p>
+          <p className="text-sm text-gray-700">
+            Комплект:{" "}
+            {product.price_set !== null ? (
+              <span className="text-black font-medium">
+                {product.price_set} грн
+              </span>
+            ) : (
+              <span className="text-red-500 font-bold">Уточнюйте</span>
+            )}
+          </p>
+        </div>
+      </div>
     </div>
   );
 
   return clickable ? (
-    <Link href={`/products/${product.id}`} className="block">
+    <Link href={`/products/${product.id}`} className="block h-full">
       {content}
     </Link>
   ) : (
-    content
+    <div className="h-full">{content}</div>
   );
 }
