@@ -15,7 +15,6 @@ export default function Header() {
       transition={{ duration: 0.6 }}
       className="bg-lime-600 shadow-md py-4 px-6 flex justify-between items-center sticky top-0 z-50"
     >
-      {/* ЛОГОТИП С ХОВЕРОМ НА ВСЁМ */}
       <Link href="/" className="group flex items-center gap-2 cursor-pointer">
         <p className="text-gray-900 text-2xl italic font-bold tracking-wider transition-colors duration-300 group-hover:text-lime-400">
           VADI-AVTO
@@ -23,7 +22,6 @@ export default function Header() {
         <Car className="w-9 h-9 text-gray-900 transition-colors duration-300 group-hover:text-lime-400" />
       </Link>
 
-      {/* НАВИГАЦИЯ (ПК) */}
       <nav className="hidden md:flex items-center space-x-4">
         <Link
           href="/products"
@@ -51,7 +49,6 @@ export default function Header() {
         </Link>
       </nav>
 
-      {/* КНОПКА МЕНЮ (МОБИЛЬНАЯ) */}
       <button
         className="md:hidden text-gray-900"
         onClick={() => setMenuOpen((v) => !v)}
@@ -60,7 +57,6 @@ export default function Header() {
         {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
 
-      {/* МЕНЮ (МОБИЛЬНАЯ ВЕРСИЯ) */}
       <AnimatePresence>
         {menuOpen && (
           <motion.nav

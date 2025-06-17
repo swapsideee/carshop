@@ -38,7 +38,7 @@ export default function ProductCard({ product, clickable = false }) {
                 {product.price_pair} грн
               </span>
             ) : (
-              <span className="text-red-500 font-bold">Уточнюйте</span>
+              <span className="font-bold text-lime-600">За запитом</span>
             )}
           </p>
 
@@ -49,7 +49,7 @@ export default function ProductCard({ product, clickable = false }) {
                 {product.price_set} грн
               </span>
             ) : (
-              <span className="text-red-500 font-bold">Уточнюйте</span>
+              <span className="text-lime-600 font-bold">За запитом</span>
             )}
           </p>
         </div>

@@ -71,7 +71,6 @@ export default function AllProductsPage() {
 
 return (
   <div className="flex max-w-7xl mx-auto px-4 gap-8">
-    {/* Сайдбар с фильтрами — слева */}
     <FiltersPanel
       brands={brands}
       selectedBrand={selectedBrand}

@@ -1,5 +1,5 @@
 "use client";
-
+import { ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -90,79 +90,59 @@ export default function ProductOrBrandPage() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white py-10">
-      <div className="max-w-5xl mx-auto px-4">
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
-          <div className="flex items-center justify-center">
-            <img
-              src={product.image || "/placeholder.png"}
-              alt={product.name}
-              className="rounded-lg max-h-96 object-contain transition-transform duration-300 hover:scale-105"
-            />
+return (
+  <div className="min-h-screen bg-white flex items-center justify-center px-4 py-10 cursor-default">
+  <div className="w-full max-w-6xl mx-auto bg-gray-100 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
+    <div className="flex items-center justify-center w-full md:w-1/2">
+      <img
+        src={product.image || "/placeholder.png"}
+        alt={product.name}
+        className="rounded-xl max-h-80 md:max-h-[500px] w-full max-w-[400px] object-contain transition-transform duration-300 hover:scale-105"
+      />
+    </div>
+
+    <div className="flex flex-col justify-between w-full md:w-1/2">
+      <div>
+        <h1 className="text-2xl md:text-4xl font-extrabold text-gray-800 mb-4 md:mb-6">
+          {product.model}
+        </h1>
+
+        <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
+          <div>
+            <p className="text-sm text-gray-600">Ціна за пару: </p>
+            <p className="text-xl font-semibold">
+              {product.price_pair !== null ? (
+                <span className="text-black">{product.price_pair} грн</span>
+              ) : (
+                <span className="text-lime-600">За запитом</span>
+              )}
+            </p>
           </div>
 
-          <div className="flex flex-col justify-between">
-            <div>
-              <p className="text-sm text-gray-400 uppercase tracking-wide mb-1">
-                {product.name}
-              </p>
-              <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
-                {product.model}
-              </h1>
-
-              <div className="space-y-3 mb-6">
-                <div>
-                  <p className="text-sm text-gray-600">Ціна за пару:</p>
-                  <p className="text-xl font-semibold">
-                    {product.price_pair !== null ? (
-                      <span className="text-green-600">
-                        {product.price_pair} грн
-                      </span>
-                    ) : (
-                      <span className="text-red-500">Уточнюйте</span>
-                    )}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-600">Ціна за комплект:</p>
-                  <p className="text-xl font-semibold">
-                    {product.price_set !== null ? (
-                      <span className="text-green-600">
-                        {product.price_set} грн
-                      </span>
-                    ) : (
-                      <span className="text-red-500">Уточнiть</span>
-                    )}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <button
-              onClick={() => alert("test button")}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-base py-3 px-6 rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.293 1.293a1 1 0 000 1.414L7 17m10-4l1.293 1.293a1 1 0 010 1.414L17 17m0 0H7"
-                />
-              </svg>
-              Додати в кошик
-            </button>
+          <div>
+            <p className="text-sm text-gray-600">Ціна за комплект: </p>
+            <p className="text-xl font-semibold">
+              {product.price_set !== null ? (
+                <span className="text-black">{product.price_set} грн</span>
+              ) : (
+                <span className="text-lime-600">За запитом</span>
+              )}
+            </p>
           </div>
         </div>
       </div>
+
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => alert("test button")}
+          className="bg-blue-700 hover:bg-blue-600 text-white text-sm md:text-base py-3 px-4 md:py-4 md:px-6 rounded-2xl shadow-md font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+        >
+          <ShoppingCart className="w-5 h-5" />
+          Оформити замовлення
+        </button>
+      </div>
     </div>
-  );
+  </div>
+</div>
+);
 }
