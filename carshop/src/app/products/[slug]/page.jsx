@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
+import ProductGallery from "@/components/ProductGallery";
 
 export default function ProductOrBrandPage() {
   const params = useParams();
@@ -62,10 +63,7 @@ export default function ProductOrBrandPage() {
             ) : (
               brandProducts.map((product) => (
                 <div key={product.id} className="h-full">
-                  <ProductCard
-                    product={product}
-                    clickable={false}
-                  />
+                  <ProductCard product={product} clickable={false} />
                 </div>
               ))
             )}
@@ -95,10 +93,8 @@ export default function ProductOrBrandPage() {
       <div className="max-w-5xl mx-auto px-4">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
           <div className="flex items-center justify-center">
-            <img
-              src={product.image || "/placeholder.png"}
-              alt={product.name}
-              className="rounded-lg max-h-96 object-contain transition-transform duration-300 hover:scale-105"
+            <ProductGallery
+              images={[product.image, product.image2].filter(Boolean)}
             />
           </div>
 
