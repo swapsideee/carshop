@@ -89,36 +89,58 @@ export default function ProductOrBrandPage() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white py-10">
-      <div className="max-w-5xl mx-auto px-4 space-y-8">
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
-          <div className="flex items-center justify-center">
-            <ProductGallery
-              images={[product.image, product.image2].filter(Boolean)}
-            />
-          </div>
+  const productImages = [
+    product.image,
+    product.image2,
+  ].filter(Boolean);
 
-          <div>
-            <p className="text-sm text-gray-600">Ціна за комплект: </p>
-            <p className="text-xl font-semibold">
-              {product.price_set !== null ? (
-                <span className="text-black">{product.price_set} грн</span>
-              ) : (
-                <span className="text-lime-600">За запитом</span>
-              )}
-            </p>
-          </div>
+  return (
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 py-10 cursor-default">
+      <div className="w-full max-w-6xl mx-auto bg-gray-100 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
+        <div className="flex items-center justify-center w-full md:w-1/2">
+          <ProductGallery images={productImages} />
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => alert("test button")}
-            className="bg-blue-700 hover:bg-blue-600 text-white text-sm md:text-base py-3 px-4 md:py-4 md:px-6 rounded-2xl shadow-md font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
-          >
-            <ShoppingCart className="w-5 h-5" />
-            Оформити замовлення
-          </button>
+        <div className="flex flex-col justify-between w-full md:w-1/2">
+          <div>
+            <h1 className="text-2xl md:text-4xl font-extrabold text-gray-800 mb-4 md:mb-6">
+              {product.model}
+            </h1>
+
+            <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
+              <div>
+                <p className="text-sm text-gray-600">Ціна за пару: </p>
+                <p className="text-xl font-semibold">
+                  {product.price_pair !== null ? (
+                    <span className="text-black">{product.price_pair} грн</span>
+                  ) : (
+                    <span className="text-lime-600">За запитом</span>
+                  )}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-sm text-gray-600">Ціна за комплект: </p>
+                <p className="text-xl font-semibold">
+                  {product.price_set !== null ? (
+                    <span className="text-black">{product.price_set} грн</span>
+                  ) : (
+                    <span className="text-lime-600">За запитом</span>
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => alert("test button")}
+              className="bg-blue-700 hover:bg-blue-600 text-white text-sm md:text-base py-3 px-4 md:py-4 md:px-6 rounded-2xl shadow-md font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              Оформити замовлення
+            </button>
+          </div>
         </div>
       </div>
     </div>
