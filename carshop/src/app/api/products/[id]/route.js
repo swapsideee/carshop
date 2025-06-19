@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { ErrorHandler } from "@/lib/utils/errorHandler";
-import { getProductById } from "@/lib/queries/products";
+import {
+  getProductById,
+  getProductImages,
+  getRelatedProducts,
+} from "@/lib/queries/products";
+
 
 async function getProductHandler(request, context) {
   const id = (await context.params).id;
@@ -15,11 +20,25 @@ async function getProductHandler(request, context) {
       : result[0]
     : result;
 
-  if (!product) {
+  if (!product)
     return new NextResponse("Product not found", { status: 404 });
-  }
+
+  const { query: imagesQuery, params: imagesParams } = getProductImages(id);
+  const imagesRes = await db.query(imagesQuery, imagesParams);
+  const images = imagesRes[0].map((row) => row.image_url);
+  product.images = images;
+
+  const baseDigits = product.model.match(/\d+/)?.[0] || "";
+  const { query: relatedQuery, params: relatedParams } = getRelatedProducts({
+    brandId: product.brand_id,
+    modelDigits: baseDigits,
+    excludeId: id,
+  });
+  const relatedRes = await db.query(relatedQuery, relatedParams);
+  product.related = relatedRes[0];
 
   return NextResponse.json(product);
+
 }
 
 export const GET = ErrorHandler(getProductHandler);

@@ -89,10 +89,12 @@ export default function ProductOrBrandPage() {
     );
   }
 
-  const productImages = [product.image, product.image2].filter(Boolean);
+  const productImages = product.images?.length
+    ? [product.image, ...product.images]
+    : [product.image].filter(Boolean);
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 py-10 cursor-default">
+    <div className="min-h-screen bg-white px-4 py-10 cursor-default space-y-16">
       <div className="w-full max-w-6xl mx-auto bg-gray-100 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
         <div className="flex items-center justify-center w-full md:w-1/2">
           <ProductGallery images={productImages} />
@@ -140,6 +142,19 @@ export default function ProductOrBrandPage() {
           </div>
         </div>
       </div>
+
+      {product.related?.length > 0 && (
+        <div className="w-full max-w-6xl mx-auto">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            Схожі товари
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+            {product.related.map((p) => (
+              <ProductCard key={p.id} product={p} clickable />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
