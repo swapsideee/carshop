@@ -15,3 +15,8 @@ export const getAllProducts = ({ brand, sortBy = 'price_pair', sortOrder = 'ASC'
 
     return { query, params };
 };
+
+export const getProductById = (id) => ({
+    query: 'SELECT * FROM products WHERE id = ?',
+    params: [id],
+});

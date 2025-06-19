@@ -1,9 +1,8 @@
 export function ErrorHandler(handler) {
-    return async function (...args) {
+    return async function (request, context) {
         try {
-            return await handler(...args);
-        }
-        catch (err) {
+            return await handler(request, context);
+        } catch (err) {
             console.error("API Error:", err);
             return new Response(
                 JSON.stringify({ error: "Internal server error" }),

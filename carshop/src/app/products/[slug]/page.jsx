@@ -89,10 +89,7 @@ export default function ProductOrBrandPage() {
     );
   }
 
-  const productImages = [
-    product.image,
-    product.image2,
-  ].filter(Boolean);
+  const productImages = [product.image, product.image2].filter(Boolean);
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4 py-10 cursor-default">
