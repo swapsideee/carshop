@@ -56,21 +56,21 @@ function ReviewForm({ onNewReview }) {
         <label className="block mb-1 text-sm text-gray-700 font-medium">
           Товар
         </label>
-<select
-  value={productId}
-  onChange={(e) => setProductId(e.target.value)}
-  className="w-full max-w-sm border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-lime-600 shadow-sm transition"
->
-  <option value="">Оберіть товар</option>
-  {products.map((p) => {
-    const label = p.name ? `${p.name} ${p.model}` : p.model;
-    return (
-      <option key={p.id} value={p.id} title={label}>
-        {label.length > 30 ? label.slice(0, 30) + "..." : label}
-      </option>
-    );
-  })}
-</select>
+        <select
+          value={productId}
+          onChange={(e) => setProductId(e.target.value)}
+          className="w-full max-w-sm border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-lime-600 shadow-sm transition"
+        >
+          <option value="">Оберіть товар</option>
+          {products.map((p) => {
+            const label = p.name ? `${p.name} ${p.model}` : p.model;
+            return (
+              <option key={p.id} value={p.id} title={label}>
+                {label.length > 30 ? label.slice(0, 30) + "..." : label}
+              </option>
+            );
+          })}
+        </select>
       </div>
       <div>
         <label className="block mb-1 text-sm text-gray-700 font-medium">
@@ -131,7 +131,9 @@ function ReviewList({ refresh }) {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 space-y-6">
-      <h2 className="text-xl font-semibold text-black cursor-default">Останні відгуки</h2>
+      <h2 className="text-xl font-semibold text-black cursor-default">
+        Останні відгуки
+      </h2>
       {reviews.length === 0 ? (
         <p className="text-gray-500 cursor-default">Відгуків ще немає</p>
       ) : (
@@ -167,15 +169,15 @@ export default function ReviewsPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-white">
-    <div className="bg-zinc-100 px-4 rounded-2xl max-w-7xl mx-auto shadow-xl">
-      <div className="py-10 px-4">
-      <h1 className="text-2xl font-bold text-center mb-6 text-black cursor-default">
-        Залишити відгук
-      </h1>
-      <ReviewForm onNewReview={handleNewReview} />
-      <ReviewList refresh={refreshFlag} />
-    </div>
-    </div>
+      <div className="bg-zinc-100 px-4 rounded-2xl max-w-7xl mx-auto shadow-xl">
+        <div className="py-10 px-4">
+          <h1 className="text-2xl font-bold text-center mb-6 text-black cursor-default">
+            Залишити відгук
+          </h1>
+          <ReviewForm onNewReview={handleNewReview} />
+          <ReviewList refresh={refreshFlag} />
+        </div>
+      </div>
     </div>
   );
 }
