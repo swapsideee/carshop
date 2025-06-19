@@ -56,18 +56,21 @@ function ReviewForm({ onNewReview }) {
         <label className="block mb-1 text-sm text-gray-700 font-medium">
           Товар
         </label>
-        <select
-          value={productId}
-          onChange={(e) => setProductId(e.target.value)}
-          className="cursor-pointer w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition"
-        >
-          <option value="">Оберіть товар</option>
-          {products.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.name ? `${p.name} ${p.model}` : p.model}
-            </option>
-          ))}
-        </select>
+<select
+  value={productId}
+  onChange={(e) => setProductId(e.target.value)}
+  className="w-full max-w-sm border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-lime-600 shadow-sm transition"
+>
+  <option value="">Оберіть товар</option>
+  {products.map((p) => {
+    const label = p.name ? `${p.name} ${p.model}` : p.model;
+    return (
+      <option key={p.id} value={p.id} title={label}>
+        {label.length > 30 ? label.slice(0, 30) + "..." : label}
+      </option>
+    );
+  })}
+</select>
       </div>
       <div>
         <label className="block mb-1 text-sm text-gray-700 font-medium">
@@ -92,7 +95,7 @@ function ReviewForm({ onNewReview }) {
           onChange={(e) => setComment(e.target.value)}
           rows="4"
           placeholder="Ваш відгук"
-          className="w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition"
+          className="w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 ring-lime-600 shadow-sm transition"
         />
       </div>
       <button

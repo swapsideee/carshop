@@ -134,7 +134,7 @@ export default function ProductOrBrandPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => alert("test button")}
-              className="bg-blue-700 hover:bg-blue-600 text-white text-sm md:text-base py-3 px-4 md:py-4 md:px-6 rounded-2xl shadow-md font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              className="bg-gray-900 hover:bg-gray-800 text-white text-sm md:text-base py-3 px-4 md:py-4 md:px-6 rounded-2xl shadow-md font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <ShoppingCart className="w-5 h-5" />
               Оформити замовлення

@@ -21,7 +21,7 @@ export default function FiltersPanel({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Введіть назву або модель"
-          className="w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition"
+          className="w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-lime-600 shadow-sm transition"
         />
       </div>
 
@@ -32,7 +32,7 @@ export default function FiltersPanel({
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className="cursor-pointer w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition"
+          className="cursor-pointer w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-lime-600 shadow-sm transition"
         >
           <option value="">Обрати</option>
           <option value="asc">Від дешевих до дорогих</option>
@@ -47,7 +47,7 @@ export default function FiltersPanel({
         <select
           value={selectedBrand}
           onChange={(e) => setSelectedBrand(e.target.value)}
-          className="cursor-pointer w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition"
+          className="cursor-pointer w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-lime-600 shadow-sm transition"
         >
           <option value="">Усі бренди</option>
           {brands.map((b) => (
