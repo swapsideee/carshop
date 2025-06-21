@@ -69,18 +69,18 @@ export default function AllProductsPage() {
     setQuery("");
   };
 
-  return (
-    <div className="flex max-w-7xl mx-auto px-4 gap-8">
-      <FiltersPanel
-        brands={brands}
-        selectedBrand={selectedBrand}
-        setSelectedBrand={setSelectedBrand}
-        sort={sort}
-        setSort={setSort}
-        query={query}
-        setQuery={setQuery}
-        resetFilters={resetFilters}
-      />
+return (
+  <div className="flex max-w-7xl mx-auto px-4 gap-8 ml-[-275px]">
+    <FiltersPanel
+      brands={brands}
+      selectedBrand={selectedBrand}
+      setSelectedBrand={setSelectedBrand}
+      sort={sort}
+      setSort={setSort}
+      query={query}
+      setQuery={setQuery}
+      resetFilters={resetFilters}
+    />
 
       <div className="bg-zinc-50 py-10 rounded-2xl flex-1 shadow-md">
         <main>
