@@ -70,7 +70,7 @@ export default function AllProductsPage() {
   };
 
 return (
-  <div className="flex max-w-7xl mx-auto px-4 gap-8">
+  <div className="flex max-w-7xl mx-auto px-4 gap-8 ml-[-275px]">
     <FiltersPanel
       brands={brands}
       selectedBrand={selectedBrand}

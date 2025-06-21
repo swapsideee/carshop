@@ -105,8 +105,7 @@ export default function ProductOrBrandPage() {
             <h1 className="text-2xl md:text-4xl font-extrabold text-gray-800 mb-4 md:mb-6">
               {product.model}
             </h1>
-
-            <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
+            <div className="space-y-3 md:space-y-4 mb-6 md:mb-8 mt-6">
               <div>
                 <p className="text-sm text-gray-600">Ціна за пару: </p>
                 <p className="text-xl font-semibold">
@@ -130,7 +129,7 @@ export default function ProductOrBrandPage() {
               </div>
             </div>
           </div>
-
+            <DescriptionBlock />
           <div className="flex items-center gap-2">
             <button
               onClick={() => alert("test button")}
@@ -155,6 +154,35 @@ export default function ProductOrBrandPage() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function DescriptionBlock() {
+  const [expanded, setExpanded] = useState(false);
+
+  const text = `Підкрилки виробництва ТМ "Mega Locker". Оптимальне поєднання високої якості та доступної ціни. Виготовлені з високоякісного еластичного пластику, мають високу зносостійкість, що дозволяє зберігати за будь-яких умов фізичну форму та властивості. Є модельними, кріпляться до крила та кузова звичайними шурупами. Форма виробів спеціально розроблена під колісну арку даного автомобіля, спрощує встановлення та продовжує термін служби захисту. Вони легко переносять високі температури і різні навантаження, що робить їх практичнішими за металеві вироби.`;
+
+  return (
+    <div className="relative">
+      <p
+        className={`text-gray-700 text-sm leading-relaxed transition-all duration-300 ease-in-out ${
+          expanded
+            ? "line-clamp-none max-h-none"
+            : "max-h-[4rem] overflow-hidden"
+        }`}
+      >
+        {text}
+        {!expanded && (
+          <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-gray-100 to-transparent pointer-events-none" />
+        )}
+      </p>
+      <button
+        onClick={() => setExpanded((prev) => !prev)}
+        className="mt-2 text-sm font-medium text-lime-600 hover:text-lime-700 focus:outline-none transition-colors"
+      >
+     {expanded ? "Згорнути" : "Розгорнути повнiстю"}
+      </button>
     </div>
   );
 }
