@@ -1,5 +1,5 @@
 "use client";
-import { Mail,Phone,MapPin,Building,Clock } from 'lucide-react';
+import { Mail, Phone, MapPin, Building, Clock } from "lucide-react";
 const CompanyCard = () => {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 cursor-default">
@@ -10,11 +10,11 @@ const CompanyCard = () => {
           </h2>
           <p className="text-lg text-gray-700 flex items-center gap-2">
             <Mail className="w-5 h-5" />
-              <a
+            <a
               href="mailto:Vadi-Avto@ukr.net"
               className="text-gray-700 underline hover:text-gray-500"
-              >
-            Vadi-Avto@ukr.net
+            >
+              Vadi-Avto@ukr.net
             </a>
           </p>
           <p className="text-lg text-gray-700 flex items-center gap-2">
@@ -27,16 +27,16 @@ const CompanyCard = () => {
             </a>
           </p>
           <p className="text-lg text-gray-700 flex items-center gap-2">
-            <MapPin className='w-5 h-5' />
-           Авторинок "Лоск", 13 ряд, 9 місце
+            <MapPin className="w-5 h-5" />
+            Авторинок "Лоск", 13 ряд, 9 місце
           </p>
           <p className="text-lg text-gray-700 flex items-center gap-2">
-            <Building className='w-5 h-5' />
-           Харків
+            <Building className="w-5 h-5" />
+            Харків
           </p>
           <p className="text-lg text-gray-700 flex items-center gap-2">
-            <Clock className='w-5 h-5' />
-             Пн–Нд, 9:00–13:00
+            <Clock className="w-5 h-5" />
+            Пн–Нд, 9:00–13:00
           </p>
         </div>
 

@@ -3,20 +3,21 @@
 import { ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { toast } from "react-hot-toast";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/ProductGallery";
 import useCartStore from "@/app/store/cartStore";
-import { toast } from "react-hot-toast";
+import PriceSelector from "@/components/PriceSelector";
 
 export default function ProductOrBrandPage() {
   const params = useParams();
   const [product, setProduct] = useState(null);
   const [brandProducts, setBrandProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedOption, setSelectedOption] = useState("pair");
 
   const addToCart = useCartStore((state) => state.addToCart);
-
   const isProductId = !isNaN(Number(params.slug));
 
   useEffect(() => {
@@ -41,14 +42,36 @@ export default function ProductOrBrandPage() {
     fetchData();
   }, [params.slug, isProductId]);
 
+  useEffect(() => {
+    if (product) {
+      if (product.price_pair !== null && product.price_set === null) {
+        setSelectedOption("pair");
+      } else if (product.price_set !== null && product.price_pair === null) {
+        setSelectedOption("set");
+      }
+    }
+  }, [product]);
+
   const handleAddToCart = () => {
     if (!product) return;
+
+    const price =
+      selectedOption === "pair" ? product.price_pair : product.price_set;
+
+    if (!price) {
+      toast.error("Ціна для обраного варіанту відсутня");
+      return;
+    }
+
     const cartItem = {
-      id: product.id,
-      name: product.model,
-      price: product.price_pair || product.price_set || 0,
+      id: `${product.id}-${selectedOption}`,
+      name: `${product.model} (${
+        selectedOption === "pair" ? "Пара" : "Комплект"
+      })`,
+      price,
       image: product.image,
     };
+
     addToCart(cartItem);
     toast.success("Товар додано до кошику");
   };
@@ -109,21 +132,30 @@ export default function ProductOrBrandPage() {
     ? [product.image, ...product.images]
     : [product.image].filter(Boolean);
 
+  const bothPricesAvailable =
+    product.price_pair !== null && product.price_set !== null;
+  const onlyPair = product.price_pair !== null && product.price_set === null;
+  const onlySet = product.price_set !== null && product.price_pair === null;
+  const noPrice = product.price_pair === null && product.price_set === null;
+
   return (
     <div className="min-h-screen bg-white px-4 py-10 cursor-default space-y-16">
       <div className="w-full max-w-6xl mx-auto bg-gray-100 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
-        <div className="flex items-center justify-center w-full md:w-1/2">
-          <ProductGallery images={productImages} />
+        <div className="w-full md:basis-1/2 min-w-0 flex justify-center">
+          <div className="w-full max-w-sm">
+            <ProductGallery images={productImages} />
+          </div>
         </div>
 
-        <div className="flex flex-col justify-between w-full md:w-1/2">
+        <div className="w-full md:basis-1/2 min-w-0 flex flex-col justify-between">
           <div>
             <h1 className="text-2xl md:text-4xl font-extrabold text-gray-800 mb-4 md:mb-6">
               {product.model}
             </h1>
+
             <div className="space-y-3 md:space-y-4 mb-6 md:mb-8 mt-6">
               <div>
-                <p className="text-sm text-gray-600">Ціна за пару: </p>
+                <p className="text-sm text-gray-600">Ціна за пару:</p>
                 <p className="text-xl font-semibold">
                   {product.price_pair !== null ? (
                     <span className="text-black">{product.price_pair} грн</span>
@@ -134,7 +166,7 @@ export default function ProductOrBrandPage() {
               </div>
 
               <div>
-                <p className="text-sm text-gray-600">Ціна за комплект: </p>
+                <p className="text-sm text-gray-600">Ціна за комплект:</p>
                 <p className="text-xl font-semibold">
                   {product.price_set !== null ? (
                     <span className="text-black">{product.price_set} грн</span>
@@ -144,6 +176,29 @@ export default function ProductOrBrandPage() {
                 </p>
               </div>
             </div>
+
+            {bothPricesAvailable && (
+              <PriceSelector
+                pricePair={product.price_pair}
+                priceSet={product.price_set}
+                selected={selectedOption}
+                onSelect={setSelectedOption}
+              />
+            )}
+
+            {onlyPair && (
+              <p className="text-sm text-gray-600 mb-4">
+                Для цього товару доступний тільки:{" "}
+                <span className="font-semibold text-black">Пара</span>
+              </p>
+            )}
+
+            {onlySet && (
+              <p className="text-sm text-gray-600 mb-4">
+                Для цього товару доступний тільки:{" "}
+                <span className="font-semibold text-black">Комплект</span>
+              </p>
+            )}
           </div>
 
           <DescriptionBlock />
@@ -151,10 +206,15 @@ export default function ProductOrBrandPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={handleAddToCart}
-              className="bg-gray-900 hover:bg-gray-800 text-white text-sm md:text-base py-3 px-4 md:py-4 md:px-6 rounded-2xl shadow-md font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              disabled={noPrice}
+              className={`${
+                noPrice
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-gray-900 hover:bg-gray-800 text-white"
+              } text-sm md:text-base py-3 px-4 md:py-4 md:px-6 rounded-2xl shadow-md font-semibold flex items-center justify-center gap-2 transition-colors`}
             >
               <ShoppingCart className="w-5 h-5" />
-              Додати в корзину
+              {noPrice ? "Недоступно" : "Додати в кошик"}
             </button>
           </div>
         </div>
@@ -182,7 +242,7 @@ function DescriptionBlock() {
   const text = `Підкрилки виробництва ТМ "Mega Locker". Оптимальне поєднання високої якості та доступної ціни. Виготовлені з високоякісного еластичного пластику, мають високу зносостійкість, що дозволяє зберігати за будь-яких умов фізичну форму та властивості. Є модельними, кріпляться до крила та кузова звичайними шурупами. Форма виробів спеціально розроблена під колісну арку даного автомобіля, спрощує встановлення та продовжує термін служби захисту. Вони легко переносять високі температури і різні навантаження, що робить їх практичнішими за металеві вироби.`;
 
   return (
-    <div className="relative">
+    <div className="relative mt-6">
       <p
         className={`text-gray-700 text-sm leading-relaxed transition-all duration-300 ease-in-out ${
           expanded

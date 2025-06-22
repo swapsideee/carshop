@@ -1,8 +1,9 @@
 "use client";
 
 import useCartStore from "@/app/store/cartStore";
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
+import { validatePhone } from "@/lib/utils/validator";
 
 export default function OrderPage() {
   const { cartItems, clearCart, saveOrder } = useCartStore();
@@ -24,7 +25,9 @@ export default function OrderPage() {
     e.preventDefault();
     const cleanedPhone = form.phone.replace(/\s+/g, "");
 
-    if (!/^\+?\d{9,15}$/.test(cleanedPhone)) {
+    const { isValid, cleaned } = validatePhone(form.phone);
+
+    if (!isValid) {
       alert("Введіть коректний номер телефону");
       return;
     }
