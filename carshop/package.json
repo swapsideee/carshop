@@ -12,14 +12,16 @@
     "@headlessui/react": "^2.2.4",
     "dotenv": "^16.4.7",
     "framer-motion": "^12.6.2",
-    "lucide-react": "^0.483.0",
+    "lucide-react": "^0.522.0",
     "mysql2": "^3.14.0",
     "next": "15.2.3",
     "react": "^19.0.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.2",
     "swiper": "^11.2.8",
-    "yet-another-react-lightbox": "^3.23.3"
+    "yet-another-react-lightbox": "^3.23.3",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

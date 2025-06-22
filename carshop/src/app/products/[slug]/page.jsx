@@ -6,12 +6,16 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/ProductGallery";
+import useCartStore from "@/app/store/cartStore";
+import { toast } from "react-hot-toast";
 
 export default function ProductOrBrandPage() {
   const params = useParams();
   const [product, setProduct] = useState(null);
   const [brandProducts, setBrandProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const addToCart = useCartStore((state) => state.addToCart);
 
   const isProductId = !isNaN(Number(params.slug));
 
@@ -36,6 +40,18 @@ export default function ProductOrBrandPage() {
     };
     fetchData();
   }, [params.slug, isProductId]);
+
+  const handleAddToCart = () => {
+    if (!product) return;
+    const cartItem = {
+      id: product.id,
+      name: product.model,
+      price: product.price_pair || product.price_set || 0,
+      image: product.image,
+    };
+    addToCart(cartItem);
+    toast.success("Товар додано до кошику");
+  };
 
   if (isLoading) {
     return (
@@ -129,14 +145,16 @@ export default function ProductOrBrandPage() {
               </div>
             </div>
           </div>
-            <DescriptionBlock />
+
+          <DescriptionBlock />
+
           <div className="flex items-center gap-2">
             <button
-              onClick={() => alert("test button")}
+              onClick={handleAddToCart}
               className="bg-gray-900 hover:bg-gray-800 text-white text-sm md:text-base py-3 px-4 md:py-4 md:px-6 rounded-2xl shadow-md font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <ShoppingCart className="w-5 h-5" />
-              Оформити замовлення
+              Додати в корзину
             </button>
           </div>
         </div>
@@ -181,7 +199,7 @@ function DescriptionBlock() {
         onClick={() => setExpanded((prev) => !prev)}
         className="mt-2 text-sm font-medium text-lime-600 hover:text-lime-700 focus:outline-none transition-colors"
       >
-     {expanded ? "Згорнути" : "Розгорнути повнiстю"}
+        {expanded ? "Згорнути" : "Розгорнути повнiстю"}
       </button>
     </div>
   );

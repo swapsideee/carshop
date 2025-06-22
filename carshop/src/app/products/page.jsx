@@ -69,24 +69,26 @@ export default function AllProductsPage() {
     setQuery("");
   };
 
-return (
-  <div className="flex max-w-7xl mx-auto px-4 gap-8 ml-[-275px]">
-    <FiltersPanel
-      brands={brands}
-      selectedBrand={selectedBrand}
-      setSelectedBrand={setSelectedBrand}
-      sort={sort}
-      setSort={setSort}
-      query={query}
-      setQuery={setQuery}
-      resetFilters={resetFilters}
-    />
+  return (
+    <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-4 gap-8 py-10">
+      <div className="w-full lg:w-[275px] shrink-0">
+        <FiltersPanel
+          brands={brands}
+          selectedBrand={selectedBrand}
+          setSelectedBrand={setSelectedBrand}
+          sort={sort}
+          setSort={setSort}
+          query={query}
+          setQuery={setQuery}
+          resetFilters={resetFilters}
+        />
+      </div>
 
-      <div className="bg-zinc-50 py-10 rounded-2xl flex-1 shadow-md">
-        <main>
+      <div className="w-full bg-zinc-50 rounded-2xl shadow-md">
+        <main className="p-4">
           {isLoading ? (
             <div className="text-center text-gray-500 mt-20 text-lg animate-pulse">
-              Завантаження товарів
+              Завантаження товарів...
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="flex flex-col items-center mt-20 text-gray-500">
@@ -109,7 +111,7 @@ return (
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 px-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
                 <ProductCard
                   key={product.id}

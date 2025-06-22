@@ -1,6 +1,7 @@
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "CarShop - Магазин подкрылков",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
         <Header />
         <main className="p-4 max-w-7xl mx-auto flex-grow">{children}</main>
         <Footer />
+        <Toaster position="top-right" />
       </body>
     </html>
   );
