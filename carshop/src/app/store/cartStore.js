@@ -1,64 +1,69 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+const generateOrderId = () => crypto.randomUUID?.() || Date.now();
+
 const useCartStore = create(
     persist(
-        (set) => ({
+        (set, get) => ({
             cartItems: [],
             pastOrders: [],
 
-            addToCart: (product) =>
-                set((state) => {
-                    if (!product?.id || !product?.price) return state;
+            addToCart: (product) => {
+                if (!product?.id || !product?.price) return;
 
-                    const existing = state.cartItems.find((item) => item.id === product.id);
-                    if (existing) {
-                        return {
-                            cartItems: state.cartItems.map((item) =>
-                                item.id === product.id
-                                    ? { ...item, quantity: item.quantity + 1 }
-                                    : item
-                            ),
-                        };
-                    }
+                const { cartItems } = get();
+                const existingItem = cartItems.find((item) => item.id === product.id);
 
-                    return {
-                        cartItems: [...state.cartItems, { ...product, quantity: 1 }],
-                    };
-                }),
-
-            decreaseQuantity: (id) =>
-                set((state) => ({
-                    cartItems: state.cartItems
-                        .map((item) =>
-                            item.id === id
-                                ? { ...item, quantity: item.quantity - 1 }
+                if (existingItem) {
+                    set({
+                        cartItems: cartItems.map((item) =>
+                            item.id === product.id
+                                ? { ...item, quantity: item.quantity + 1 }
                                 : item
-                        )
-                        .filter((item) => item.quantity > 0),
-                })),
+                        ),
+                    });
+                }
+                else {
+                    set({
+                        cartItems: [...cartItems, { ...product, quantity: 1 }],
+                    });
+                }
+            },
 
-            removeFromCart: (id) =>
-                set((state) => ({
-                    cartItems: state.cartItems.filter((item) => item.id !== id),
-                })),
+            decreaseQuantity: (id) => {
+                const { cartItems } = get();
+                const updated = cartItems
+                    .map((item) =>
+                        item.id === id
+                            ? { ...item, quantity: item.quantity - 1 }
+                            : item
+                    )
+                    .filter((item) => item.quantity > 0);
+
+                set({ cartItems: updated });
+            },
+
+            removeFromCart: (id) => {
+                const { cartItems } = get();
+                set({
+                    cartItems: cartItems.filter((item) => item.id !== id),
+                });
+            },
 
             clearCart: () => set({ cartItems: [] }),
 
-            saveOrder: (orderData) =>
-                set((state) => ({
-                    pastOrders: [
-                        ...state.pastOrders,
-                        {
-                            ...orderData,
-                            id: crypto.randomUUID?.() || Date.now(),
-                        },
-                    ],
-                })),
+            saveOrder: (orderData) => {
+                const { pastOrders } = get();
+                const newOrder = {
+                    ...orderData,
+                    id: generateOrderId(),
+                };
+
+                set({ pastOrders: [...pastOrders, newOrder] });
+            },
         }),
-        {
-            name: "cart-storage",
-        }
+        { name: "cart-storage" }
     )
 );
 

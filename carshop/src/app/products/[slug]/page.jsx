@@ -147,7 +147,7 @@ export default function ProductOrBrandPage() {
           </div>
         </div>
 
-        <div className="w-full md:basis-1/2 min-w-0 flex flex-col justify-between">
+        <div className="w-full md:basis-1/2 min-w-0 flex flex-col gap-6">
           <div>
             <h1 className="text-2xl md:text-4xl font-extrabold text-gray-800 mb-4 md:mb-6">
               {product.model}
@@ -201,9 +201,7 @@ export default function ProductOrBrandPage() {
             )}
           </div>
 
-          <DescriptionBlock />
-
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mt-auto">
             <button
               onClick={handleAddToCart}
               disabled={noPrice}
@@ -218,6 +216,10 @@ export default function ProductOrBrandPage() {
             </button>
           </div>
         </div>
+      </div>
+
+      <div className="w-full max-w-6xl mx-auto">
+        <DescriptionBlock />
       </div>
 
       {product.related?.length > 0 && (
@@ -247,17 +249,17 @@ function DescriptionBlock() {
         className={`text-gray-700 text-sm leading-relaxed transition-all duration-300 ease-in-out ${
           expanded
             ? "line-clamp-none max-h-none"
-            : "max-h-[4rem] overflow-hidden"
+            : "max-h-[3rem] overflow-hidden"
         }`}
       >
         {text}
         {!expanded && (
-          <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-gray-100 to-transparent pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white to-transparent pointer-events-none" />
         )}
       </p>
       <button
         onClick={() => setExpanded((prev) => !prev)}
-        className="mt-2 text-sm font-medium text-lime-600 hover:text-lime-700 focus:outline-none transition-colors"
+        className="mt-2 text-sm font-medium text-lime-700 hover:text-lime-800 focus:outline-none transition-colors"
       >
         {expanded ? "Згорнути" : "Розгорнути повнiстю"}
       </button>
