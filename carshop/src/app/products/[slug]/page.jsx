@@ -187,18 +187,28 @@ export default function ProductOrBrandPage() {
             )}
 
             {onlyPair && (
-              <p className="text-sm text-gray-600 mb-4">
-                Для цього товару доступний тільки:{" "}
+            <>
+             <p className="text-sm text-gray-600 mb-4 underline">
+              Для замовлення цього товару доступна тільки{" "}
                 <span className="font-semibold text-black">Пара</span>
-              </p>
-            )}
+            </p>
+            <p className="text-sm text-gray-600">
+              Інформацію про наявність комплекту можна дізнатися, зв'язавшись із менеджером
+            </p>
+            </>
+          )}
 
             {onlySet && (
-              <p className="text-sm text-gray-600 mb-4">
-                Для цього товару доступний тільки:{" "}
+            <>
+             <p className="text-sm text-gray-600 mb-4 underline">
+              Для замовлення цього товару доступний тільки{" "}
                 <span className="font-semibold text-black">Комплект</span>
-              </p>
-            )}
+            </p>
+            <p className="text-sm text-gray-600">
+              Інформацію про наявність пари можна дізнатися, зв'язавшись із менеджером
+            </p>
+            </>
+          )}
           </div>
 
           <div className="flex items-center gap-2 mt-auto">
@@ -209,10 +219,10 @@ export default function ProductOrBrandPage() {
                 noPrice
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-gray-900 hover:bg-gray-800 text-white"
-              } text-sm md:text-base py-3 px-4 md:py-4 md:px-6 rounded-2xl shadow-md font-semibold flex items-center justify-center gap-2 transition-colors`}
+              } text-sm md:text-base py-3 px-4 md:py-4 md:px-6 rounded-2xl shadow-md font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer`}
             >
               <ShoppingCart className="w-5 h-5" />
-              {noPrice ? "Недоступно" : "Додати в кошик"}
+              {noPrice ? "Недоступно" : "Додати до кошика"}
             </button>
           </div>
         </div>
@@ -242,7 +252,6 @@ function DescriptionBlock() {
   const [expanded, setExpanded] = useState(false);
 
   const text = `Підкрилки виробництва ТМ "Mega Locker". Оптимальне поєднання високої якості та доступної ціни. Виготовлені з високоякісного еластичного пластику, мають високу зносостійкість, що дозволяє зберігати за будь-яких умов фізичну форму та властивості. Є модельними, кріпляться до крила та кузова звичайними шурупами. Форма виробів спеціально розроблена під колісну арку даного автомобіля, спрощує встановлення та продовжує термін служби захисту. Вони легко переносять високі температури і різні навантаження, що робить їх практичнішими за металеві вироби.`;
-
   return (
     <div className="relative mt-6">
       <p
@@ -259,7 +268,7 @@ function DescriptionBlock() {
       </p>
       <button
         onClick={() => setExpanded((prev) => !prev)}
-        className="mt-2 text-sm font-medium text-lime-700 hover:text-lime-800 focus:outline-none transition-colors"
+        className="mt-2 text-sm font-bold text-lime-700 hover:text-lime-600 focus:outline-none transition-colors cursor-pointer"
       >
         {expanded ? "Згорнути" : "Розгорнути повнiстю"}
       </button>

@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin, Building, Clock } from "lucide-react";
 const CompanyCard = () => {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 cursor-default">
-      <div className="bg-gray-100 rounded-2xl shadow-2xl w-full max-w-3xl p-10 space-y-8">
+      <div className="bg-gray-100 rounded-2xl shadow-2xl w-full max-w-xl p-10 space-y-8">
         <div className="space-y-4">
           <h2 className="text-center text-3xl font-bold text-gray-800">
             Контактна інформація

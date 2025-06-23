@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
         <Header />
         <main className="p-4 flex-grow">{children}</main>
         <Footer />
-        <Toaster position="top-right" />
+        <Toaster position="top-center" />
       </body>
     </html>
   );

@@ -10,7 +10,7 @@ function Star({ filled, onClick }) {
       fill={filled ? "#84cc16" : "none"}
       stroke="#84cc16"
       strokeWidth="1.5"
-      className="w-6 h-6 cursor-pointer"
+      className="w-5 h-5 cursor-pointer"
     >
       <path
         strokeLinecap="round"
@@ -51,15 +51,15 @@ function ReviewForm({ onNewReview }) {
   };
 
   return (
-    <form className="max-w-md mx-auto space-y-4" onSubmit={handleSubmit}>
+    <form className="space-y-5" onSubmit={handleSubmit}>
       <div>
-        <label className="block mb-1 text-sm text-gray-700 font-medium">
-          Товар
+        <label className="block mb-1 text-base text-gray-700 font-medium">
+          Товар<span className="text-red-500 ml-0.5">*</span>
         </label>
         <select
           value={productId}
           onChange={(e) => setProductId(e.target.value)}
-          className="w-full max-w-sm border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-lime-600 shadow-sm transition"
+          className="cursor-pointer w-full border border-gray-300 text-gray-900 rounded-md px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-lime-600 shadow-sm"
         >
           <option value="">Оберіть товар</option>
           {products.map((p) => {
@@ -72,9 +72,10 @@ function ReviewForm({ onNewReview }) {
           })}
         </select>
       </div>
+
       <div>
-        <label className="block mb-1 text-sm text-gray-700 font-medium">
-          Оцінка
+        <label className="block mb-1 text-base text-gray-700 font-medium">
+          Оцінка<span className="text-red-500 ml-0.5">*</span>
         </label>
         <div className="flex space-x-1">
           {[1, 2, 3, 4, 5].map((num) => (
@@ -86,26 +87,31 @@ function ReviewForm({ onNewReview }) {
           ))}
         </div>
       </div>
+
       <div>
-        <label className="block mb-1 text-sm text-gray-700 font-medium">
+        <label className="block mb-1 text-base text-gray-700 font-medium">
           Коментар
         </label>
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          rows="4"
+          rows="3"
           placeholder="Ваш відгук"
-          className="w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 ring-lime-600 shadow-sm transition"
+          className="w-full border border-gray-300 text-gray-900 rounded-md px-4 py-2 bg-white focus:outline-none focus:ring-2 ring-lime-600 shadow-sm"
         />
       </div>
+
       <button
         type="submit"
-        className="cursor-pointer w-full bg-lime-600 text-gray-900 hover:text-green-100 py-2 rounded-md transition"
+        className="w-full cursor-pointer text-white font-semibold bg-gray-900 hover:bg-gray-800 py-2.5 rounded-md transition text-base"
       >
         Надіслати відгук
       </button>
+
       {submitted && (
-        <p className="text-center text-green-700">Дякуємо за відгук!</p>
+        <p className="text-center text-green-700 font-medium">
+          Дякуємо за відгук!
+        </p>
       )}
     </form>
   );
@@ -130,16 +136,16 @@ function ReviewList({ refresh }) {
   }, [refresh]);
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 space-y-6">
-      <h2 className="text-xl font-semibold text-black cursor-default">
+    <div className="space-y-4 pt-8">
+      <h2 className="text-xl font-semibold text-gray-800 text-center">
         Останні відгуки
       </h2>
       {reviews.length === 0 ? (
-        <p className="text-gray-500 cursor-default">Відгуків ще немає</p>
+        <p className="text-gray-500 text-center">Відгуків ще немає</p>
       ) : (
         reviews.map((r) => (
           <div key={r.id} className="border rounded-lg p-4 bg-white shadow-sm">
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex justify-between items-center mb-1">
               <span className="text-gray-900 font-medium">
                 {r.name ? `${r.name} ${r.model}` : r.model}
               </span>
@@ -168,15 +174,15 @@ export default function ReviewsPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-white">
-      <div className="bg-zinc-100 px-4 rounded-2xl max-w-7xl mx-auto shadow-xl">
-        <div className="py-10 px-4">
-          <h1 className="text-2xl font-bold text-center mb-6 text-black cursor-default">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-white">
+      <div className="bg-gray-100 rounded-2xl shadow-2xl w-full max-w-xl p-10 space-y-10">
+        <div>
+          <h1 className="text-3xl font-bold text-center text-gray-800 mb-6 cursor-default">
             Залишити відгук
           </h1>
           <ReviewForm onNewReview={handleNewReview} />
-          <ReviewList refresh={refreshFlag} />
         </div>
+        <ReviewList refresh={refreshFlag} />
       </div>
     </div>
   );
