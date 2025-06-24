@@ -34,8 +34,8 @@ export default function PriceSelector({
             className={`flex-1 px-4 py-3 rounded-xl border text-sm font-semibold transition-all duration-200 ease-in-out
               ${
                 selected === option.value
-                  ? "bg-lime-600 text-white border-lime-600 shadow-md"
-                  : "bg-white text-gray-800 border-gray-300 hover:border-lime-500"
+                  ? "bg-gray-900 text-white border-gray-800 shadow-md"
+                  : "bg-white text-gray-800 border-gray-300 hover:border-gray-800 shadow-md"
               }
               ${
                 option.disabled

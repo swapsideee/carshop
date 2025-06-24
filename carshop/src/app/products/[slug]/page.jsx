@@ -90,32 +90,31 @@ export default function ProductOrBrandPage() {
 
   if (!isProductId) {
     return (
-      <div className="min-h-screen bg-zinc-50 py-10">
-        <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-2xl font-bold mb-6 text-black uppercase">
-            {params.slug}
-          </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-            {brandProducts.length === 0 ? (
-              <div className="text-gray-500">
-                Товарів цього бренду не знайдено.
-              </div>
-            ) : (
-              brandProducts.map((product) => (
-                <div key={product.id} className="h-full">
-                  <ProductCard product={product} clickable={false} />
-                </div>
-              ))
-            )}
+      <div className="w-fit mx-auto bg-gray-100 p-6 rounded-xl shadow-md">
+        <h1 className="text-4xl font-extrabold mb-4 text-black uppercase">
+          {params.slug}
+        </h1>
+
+        {brandProducts.length === 0 ? (
+          <div className="text-gray-500 text-center text-sm">
+            Товарів цього бренду не знайдено.
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+            {brandProducts.map((product) => (
+              <div key={product.id} className="h-full">
+                <ProductCard product={product} clickable={false} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-zinc-50 py-10"> 
+      <div className="min-h-screen bg-gray-100 py-10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center text-gray-500 mt-20">
             <h1 className="text-2xl font-bold mb-4">Товар не знайдено</h1>
@@ -187,28 +186,30 @@ export default function ProductOrBrandPage() {
             )}
 
             {onlyPair && (
-            <>
-             <p className="text-sm text-gray-600 mb-4 underline">
-              Для замовлення цього товару доступна тільки{" "}
-                <span className="font-semibold text-black">Пара</span>
-            </p>
-            <p className="text-sm text-gray-600">
-              Інформацію про наявність комплекту можна дізнатися, зв'язавшись із менеджером
-            </p>
-            </>
-          )}
+              <>
+                <p className="text-sm text-gray-600 mb-4 underline">
+                  Для замовлення цього товару доступна тільки{" "}
+                  <span className="font-semibold text-black">Пара</span>
+                </p>
+                <p className="text-sm text-gray-600">
+                  Інформацію про наявність комплекту можна дізнатися,
+                  зв'язавшись із менеджером
+                </p>
+              </>
+            )}
 
             {onlySet && (
-            <>
-             <p className="text-sm text-gray-600 mb-4 underline">
-              Для замовлення цього товару доступний тільки: {" "}
-                <span className="font-semibold text-black">Комплект</span>
-            </p>
-            <p className="text-sm text-gray-600">
-              Інформацію про наявність пари можна дізнатися, зв'язавшись із менеджером
-            </p>
-            </>
-          )}
+              <>
+                <p className="text-sm text-gray-600 mb-4 underline">
+                  Для замовлення цього товару доступний тільки:{" "}
+                  <span className="font-semibold text-black">Комплект</span>
+                </p>
+                <p className="text-sm text-gray-600">
+                  Інформацію про наявність пари можна дізнатися, зв'язавшись із
+                  менеджером
+                </p>
+              </>
+            )}
           </div>
 
           <div className="flex items-center gap-2 mt-auto">

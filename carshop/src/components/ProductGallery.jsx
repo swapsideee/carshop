@@ -79,7 +79,7 @@ export default function ProductGallery({ images }) {
             className={`h-16 w-16 object-cover rounded-md border-2 cursor-pointer transition 
               ${
                 activeIndex === index
-                  ? "border-blue-600 ring-2 ring-blue-300"
+                  ? "bg-gray-900 ring-2 ring-gray-900"
                   : "border-gray-300"
               }`}
           />

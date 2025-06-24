@@ -70,19 +70,19 @@ export default function AllProductsPage() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-4 gap-8 py-10">
-      <div className="w-full lg:w-[275px] shrink-0">
-        <FiltersPanel
-          brands={brands}
-          selectedBrand={selectedBrand}
-          setSelectedBrand={setSelectedBrand}
-          sort={sort}
-          setSort={setSort}
-          query={query}
-          setQuery={setQuery}
-          resetFilters={resetFilters}
-        />
-      </div>
+<div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-4 gap-8 py-10">
+  <div className="w-full lg:w-[275px] shrink-0">
+    <FiltersPanel
+      brands={brands}
+      selectedBrand={selectedBrand}
+      setSelectedBrand={setSelectedBrand}
+      sort={sort}
+      setSort={setSort}
+      query={query}
+      setQuery={setQuery}
+      resetFilters={resetFilters}
+    />
+  </div>
 
       <div className="w-full bg-zinc-50 rounded-2xl shadow-md">
         <main className="p-4">

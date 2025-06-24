@@ -39,7 +39,7 @@ export default function CartPage() {
           animate={{ opacity: 1 }}
           className="text-center text-xl text-gray-900 space-y-6"
         >
-          <p>
+          <p className="mb-15">
             Ваш кошик порожній{" "}
           </p>
 

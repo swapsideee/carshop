@@ -26,3 +26,9 @@ body {
   color: var(--foreground);
   font-family: var(--font-main);
 }
+
+.swiper-button-next,
+
+.swiper-button-prev {
+    color: oklch(21% 0.034 264.665) !important;
+}

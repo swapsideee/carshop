@@ -176,7 +176,7 @@ export default function OrderPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-10">
+    <div className="min-h-screen flex items-center justify-center px-4 py-10 cursor-default">
       <div className="w-full max-w-2xl bg-gray-100 rounded-2xl shadow-2xl p-6 space-y-6">
         <h1 className="text-3xl font-bold text-center text-gray-900 mb-6 mt-2">
           Заповніть форму для замовлення
@@ -210,7 +210,7 @@ export default function OrderPage() {
         <div className="text-right font-base text-xl text-gray-900">
           Всього до сплати{" "}
           <span className="text-gray-600 text-lg">
-            (без вартостi доставки*):{" "}
+            (без вартостi доставки<span className="text-red-500 ml-0.5">*</span>):{" "}
           </span>
           <span className="font-bold">{total} грн</span>
         </div>
@@ -254,7 +254,7 @@ export default function OrderPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full text-white font-semibold py-3 rounded-xl transition ${
+            className={`cursor-pointer w-full text-white font-semibold py-3 rounded-xl transition ${
               isSubmitting
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-gray-900 hover:bg-gray-800 transition duration-200 shadow-md"
