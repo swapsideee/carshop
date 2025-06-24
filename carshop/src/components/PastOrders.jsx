@@ -16,7 +16,7 @@ export default function PastOrders({ orders }) {
     <div className="text-left max-w-2xl mx-auto">
       <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2 text-gray-800">
         <Clock className="w-5 h-5 text-lime-600" />
-        Минулі замовлення
+        Останні замовлення
       </h2>
 
       <div className="space-y-4">

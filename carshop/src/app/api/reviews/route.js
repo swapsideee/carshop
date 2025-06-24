@@ -5,7 +5,7 @@ import { ErrorHandler } from '@/lib/utils/errorHandler';
 export const POST = ErrorHandler(async (req) => {
     const { productId, rating, comment } = await req.json();
 
-    if (!productId || rating < 1 || rating > 5 || comment.length < 3)
+    if (!productId || rating < 1 || rating > 5)
         return new Response(JSON.stringify({ error: "Invalid input" }), { status: 400 });
 
     await db.execute(insertReview, [productId, rating, comment]);

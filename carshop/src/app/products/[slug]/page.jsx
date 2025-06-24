@@ -115,7 +115,7 @@ export default function ProductOrBrandPage() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-zinc-50 py-10">
+      <div className="min-h-screen bg-zinc-50 py-10"> 
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center text-gray-500 mt-20">
             <h1 className="text-2xl font-bold mb-4">Товар не знайдено</h1>
@@ -201,7 +201,7 @@ export default function ProductOrBrandPage() {
             {onlySet && (
             <>
              <p className="text-sm text-gray-600 mb-4 underline">
-              Для замовлення цього товару доступний тільки{" "}
+              Для замовлення цього товару доступний тільки: {" "}
                 <span className="font-semibold text-black">Комплект</span>
             </p>
             <p className="text-sm text-gray-600">

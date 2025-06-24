@@ -3,9 +3,8 @@
 import useCartStore from "@/app/store/cartStore";
 import Link from "next/link";
 import { useState } from "react";
-import { validatePhone } from "@/lib/utils/validator";
+import { validatePhone, validateName } from "@/lib/utils/validator";
 import { motion } from "framer-motion";
-import { Smile } from "lucide-react";
 
 export default function OrderPage() {
   const { cartItems, clearCart, saveOrder } = useCartStore();
@@ -15,7 +14,12 @@ export default function OrderPage() {
     0
   );
 
-  const [form, setForm] = useState({ name: "", phone: "", comment: "" });
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    comment: "",
+  });
   const [submitted, setSubmitted] = useState(false);
   const [submittedOrder, setSubmittedOrder] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,13 +27,28 @@ export default function OrderPage() {
   const handleChange = (e) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const cleanedPhone = form.phone.replace(/\s+/g, "");
-    const { isValid, cleaned } = validatePhone(form.phone);
 
-    if (!isValid) {
+    const { isValid: phoneValid, cleaned: cleanedPhone } = validatePhone(
+      form.phone
+    );
+    const { isValid: nameValid, cleaned: cleanedName } = validateName(
+      form.name
+    );
+
+    if (!nameValid) {
+      alert("Ім’я повинно містити лише літери");
+      return;
+    }
+
+    if (!phoneValid) {
       alert("Введіть коректний номер телефону");
+      return;
+    }
+
+    if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) {
+      alert("Введіть коректний email");
       return;
     }
 
@@ -38,16 +57,43 @@ export default function OrderPage() {
     const orderData = {
       items: cartItems,
       total,
-      name: form.name.trim(),
+      name: cleanedName,
       phone: cleanedPhone,
+      email: form.email.trim(),
       comment: form.comment.trim(),
       createdAt: new Date().toISOString(),
     };
 
-    saveOrder(orderData);
-    clearCart();
-    setSubmittedOrder(orderData);
-    setSubmitted(true);
+    try {
+      const res = await fetch("/api/send-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: orderData.name,
+          phone: orderData.phone,
+          email: orderData.email,
+          comment: orderData.comment,
+          cartItems,
+          total,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok || !result.success) {
+        throw new Error(result.error || "Помилка при відправленні листа");
+      }
+
+      saveOrder(orderData);
+      clearCart();
+      setSubmittedOrder(orderData);
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Помилка:", error);
+      alert("Сталася помилка при оформленні замовлення. Спробуйте ще раз.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (cartItems.length === 0 && !submitted) {
@@ -81,17 +127,22 @@ export default function OrderPage() {
               <strong>Телефон:</strong> {submittedOrder.phone}
             </p>
             <p>
+              <strong>Email:</strong> {submittedOrder.email}
+            </p>
+            <p>
               <strong>Коментар:</strong>{" "}
               {submittedOrder.comment || (
                 <span className="text-gray-400">—</span>
               )}
             </p>
           </div>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="border-t text-center space-y-6 text-gray-300"
-          ></motion.div>
+          />
+
           <ul className="text-sm space-y-2">
             {submittedOrder.items.map((item) => (
               <li key={item.id} className="flex justify-between">
@@ -102,11 +153,13 @@ export default function OrderPage() {
               </li>
             ))}
           </ul>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="border-t text-center space-y-6 text-gray-300"
-          ></motion.div>
+          />
+
           <div className="text-right font-bold text-lg text-gray-900">
             Всього: {submittedOrder.total} грн
           </div>
@@ -123,16 +176,18 @@ export default function OrderPage() {
   }
 
   return (
-    <div className="min-h-screen  flex items-center justify-center px-4 py-10">
+    <div className="min-h-screen flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-2xl bg-gray-100 rounded-2xl shadow-2xl p-6 space-y-6">
         <h1 className="text-3xl font-bold text-center text-gray-900 mb-6 mt-2">
           Заповніть форму для замовлення
         </h1>
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="border-t text-center space-y-6 text-gray-300"
-        ></motion.div>
+        />
+
         <ul className="space-y-2 text-gray-800 text-sm">
           {cartItems.map((item) => (
             <li key={item.id} className="flex justify-between">
@@ -145,11 +200,13 @@ export default function OrderPage() {
             </li>
           ))}
         </ul>
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="border-t text-center space-y-6 text-gray-300"
-        ></motion.div>
+        />
+
         <div className="text-right font-base text-xl text-gray-900">
           Всього до сплати{" "}
           <span className="text-gray-600 text-lg">
@@ -177,9 +234,18 @@ export default function OrderPage() {
             onChange={handleChange}
             className="w-full border border-gray-400 rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-lime-500 transition"
           />
+          <input
+            required
+            type="email"
+            name="email"
+            placeholder="Email для підтвердження*"
+            value={form.email}
+            onChange={handleChange}
+            className="w-full border border-gray-400 rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-lime-500 transition"
+          />
           <textarea
             name="comment"
-            placeholder="Коментар до замовлення (необов’язково*)"
+            placeholder="Коментар до замовлення (необов’язково)"
             value={form.comment}
             onChange={handleChange}
             className="w-full border border-gray-400 rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-lime-500 transition min-h-[100px]"
@@ -188,7 +254,7 @@ export default function OrderPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`cursor-pointer w-full text-white font-semibold py-3 rounded-xl transition ${
+            className={`w-full text-white font-semibold py-3 rounded-xl transition ${
               isSubmitting
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-gray-900 hover:bg-gray-800 transition duration-200 shadow-md"
