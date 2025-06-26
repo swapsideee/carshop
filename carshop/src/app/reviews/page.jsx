@@ -54,7 +54,7 @@ function ReviewForm({ onNewReview }) {
     <form className="space-y-5" onSubmit={handleSubmit}>
       <div>
         <label className="block mb-1 text-base text-gray-700 font-medium">
-          Товар<span className="text-red-500 ml-0.5">*</span>
+          Коментар (необов'язково)
         </label>
         <select
           value={productId}
