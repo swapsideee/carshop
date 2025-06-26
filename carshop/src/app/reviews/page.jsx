@@ -90,7 +90,7 @@ function ReviewForm({ onNewReview }) {
 
       <div>
         <label className="block mb-1 text-base text-gray-700 font-medium">
-          Коментар<span className="text-red-500 ml-0.5">*</span>
+          Коментар (необов'язково)
         </label>
         <textarea
           value={comment}
