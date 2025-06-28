@@ -18,7 +18,7 @@ export default function Footer() {
           href="mailto:Vadi-Avto@ukr.net"
           className="text-gray-900 hover:text-gray-700"
         >
-          Vadi-Avto@ukr.net
+          vadiavtoua@gmail.com
         </a>{" "}
         | Тел:{" "}
         <a

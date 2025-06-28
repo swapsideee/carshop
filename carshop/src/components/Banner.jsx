@@ -67,7 +67,7 @@ export default function Banner() {
                     {brand.name}
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Підкрилки для бренду {brand.name}
+                    Підкрилки для {brand.name}
                   </p>
                 </div>
               </div>

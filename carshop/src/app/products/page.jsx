@@ -70,8 +70,8 @@ export default function AllProductsPage() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-4 gap-8 py-10">
-      <div className="w-full lg:w-[275px] shrink-0">
+    <div className="flex flex-col max-w-7xl mx-auto px-4 gap-8 py-10 items-center">
+      <div className="w-full shrink-0">
         <FiltersPanel
           brands={brands}
           selectedBrand={selectedBrand}

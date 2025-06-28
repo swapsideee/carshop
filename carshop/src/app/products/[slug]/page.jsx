@@ -90,8 +90,8 @@ export default function ProductOrBrandPage() {
 
   if (!isProductId) {
     return (
-      <div className="w-fit mx-auto bg-gray-100 p-6 rounded-xl shadow-md">
-        <h1 className="text-4xl font-extrabold mb-4 text-black uppercase">
+      <div className="max-w-7xl mx-auto w-full bg-zinc-50 p-6 rounded-2xl shadow-md">
+        <h1 className="text-center text-5xl font-extrabold mb-8 text-black uppercase">
           {params.slug}
         </h1>
 
@@ -103,7 +103,7 @@ export default function ProductOrBrandPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
             {brandProducts.map((product) => (
               <div key={product.id} className="h-full">
-                <ProductCard product={product} clickable={false} />
+                <ProductCard product={product} clickable={true} />
               </div>
             ))}
           </div>
@@ -252,7 +252,14 @@ export default function ProductOrBrandPage() {
 function DescriptionBlock() {
   const [expanded, setExpanded] = useState(false);
 
-  const text = `Підкрилки виробництва ТМ "Mega Locker". Оптимальне поєднання високої якості та доступної ціни. Виготовлені з високоякісного еластичного пластику, мають високу зносостійкість, що дозволяє зберігати за будь-яких умов фізичну форму та властивості. Є модельними, кріпляться до крила та кузова звичайними шурупами. Форма виробів спеціально розроблена під колісну арку даного автомобіля, спрощує встановлення та продовжує термін служби захисту. Вони легко переносять високі температури і різні навантаження, що робить їх практичнішими за металеві вироби.`;
+  const text = `Підкрилки компанії Mega Locker виготовляються з поліетилену низького тиску спеціальної марки без домішок та відходів первинних матеріалів. Це забезпечує високі фізико-механічні властивості виробів: підкрилки залишаються еластичними у великому температурному діапазоні від 200 до -70 градусів за Цельсієм, мають високу міцність та витримують удари каміння й гравію.
+
+Сучасні технології та професіоналізм дозволили створити матриці захисних арок для багатьох моделей автомобілів, завдяки чому підкрилки ідеально відповідають формі колісних арок. Вони кріпляться трьома-сімома саморізами по краю крила та двома в глибині ніші.
+
+Перед запуском серійного виробництва кожна нова модель підкрилків проходить ретельні випробування та обов'язкову сертифікацію у Держспоживстандарті України.
+
+У нашому інтернет-магазині ви можете придбати підкрилки від ТМ "Mega Locker" — якісні, доступні та практичні вироби, що стануть надійним захистом вашого авто.
+`;
   return (
     <div className="relative mt-6">
       <p

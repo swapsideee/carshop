@@ -28,7 +28,7 @@ export default function CartPage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto cursor-default">
-      <h1 className="text-4xl font-extrabold mb-10 text-center text-gray-900 flex items-center justify-center gap-2 cursor-default">
+      <h1 className="text-3xl font-extrabold mb-10 text-center text-gray-900 flex items-center justify-center gap-2 cursor-default">
         Обранi товари
         <ShoppingBasket className="w-12 h-12" />
       </h1>

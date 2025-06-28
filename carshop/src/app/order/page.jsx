@@ -96,26 +96,13 @@ export default function OrderPage() {
     }
   };
 
-  if (cartItems.length === 0 && !submitted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center font-bold text-gray-900">
-          Кошик порожній.{" "}
-          <Link href="/products" className="text-lime-600">
-            Перейти до товарів
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   if (submitted && submittedOrder) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-10">
         <div className="w-full max-w-2xl bg-gray-100 rounded-2xl shadow-2xl p-6 space-y-6 text-gray-800 cursor-default">
           <div className="flex items-center justify-center gap-3">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 text-center">
-              Дякуємо, що обрали нас! Наш менеджер невдовзі зв’яжеться з вами
+              Ми надіслали підтвердження замовлення на вашу електронну пошту. Наш менеджер незабаром зв’яжеться з вами!
             </h2>
           </div>
 
@@ -147,7 +134,7 @@ export default function OrderPage() {
             {submittedOrder.items.map((item) => (
               <li key={item.id} className="flex justify-between">
                 <span>
-                  {item.name} x {item.quantity}
+                  {item.name} {item.quantity} шт.
                 </span>
                 <span>{item.price * item.quantity} грн</span>
               </li>
@@ -192,7 +179,7 @@ export default function OrderPage() {
           {cartItems.map((item) => (
             <li key={item.id} className="flex justify-between">
               <span>
-                {item.name} x {item.quantity}
+                {item.name} {item.quantity} шт.
               </span>
               <span className="text-gray-900 font-semibold">
                 {item.price * item.quantity} грн
@@ -210,7 +197,8 @@ export default function OrderPage() {
         <div className="text-right font-base text-xl text-gray-900">
           Всього до сплати{" "}
           <span className="text-gray-600 text-lg">
-            (без вартостi доставки<span className="text-red-500 ml-0.5">*</span>):{" "}
+            (без вартостi доставки<span className="text-red-500 ml-0.5">*</span>
+            ):{" "}
           </span>
           <span className="font-bold">{total} грн</span>
         </div>
@@ -263,10 +251,11 @@ export default function OrderPage() {
             {isSubmitting ? "Обробка..." : "Підтвердити замовлення"}
           </button>
 
-          <div className="text-sm text-gray-600">
-            Натискаючи «Підтвердити замовлення», ви підтверджуєте, що менеджер
-            отримає інформацію про ваше замовлення та зв’яжеться з вами
-            найближчим часом для уточнення деталей, доставки й оплати
+          <div className="text-sm text-gray-900">
+            Натискаючи «Підтвердити замовлення», ви нічого не сплачуєте —
+            менеджер отримає інформацію про ваше замовлення та зв’яжеться з вами
+            найближчим часом для уточнення деталей, розрахунку вартості доставки
+            й оплати
             <span className="text-red-500 ml-0.5">*</span>
           </div>
         </form>

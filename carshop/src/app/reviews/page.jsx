@@ -63,7 +63,8 @@ function ReviewForm({ onNewReview }) {
         >
           <option value="">Оберіть товар</option>
           {products.map((p) => {
-            const label = p.name ? `${p.name} ${p.model}` : p.model;
+            const label =
+              p.name && p.name !== p.model ? `${p.name} ${p.model}` : p.model;
             return (
               <option key={p.id} value={p.id} title={label}>
                 {label.length > 30 ? label.slice(0, 30) + "..." : label}
@@ -136,33 +137,33 @@ function ReviewList({ refresh }) {
   }, [refresh]);
 
   return (
-    <div className="space-y-4 pt-8">
-      <h2 className="text-xl font-semibold text-gray-800 text-center">
-        Останні відгуки
-      </h2>
-      {reviews.length === 0 ? (
-        <p className="text-gray-500 text-center">Відгуків ще немає</p>
-      ) : (
-        reviews.map((r) => (
-          <div key={r.id} className="border rounded-lg p-4 bg-white shadow-sm">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-gray-900 font-medium">
-                {r.name ? `${r.name} ${r.model}` : r.model}
-              </span>
-              <span className="text-sm text-gray-500">
-                {new Date(r.created_at).toLocaleDateString("uk-UA")}
-              </span>
-            </div>
-            <div className="flex items-center mb-1">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <Star key={n} filled={n <= r.rating} />
-              ))}
-            </div>
-            <p className="text-gray-700">{r.comment}</p>
-          </div>
-        ))
-      )}
-    </div>
+<div className="space-y-4 pt-8">
+  <h2 className="text-xl font-semibold text-gray-800 text-center">
+    Останні відгуки
+  </h2>
+  {reviews.length === 0 ? (
+    <p className="text-gray-500 text-center">Відгуків ще немає</p>
+  ) : (
+    reviews.map((r) => (
+      <div key={r.id} className="border rounded-lg p-4 bg-white shadow-sm">
+        <div className="flex justify-between items-center mb-1">
+          <span className="text-gray-900 font-medium">
+            {r.name && r.name !== r.model ? `${r.name} ${r.model}` : r.model}
+          </span>
+          <span className="text-sm text-gray-500">
+            {new Date(r.created_at).toLocaleDateString("uk-UA")}
+          </span>
+        </div>
+        <div className="flex items-center mb-1">
+          {[1, 2, 3, 4, 5].map((n) => (
+            <Star key={n} filled={n <= r.rating} />
+          ))}
+        </div>
+        <p className="text-gray-700">{r.comment}</p>
+      </div>
+    ))
+  )}
+</div>
   );
 }
 

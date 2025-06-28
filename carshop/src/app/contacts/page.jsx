@@ -14,7 +14,7 @@ const CompanyCard = () => {
               href="mailto:Vadi-Avto@ukr.net"
               className="text-gray-700 underline hover:text-gray-500"
             >
-              Vadi-Avto@ukr.net
+              vadiavtoua@gmail.com
             </a>
           </p>
           <p className="text-lg text-gray-700 flex items-center gap-2">
