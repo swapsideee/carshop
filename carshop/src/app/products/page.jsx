@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { normalize } from "@/lib/normalize";
 import FiltersPanel from "@/components/FiltersPanel";
 import ProductCard from "@/components/ProductCard";
+import { Funnel } from "lucide-react";
 
 export default function AllProductsPage() {
   const [allProducts, setAllProducts] = useState([]);
@@ -13,6 +14,7 @@ export default function AllProductsPage() {
   const [sort, setSort] = useState("");
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,8 +72,8 @@ export default function AllProductsPage() {
   };
 
   return (
-    <div className="flex flex-col max-w-7xl mx-auto px-4 gap-8 py-10 items-center">
-      <div className="w-full shrink-0">
+    <div className="flex flex-col md:flex-row max-w-7xl mx-auto px-4 gap-8 py-10">
+      <div className="hidden md:block w-72 shrink-0">
         <FiltersPanel
           brands={brands}
           selectedBrand={selectedBrand}
@@ -84,7 +86,32 @@ export default function AllProductsPage() {
         />
       </div>
 
-      <div className="w-full bg-zinc-50 rounded-2xl shadow-md">
+      <div className="md:hidden w-full mb-4">
+        <button
+          onClick={() => setShowMobileFilters(!showMobileFilters)}
+          className="w-full bg-gray-900 text-white px-4 py-2 rounded-md flex items-center justify-center gap-2"
+        >
+          {showMobileFilters ? "Фільтри" : "Фільтри"}
+          <Funnel className="w-5 h-5" />
+        </button>
+
+        {showMobileFilters && (
+          <div className="mt-4">
+            <FiltersPanel
+              brands={brands}
+              selectedBrand={selectedBrand}
+              setSelectedBrand={setSelectedBrand}
+              sort={sort}
+              setSort={setSort}
+              query={query}
+              setQuery={setQuery}
+              resetFilters={resetFilters}
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="flex-1 bg-zinc-50 rounded-2xl shadow-md">
         <main className="p-4">
           {isLoading ? (
             <div className="text-center text-gray-500 mt-20 text-lg animate-pulse">
@@ -92,23 +119,6 @@ export default function AllProductsPage() {
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="flex flex-col items-center mt-20 text-gray-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-16 w-16 mb-4 text-gray-300"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 3l18 18M9.75 9.75h.008v.008H9.75v-.008zm4.5 0h.008v.008h-.008v-.008zM9.88 15.38a4.501 4.501 0 004.24 0"
-                />
-              </svg>
-              <p className="text-lg">
-                Не знайдено товарів за вибраними фільтрами.
-              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
