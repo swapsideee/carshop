@@ -4,8 +4,9 @@ import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
 
 export const metadata = {
-  title: "CarShop - Магазин подкрылков",
-  description: "Продажа подкрылков для авто",
+  title: "Iнтернет-магазин VADI-AVTO",
+  description:
+    "VADI-AVTO - надійний інтернет-магазин автозапчастин з досвідом роботи. Пропонуємо підкрилки для понад 250 моделей авто за вигідними цінами. Працюємо онлайн та офлайн - замовляйте зручно або завітайте до нас особисто у мiстi Харкiв!",
 };
 
 export const viewport = {

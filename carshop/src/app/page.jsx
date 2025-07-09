@@ -41,7 +41,7 @@ export default function Home() {
           href="/products"
           className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg text-lg  transition-colors duration-300 shadow-2xl"
         >
-          Перейти до каталогу товарів
+          Перейти до каталогу товарiв
         </a>
         <Banner />
       </motion.div>

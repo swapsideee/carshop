@@ -63,12 +63,9 @@ export default function Banner() {
                   />
                 </div>
                 <div className="mt-4 text-center">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    {brand.name}
-                  </h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="text-md font-semibold text-gray-600 mb-1">
                     Підкрилки для {brand.name}
-                  </p>
+                  </h3>
                 </div>
               </div>
             </Link>
