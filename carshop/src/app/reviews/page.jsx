@@ -27,6 +27,7 @@ function ReviewForm({ onNewReview }) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetch("/api/products")
@@ -37,17 +38,34 @@ function ReviewForm({ onNewReview }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch("/api/reviews", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId, rating, comment }),
-    });
-    setProductId("");
-    setRating(0);
-    setComment("");
-    setSubmitted(true);
-    onNewReview();
-    setTimeout(() => setSubmitted(false), 3000);
+    setError("");
+
+    if (!productId) {
+      setError("Будь ласка, оберіть товар");
+      return;
+    }
+    if (rating === 0) {
+      setError("Будь ласка, поставте оцiнку");
+      return;
+    }
+
+    try {
+      await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId, rating, comment }),
+      });
+
+      setProductId("");
+      setRating(0);
+      setComment("");
+      setSubmitted(true);
+      setError("");
+      onNewReview();
+      setTimeout(() => setSubmitted(false), 3000);
+    } catch (err) {
+      setError("Сталася помилка при надсиланні відгуку");
+    }
   };
 
   return (
@@ -76,7 +94,7 @@ function ReviewForm({ onNewReview }) {
 
       <div>
         <label className="block mb-1 text-base text-gray-700 font-medium">
-          Оцінка<span className="text-red-500 ml-0.5">*</span>
+          Оцінка
         </label>
         <div className="flex space-x-1">
           {[1, 2, 3, 4, 5].map((num) => (
@@ -114,6 +132,9 @@ function ReviewForm({ onNewReview }) {
           Дякуємо за відгук!
         </p>
       )}
+      {error && (
+        <p className="text-center text-red-600 font-medium">{error}</p>  
+      )}
     </form>
   );
 }
@@ -137,33 +158,35 @@ function ReviewList({ refresh }) {
   }, [refresh]);
 
   return (
-<div className="space-y-4 pt-8">
-  <h2 className="text-xl font-semibold text-gray-800 text-center">
-    Останні відгуки
-  </h2>
-  {reviews.length === 0 ? (
-    <p className="text-gray-500 text-center">Відгуків ще немає</p>
-  ) : (
-    reviews.map((r) => (
-      <div key={r.id} className="border rounded-lg p-4 bg-white shadow-sm">
-        <div className="flex justify-between items-center mb-1">
-          <span className="text-gray-900 font-medium">
-            {r.name && r.name !== r.model ? `${r.name} ${r.model}` : r.model}
-          </span>
-          <span className="text-sm text-gray-500">
-            {new Date(r.created_at).toLocaleDateString("uk-UA")}
-          </span>
-        </div>
-        <div className="flex items-center mb-1">
-          {[1, 2, 3, 4, 5].map((n) => (
-            <Star key={n} filled={n <= r.rating} />
-          ))}
-        </div>
-        <p className="text-gray-700">{r.comment}</p>
-      </div>
-    ))
-  )}
-</div>
+    <div className="space-y-4 pt-8">
+      <h2 className="text-xl font-semibold text-gray-800 text-center">
+        Останні відгуки користувачив
+      </h2>
+      {reviews.length === 0 ? (
+        <p className="text-gray-500 text-center">Відгуків ще немає</p>
+      ) : (
+        reviews.map((r) => (
+          <div key={r.id} className="border rounded-lg p-4 bg-white shadow-sm">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-gray-900 font-medium">
+                {r.name && r.name !== r.model
+                  ? `${r.name} ${r.model}`
+                  : r.model}
+              </span>
+              <span className="text-sm text-gray-500">
+                {new Date(r.created_at).toLocaleDateString("uk-UA")}
+              </span>
+            </div>
+            <div className="flex items-center mb-1">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <Star key={n} filled={n <= r.rating} />
+              ))}
+            </div>
+            <p className="text-gray-700">{r.comment}</p>
+          </div>
+        ))
+      )}
+    </div>
   );
 }
 

@@ -25,9 +25,11 @@ export default function Home() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
+        <div className="mt-8 bg-white-50 rounded-2xl shadow-sm py-2 px-2">
       VADI-AVTO - надійний інтернет-магазин автозапчастин з досвідом роботи.
       Пропонуємо підкрилки для понад 250 моделей авто за вигідними цінами.
       Працюємо онлайн та офлайн - замовляйте зручно або завітайте до нас особисто у мiстi Харкiв! <br></br>
+        </div>
       </motion.p>
       <motion.div
         className="mt-10"
@@ -37,9 +39,9 @@ export default function Home() {
       >
         <a
           href="/products"
-          className="bg-lime-600 text-gray-900 px-6 py-3 rounded-lg text-lg hover:text-green-100 transition-colors duration-300 shadow-md"
+          className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg text-lg  transition-colors duration-300 shadow-2xl"
         >
-          Перейти до каталогу
+          Перейти до каталогу товарів
         </a>
         <Banner />
       </motion.div>
