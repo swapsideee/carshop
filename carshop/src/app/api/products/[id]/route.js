@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { getDB } from "@/lib/db";
 import { ErrorHandler } from "@/lib/utils/errorHandler";
 import {
   getProductById,
@@ -7,9 +7,10 @@ import {
   getRelatedProducts,
 } from "@/lib/queries/products";
 
-
 async function getProductHandler(request, context) {
   const id = (await context.params).id;
+
+  const db = await getDB(); 
 
   const { query, params } = getProductById(id);
   const result = await db.query(query, params);
@@ -38,7 +39,6 @@ async function getProductHandler(request, context) {
   product.related = relatedRes[0];
 
   return NextResponse.json(product);
-
 }
 
 export const GET = ErrorHandler(getProductHandler);
