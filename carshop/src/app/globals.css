@@ -22,7 +22,7 @@
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(to top, #ecfdf5, #fafafa);
   color: var(--foreground);
   font-family: var(--font-main);
 }

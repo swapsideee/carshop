@@ -10,8 +10,8 @@ export default function FiltersPanel({
 }) {
   return (
     <div className="flex justify-center w-full">
-      <aside className="w-full md:w-130 lg:w-[400px] xl:w-[500px] bg-gray-100 p-6 rounded-2xl shadow-2xl space-y-5 h-fit cursor-default mx-auto">
-        <h2 className="text-center text-2xl font-bold text-gray-900">Фільтри</h2>
+      <aside className="border-b border-t border-gray-200 w-full md:w-130 lg:w-[400px] xl:w-[500px] bg-white p-6 rounded-2xl shadow-xl space-y-5 h-fit cursor-default mx-auto">
+        <h2 className="hidden md:block text-center text-2xl font-bold text-gray-900">Фільтри</h2>
 
         <div>
           <label className="block mb-1 text-sm text-gray-700 font-medium">
@@ -35,7 +35,7 @@ export default function FiltersPanel({
             onChange={(e) => setSort(e.target.value)}
             className="cursor-pointer w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-lime-600 shadow-sm transition"
           >
-            <option value="">Обрати</option>
+            <option value="">За релевантнiстю</option>
             <option value="asc">Від дешевих до дорогих</option>
             <option value="desc">Від дорогих до дешевих</option>
           </select>

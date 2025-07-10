@@ -40,12 +40,20 @@ function ReviewForm({ onNewReview }) {
     e.preventDefault();
     setError("");
 
+    if (!productId && rating === 0) {
+      setError("Будь ласка, оберiть товар i поставте оцiнку");
+      setTimeout(() => setError(""), 3000);
+      return;
+    }
+
     if (!productId) {
       setError("Будь ласка, оберіть товар");
+      setTimeout(() => setError(""), 3000);
       return;
     }
     if (rating === 0) {
       setError("Будь ласка, поставте оцiнку");
+      setTimeout(() => setError(""), 3000);
       return;
     }
 
@@ -64,7 +72,7 @@ function ReviewForm({ onNewReview }) {
       onNewReview();
       setTimeout(() => setSubmitted(false), 3000);
     } catch (err) {
-      setError("Сталася помилка при надсиланні відгуку");
+      setError("Сталася помилка під час надсилання відгуку.");
     }
   };
 
@@ -128,7 +136,7 @@ function ReviewForm({ onNewReview }) {
       </button>
 
       {submitted && (
-        <p className="text-center text-green-700 font-medium">
+        <p className="text-center text-green-700 font-medium cursor-default">
           Дякуємо за відгук!
         </p>
       )}
@@ -158,9 +166,9 @@ function ReviewList({ refresh }) {
   }, [refresh]);
 
   return (
-    <div className="space-y-4 pt-8">
+    <div className="space-y-4 pt-8 cursor-default">
       <h2 className="text-xl font-semibold text-gray-800 text-center">
-        Останні відгуки користувачив
+        Останні відгуки
       </h2>
       {reviews.length === 0 ? (
         <p className="text-gray-500 text-center">Відгуків ще немає</p>
@@ -198,7 +206,7 @@ export default function ReviewsPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-white">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="bg-gray-100 rounded-2xl shadow-2xl w-full max-w-xl p-10 space-y-10">
         <div>
           <h1 className="text-3xl font-bold text-center text-gray-800 mb-6 cursor-default">

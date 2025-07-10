@@ -81,7 +81,7 @@ export default function OrderPage() {
       const result = await res.json();
 
       if (!res.ok || !result.success) {
-        throw new Error(result.error || "Помилка при відправленні листа");
+        throw new Error(result.error || "Сталася помилка під час надсилання листа.");
       }
 
       saveOrder(orderData);
@@ -102,7 +102,7 @@ export default function OrderPage() {
         <div className="w-full max-w-2xl bg-gray-100 rounded-2xl shadow-2xl p-6 space-y-6 text-gray-800 cursor-default">
           <div className="flex items-center justify-center gap-3">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 text-center">
-              Ми надіслали підтвердження замовлення на вашу електронну пошту. Наш менеджер незабаром зв’яжеться з вами!
+              Дякуємо! Підтвердження вже у вас на пошті. Чекайте на дзвінок або повідомлення від нашого менеджера 📩
             </h2>
           </div>
 
@@ -119,7 +119,7 @@ export default function OrderPage() {
             <p>
               <strong>Коментар:</strong>{" "}
               {submittedOrder.comment || (
-                <span className="text-gray-400">—</span>
+                <span className="text-gray-400">-</span>
               )}
             </p>
           </div>
@@ -152,10 +152,10 @@ export default function OrderPage() {
           </div>
 
           <Link
-            href="/products"
+            href="/cart"
             className="block w-full text-center bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl font-semibold transition"
           >
-            Назад до каталогу
+            Переглянути замовлення
           </Link>
         </div>
       </div>
@@ -226,7 +226,7 @@ export default function OrderPage() {
             required
             type="email"
             name="email"
-            placeholder="Email для підтвердження*"
+            placeholder="Email*"
             value={form.email}
             onChange={handleChange}
             className="w-full border border-gray-400 rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-lime-500 transition"
@@ -252,10 +252,10 @@ export default function OrderPage() {
           </button>
 
           <div className="text-sm text-gray-900">
-            Натискаючи «Підтвердити замовлення», ви нічого не сплачуєте —
+            Натискаючи «Підтвердити замовлення», ви нічого не сплачуєте -
             менеджер отримає інформацію про ваше замовлення та зв’яжеться з вами
             найближчим часом для уточнення деталей, розрахунку вартості доставки
-            й оплати
+            та оплати
             <span className="text-red-500 ml-0.5">*</span>
           </div>
         </form>

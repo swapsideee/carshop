@@ -9,6 +9,7 @@ import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/ProductGallery";
 import useCartStore from "@/app/store/cartStore";
 import PriceSelector from "@/components/PriceSelector";
+import { motion } from "framer-motion";
 
 export default function ProductOrBrandPage() {
   const params = useParams();
@@ -16,7 +17,6 @@ export default function ProductOrBrandPage() {
   const [brandProducts, setBrandProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState("pair");
-
   const addToCart = useCartStore((state) => state.addToCart);
   const isProductId = !isNaN(Number(params.slug));
 
@@ -80,7 +80,7 @@ export default function ProductOrBrandPage() {
     return (
       <div className="min-h-screen bg-zinc-50 py-10">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center text-gray-500 mt-20 text-lg animate-pulse">
+          <div className="text-center text-gray-900 mt-20 text-lg animate-pulse">
             Завантаження...
           </div>
         </div>
@@ -91,12 +91,11 @@ export default function ProductOrBrandPage() {
   if (!isProductId) {
     return (
       <div className="max-w-7xl mx-auto w-full bg-zinc-50 p-6 rounded-2xl shadow-md">
-        <h1 className="text-center text-5xl font-extrabold mb-8 text-black uppercase">
+        <h1 className="text-center text-4xl mb-4 text-gray-900 font-bold uppercase cursor-default">
           {params.slug}
         </h1>
-
         {brandProducts.length === 0 ? (
-          <div className="text-gray-500 text-center text-sm">
+          <div className="text-gray-900 text-center text-sm">
             Товарів цього бренду не знайдено.
           </div>
         ) : (
@@ -118,7 +117,7 @@ export default function ProductOrBrandPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center text-gray-500 mt-20">
             <h1 className="text-2xl font-bold mb-4">Товар не знайдено</h1>
-            <Link href="/products" className="text-blue-500 hover:underline">
+            <Link href="/products" className="text-gray-900 hover:underline">
               Повернутися до каталогу
             </Link>
           </div>
@@ -138,7 +137,7 @@ export default function ProductOrBrandPage() {
   const noPrice = product.price_pair === null && product.price_set === null;
 
   return (
-    <div className="min-h-screen bg-white px-4 py-10 cursor-default space-y-16">
+    <div className="min-h-screen px-4 py-10 cursor-default space-y-16">
       <div className="w-full max-w-6xl mx-auto bg-gray-100 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
         <div className="w-full md:basis-1/2 min-w-0 flex justify-center">
           <div className="w-full max-w-sm">
@@ -262,16 +261,17 @@ function DescriptionBlock() {
 `;
   return (
     <div className="relative mt-6">
+      <h2 className="text-gray-900 text-xl font-semibold mb-6">Опис товару</h2>
       <p
         className={`text-gray-700 text-sm leading-relaxed transition-all duration-300 ease-in-out ${
           expanded
             ? "line-clamp-none max-h-none"
-            : "max-h-[3rem] overflow-hidden"
+            : "max-h-[4rem] overflow-hidden"
         }`}
       >
         {text}
         {!expanded && (
-          <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-full h-10 pointer-events-none" />
         )}
       </p>
       <button
