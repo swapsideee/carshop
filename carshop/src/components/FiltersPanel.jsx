@@ -35,7 +35,7 @@ export default function FiltersPanel({
             onChange={(e) => setSort(e.target.value)}
             className="cursor-pointer w-full border border-gray-300 text-gray-900 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-lime-600 shadow-sm transition"
           >
-            <option value="">Обрати</option>
+            <option value="">За релевантнiстю</option>
             <option value="asc">Від дешевих до дорогих</option>
             <option value="desc">Від дорогих до дешевих</option>
           </select>

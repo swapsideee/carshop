@@ -6,7 +6,7 @@ export default function ProductCard({ product, clickable = false }) {
   const content = (
     <div
       className={
-        "bg-white rounded-2xl shadow-md cursor-pointer hover:shadow-xl hover:scale-[1.01] transition-all duration-300 p-5 flex flex-col h-full" +
+        "bg-white rounded-2xl shadow-sm cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-300 p-5 flex flex-col h-full" +
         (clickable ? " cursor-pointer" : "")
       }
     >
