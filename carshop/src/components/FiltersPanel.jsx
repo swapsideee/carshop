@@ -10,7 +10,7 @@ export default function FiltersPanel({
 }) {
   return (
     <div className="flex justify-center w-full">
-      <aside className="w-full md:w-130 lg:w-[400px] xl:w-[500px] bg-gray-100 p-6 rounded-2xl shadow-2xl space-y-5 h-fit cursor-default mx-auto">
+      <aside className="border-b border-t border-gray-200 w-full md:w-130 lg:w-[400px] xl:w-[500px] bg-white p-6 rounded-2xl shadow-xl space-y-5 h-fit cursor-default mx-auto">
         <h2 className="text-center text-2xl font-bold text-gray-900">Фільтри</h2>
 
         <div>
