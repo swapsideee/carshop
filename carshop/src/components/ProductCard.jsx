@@ -31,25 +31,25 @@ export default function ProductCard({ product, clickable = false }) {
         </p>
 
         <div className="mt-auto space-y-1">
-          <p className="text-sm text-gray-700">
+          <p className="text-sm text-gray-800">
             Пара:{" "}
             {product.price_pair !== null ? (
-              <span className="text-black font-medium">
+              <span className="text-gray-800 font-bold">
                 {product.price_pair} грн
               </span>
             ) : (
-              <span className="font-bold text-lime-600">За запитом</span>
+              <span className="text-gray-600 font-medium">За запитом</span>
             )}
           </p>
 
-          <p className="text-sm text-gray-700">
+          <p className="text-sm text-gray-800">
             Комплект:{" "}
             {product.price_set !== null ? (
-              <span className="text-black font-medium">
+              <span className="text-gray-800 font-bold">
                 {product.price_set} грн
               </span>
             ) : (
-              <span className="text-lime-600 font-bold">За запитом</span>
+              <span className="text-gray-600 font-medium">За запитом</span>
             )}
           </p>
         </div>
