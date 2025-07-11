@@ -153,23 +153,23 @@ export default function ProductOrBrandPage() {
 
             <div className="space-y-3 md:space-y-4 mb-6 md:mb-8 mt-6">
               <div>
-                <p className="text-sm text-gray-600">Ціна за пару:</p>
+                <p className="text-md text-gray-800">Ціна за пару:</p>
                 <p className="text-xl font-semibold">
                   {product.price_pair !== null ? (
-                    <span className="text-black">{product.price_pair} грн</span>
+                    <span className="text-gray-800 font-bold">{product.price_pair} грн</span>
                   ) : (
-                    <span className="text-lime-600">За запитом</span>
+                    <span className="text-gray-600 font-medium text-md">За запитом</span>
                   )}
                 </p>
               </div>
 
               <div>
-                <p className="text-sm text-gray-600">Ціна за комплект:</p>
+                <p className="text-md text-gray-900">Ціна за комплект:</p>
                 <p className="text-xl font-semibold">
                   {product.price_set !== null ? (
-                    <span className="text-black">{product.price_set} грн</span>
+                    <span className="text-gray-800 font-bold">{product.price_set} грн</span>
                   ) : (
-                    <span className="text-lime-600">За запитом</span>
+                    <span className="text-gray-600 font-medium text-md">За запитом</span>
                   )}
                 </p>
               </div>
