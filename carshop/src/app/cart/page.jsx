@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PastOrders from "@/components/PastOrders";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBasket, Plus, Minus, Trash2 } from "lucide-react";
+import { SquareChartGantt, Plus, Minus, Trash2 } from "lucide-react";
 export default function CartPage() {
   const {
     cartItems,
@@ -30,8 +30,8 @@ export default function CartPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto cursor-default">
       <h1 className="text-3xl font-extrabold mb-10 text-center text-gray-900 flex items-center justify-center gap-2 cursor-default">
+        <SquareChartGantt className="w-10 h-10 hidden sm:block" />
         Обранi товари
-        <ShoppingBasket className="w-10 h-10 hidden sm:block" />
       </h1>
 
       {cartItems.length === 0 ? (
@@ -74,7 +74,13 @@ export default function CartPage() {
                     <div className="flex items-center justify-center md:justify-start gap-4 mb-4 mt-4">
                       <button
                         onClick={() => decreaseQuantity(item.id)}
-                        className="shadow-md w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:scale-95 transition"
+                        disabled={item.quantity === 1}
+                        className={`shadow-md w-9 h-9 flex items-center justify-center rounded-full transition
+                            ${
+                              item.quantity === 1
+                              ? "bg-gray-200 cursor-not-allowed opacity-50"
+                              : "bg-gray-100 hover:bg-gray-200 active:scale-95"
+                            }`}
                       >
                         <Minus className="w-5 h-5 text-lime-600 cursor-pointer" />
                       </button>
@@ -85,7 +91,7 @@ export default function CartPage() {
 
                       <button
                         onClick={() => {
-                          if (item.quantity >= 10 ) {
+                          if (item.quantity >= 10) {
                             setErrorItemId(item.id);
                             setTimeout(() => setErrorItemId(null), 3000);
                           } else {
@@ -122,7 +128,7 @@ export default function CartPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="border-t pt-8 text-center space-y-6"
+            className="border-t border-gray-400 pt-6 text-center space-y-6"
           >
             <div className="text-left">
               <p className="text-base text-gray-600 mb-1">
@@ -130,14 +136,12 @@ export default function CartPage() {
                 доставки розраховується менеджером
                 <span className="text-red-500 ml-0.5">*</span>):{" "}
               </p>
-              <p className="text-2xl font-semibold text-gray-900">
-                {total} грн
-              </p>
+              <p className="text-3xl font-bold text-gray-900">{total} грн</p>
             </div>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="border-t pt-8 text-center space-y-6"
+              className="border-t pt-6 border-gray-400 text-center space-y-6"
             ></motion.div>
             <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
               <button

@@ -34,7 +34,7 @@ export default function ProductCard({ product, clickable = false }) {
           <p className="text-sm text-gray-800">
             Пара:{" "}
             {product.price_pair !== null ? (
-              <span className="text-gray-800 font-bold">
+              <span className="text-gray-800 font-bold text-base">
                 {product.price_pair} грн
               </span>
             ) : (
@@ -45,7 +45,7 @@ export default function ProductCard({ product, clickable = false }) {
           <p className="text-sm text-gray-800">
             Комплект:{" "}
             {product.price_set !== null ? (
-              <span className="text-gray-800 font-bold">
+              <span className="text-gray-800 font-bold text-base">
                 {product.price_set} грн
               </span>
             ) : (

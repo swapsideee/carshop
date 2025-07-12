@@ -1,3 +1,5 @@
+import { Funnel } from "lucide-react";
+
 export default function FiltersPanel({
   query,
   setQuery,
@@ -11,7 +13,9 @@ export default function FiltersPanel({
   return (
     <div className="flex justify-center w-full">
       <aside className="border-b border-t border-gray-200 w-full md:w-130 lg:w-[400px] xl:w-[500px] bg-white p-6 rounded-2xl shadow-xl space-y-5 h-fit cursor-default mx-auto">
-        <h2 className="hidden md:block text-center text-2xl font-bold text-gray-900">Фільтри</h2>
+        <h2 className="hidden md:block text-center text-2xl font-semibold text-gray-900">
+          Фільтри
+        </h2>
 
         <div>
           <label className="block mb-1 text-sm text-gray-700 font-medium">

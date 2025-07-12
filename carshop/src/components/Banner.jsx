@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-
 export default function Banner() {
   const [brands, setBrands] = useState([]);
 

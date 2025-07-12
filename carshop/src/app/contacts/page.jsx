@@ -36,7 +36,7 @@ const CompanyCard = () => {
           </p>
           <p className="text-lg text-gray-700 flex items-center gap-2">
             <Clock className="w-5 h-5" />
-            Пн–Нд, 9:00–13:00
+            Вт–Нд, 9:00–13:00
           </p>
         </div>
 

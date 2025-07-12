@@ -1,5 +1,5 @@
 "use client";
-
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { normalize } from "@/lib/normalize";
 import FiltersPanel from "@/components/FiltersPanel";
@@ -95,20 +95,28 @@ export default function AllProductsPage() {
           <Funnel className="w-5 h-5" />
         </button>
 
-        {showMobileFilters && (
-          <div className="mt-4">
-            <FiltersPanel
-              brands={brands}
-              selectedBrand={selectedBrand}
-              setSelectedBrand={setSelectedBrand}
-              sort={sort}
-              setSort={setSort}
-              query={query}
-              setQuery={setQuery}
-              resetFilters={resetFilters}
-            />
-          </div>
-        )}
+        <AnimatePresence>
+          {showMobileFilters && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="mt-4"
+            >
+              <FiltersPanel
+                brands={brands}
+                selectedBrand={selectedBrand}
+                setSelectedBrand={setSelectedBrand}
+                sort={sort}
+                setSort={setSort}
+                query={query}
+                setQuery={setQuery}
+                resetFilters={resetFilters}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <div className="flex-1 bg-zinc-50 rounded-2xl shadow-md">
@@ -118,8 +126,7 @@ export default function AllProductsPage() {
               Завантаження товарів...
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="flex flex-col items-center mt-20 text-gray-500">
-            </div>
+            <div className="flex flex-col items-center mt-20 text-gray-500"></div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (

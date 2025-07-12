@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { validatePhone, validateName } from "@/lib/utils/validator";
 import { motion } from "framer-motion";
+import { NotebookPen, Mail } from "lucide-react";
 
 export default function OrderPage() {
   const { cartItems, clearCart, saveOrder } = useCartStore();
@@ -81,7 +82,9 @@ export default function OrderPage() {
       const result = await res.json();
 
       if (!res.ok || !result.success) {
-        throw new Error(result.error || "Сталася помилка під час надсилання листа.");
+        throw new Error(
+          result.error || "Сталася помилка під час надсилання листа."
+        );
       }
 
       saveOrder(orderData);
@@ -102,7 +105,8 @@ export default function OrderPage() {
         <div className="w-full max-w-2xl bg-gray-100 rounded-2xl shadow-2xl p-6 space-y-6 text-gray-800 cursor-default">
           <div className="flex items-center justify-center gap-3">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 text-center">
-              Дякуємо! Підтвердження вже у вас на пошті. Чекайте на дзвінок або повідомлення від нашого менеджера 📩
+              Дякуємо! Підтвердження вже у вас на пошті. Чекайте на дзвінок або
+              повідомлення від нашого менеджера 📩
             </h2>
           </div>
 
@@ -165,10 +169,10 @@ export default function OrderPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-10 cursor-default">
       <div className="w-full max-w-2xl bg-gray-100 rounded-2xl shadow-2xl p-6 space-y-6">
-        <h1 className="text-3xl font-bold text-center text-gray-900 mb-6 mt-2">
+        <h1 className="flex items-center justify-center gap-2 text-3xl font-bold text-gray-900 mb-6 mt-2">
+          <NotebookPen className="w-9 h-9" />
           Заповніть форму для замовлення
         </h1>
-
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
