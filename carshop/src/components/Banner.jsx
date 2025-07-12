@@ -38,7 +38,7 @@ export default function Banner() {
   return (
     <div className="mt-14 flex justify-center px-4 sm:px-6 lg:px-8 cursor-default">
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 max-w-7xl w-full"
+        className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-8 max-w-7xl w-full"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -62,7 +62,10 @@ export default function Banner() {
                   />
                 </div>
                 <div className="mt-4 text-center">
-                  <h3 className="text-md font-semibold text-gray-600 mb-1">
+                  <h3 className="block sm:hidden text-md font-semibold text-gray-900 mb-1">
+                    {brand.name}
+                  </h3>
+                  <h3 className="hidden sm:block text-md font-semibold text-gray-600 mb-1">
                     Підкрилки для {brand.name}
                   </h3>
                 </div>

@@ -79,7 +79,7 @@ export default function Header() {
               className="flex items-center gap-1.5 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer"
               onClick={() => setMenuOpen(false)}
             >
-              <Contact className="w-5 h-5" />
+              <Contact className="w-5 h-5 mb-0.5" />
               Зв'язок
             </Link>
             <Link
@@ -87,12 +87,12 @@ export default function Header() {
               className="flex items-center gap-1.5 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer"
               onClick={() => setMenuOpen(false)}
             >
-              <Star className="w-5 h-5" />
+              <Star className="w-5 h-5 mb-0.5" />
               Відгуки
             </Link>
             <Link href="/cart" onClick={() => setMenuOpen(false)}>
               <div className="flex items-center gap-1.5 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer">
-                <ShoppingCart className="w-5 h-5" />
+                <ShoppingCart className="w-5 h-5 mb-1" />
                 <span>Кошик</span>
               </div>
             </Link>

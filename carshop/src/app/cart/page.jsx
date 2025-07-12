@@ -30,7 +30,7 @@ export default function CartPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto cursor-default">
       <h1 className="text-3xl font-extrabold mb-10 text-center text-gray-900 flex items-center justify-center gap-2 cursor-default">
-        <SquareChartGantt className="w-10 h-10 hidden sm:block" />
+        <SquareChartGantt className="flex w-9 h-9 flex-shrink-0 self-start" />
         Обранi товари
       </h1>
 

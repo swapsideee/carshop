@@ -9,7 +9,7 @@ const CompanyCard = () => {
             Контактна інформація
           </h2>
           <p className="text-lg text-gray-700 flex items-center gap-2">
-            <Mail className="w-5 h-5" />
+            <Mail className="w-5 h-5 flex-shrink-0 self-start mt-1" />
             <a
               href="mailto:Vadi-Avto@ukr.net"
               className="text-gray-700 underline hover:text-gray-500"
@@ -18,7 +18,7 @@ const CompanyCard = () => {
             </a>
           </p>
           <p className="text-lg text-gray-700 flex items-center gap-2">
-            <Phone className="w-5 h-5" />
+            <Phone className="w-5 h-5 flex-shrink-0 self-start mt-1" />
             <a
               href="tel:+380961365299"
               className="text-gray-700 underline hover:text-gray-500"
@@ -27,15 +27,15 @@ const CompanyCard = () => {
             </a>
           </p>
           <p className="text-lg text-gray-700 flex items-center gap-2">
-            <MapPin className="w-5 h-5" />
+            <MapPin className="w-5 h-5 flex-shrink-0 self-start mt-1" />
             Авторинок "Лоск", 13 ряд, 9 місце
           </p>
           <p className="text-lg text-gray-700 flex items-center gap-2">
-            <Building className="w-5 h-5" />
+            <Building className="w-5 h-5 flex-shrink-0 self-start mt-1" />
             Харків
           </p>
           <p className="text-lg text-gray-700 flex items-center gap-2">
-            <Clock className="w-5 h-5" />
+            <Clock className="w-5 h-5 flex-shrink-0 self-start mt-1" />
             Вт–Нд, 9:00–13:00
           </p>
         </div>

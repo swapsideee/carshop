@@ -140,7 +140,7 @@ export default function OrderPage() {
                 <span>
                   {item.name} {item.quantity} шт.
                 </span>
-                <span>{item.price * item.quantity} грн</span>
+                <span className="font-bold">{item.price * item.quantity} грн</span>
               </li>
             ))}
           </ul>
@@ -151,7 +151,7 @@ export default function OrderPage() {
             className="border-t text-center space-y-6 text-gray-300"
           />
 
-          <div className="text-right font-bold text-lg text-gray-900">
+          <div className="text-right font-bold text-xl text-gray-900">
             Всього: {submittedOrder.total} грн
           </div>
 
@@ -169,8 +169,7 @@ export default function OrderPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-10 cursor-default">
       <div className="w-full max-w-2xl bg-gray-100 rounded-2xl shadow-2xl p-6 space-y-6">
-        <h1 className="flex items-center justify-center gap-2 text-3xl font-bold text-gray-900 mb-6 mt-2">
-          <NotebookPen className="w-9 h-9" />
+        <h1 className="text-center gap-2 text-3xl font-bold text-gray-900 mb-6 mt-2">
           Заповніть форму для замовлення
         </h1>
         <motion.div
