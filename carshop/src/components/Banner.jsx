@@ -39,7 +39,7 @@ export default function Banner() {
   return (
     <div className="mt-14 flex justify-center px-4 sm:px-6 lg:px-8 cursor-default">
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 max-w-7xl w-full"
+        className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl w-full"
         variants={containerVariants}
         initial="hidden"
         animate="visible"

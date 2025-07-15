@@ -118,8 +118,7 @@ export default function AllProductsPage() {
               Завантаження товарів...
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="flex flex-col items-center mt-20 text-gray-500">
-            </div>
+            <div className="flex flex-col items-center mt-20 text-gray-500"></div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (

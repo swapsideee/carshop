@@ -81,7 +81,9 @@ export default function OrderPage() {
       const result = await res.json();
 
       if (!res.ok || !result.success) {
-        throw new Error(result.error || "Сталася помилка під час надсилання листа.");
+        throw new Error(
+          result.error || "Сталася помилка під час надсилання листа."
+        );
       }
 
       saveOrder(orderData);
@@ -102,7 +104,8 @@ export default function OrderPage() {
         <div className="w-full max-w-2xl bg-gray-100 rounded-2xl shadow-2xl p-6 space-y-6 text-gray-800 cursor-default">
           <div className="flex items-center justify-center gap-3">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 text-center">
-              Дякуємо! Підтвердження вже у вас на пошті. Чекайте на дзвінок або повідомлення від нашого менеджера 📩
+              Дякуємо! Підтвердження вже у вас на пошті. Чекайте на дзвінок або
+              повідомлення від нашого менеджера 📩
             </h2>
           </div>
 
