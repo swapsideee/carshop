@@ -14,7 +14,7 @@ export const GET = ErrorHandler(async (req) => {
     sortOrder: sort === 'desc' ? 'DESC' : 'ASC',
   });
 
-  const db = await getDB(); 
+  const db = await getDB();
   const [rows] = await db.query(query, params);
   return Response.json(rows);
 });

@@ -10,7 +10,7 @@ import {
 async function getProductHandler(request, context) {
   const id = (await context.params).id;
 
-  const db = await getDB(); 
+  const db = await getDB();
 
   const { query, params } = getProductById(id);
   const result = await db.query(query, params);

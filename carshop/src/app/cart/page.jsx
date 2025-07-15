@@ -106,7 +106,7 @@ export default function CartPage() {
                     </div>
                     {errorItemId === item.id && (
                       <p className="text-sm text-red-600 mt-2 mb-2">
-                        Максимум 10 одиниць цього товару !
+                        Максимум 10 одиниць цього товару!
                       </p>
                     )}
                     <p className="text-lg font-semibold text-gray-800">
