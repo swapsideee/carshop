@@ -77,7 +77,7 @@ export default function ProductOrBrandPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-zinc-50 py-10">
+      <div className="min-h-screen bg-white py-10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center text-gray-900 mt-20 text-lg animate-pulse">
             Завантаження...
@@ -89,8 +89,8 @@ export default function ProductOrBrandPage() {
 
   if (!isProductId) {
     return (
-      <div className="max-w-7xl mx-auto w-full bg-white p-6 rounded-2xl shadow-md">
-        <h1 className="text-center text-4xl mb-4 text-gray-800 font-bold uppercase cursor-default">
+      <div className="max-w-7xl mx-auto w-full p-6">
+        <h1 className="text-center text-5xl mb-8 text-gray-800 font-bold uppercase cursor-default">
           {params.slug}
         </h1>
         {brandProducts.length === 0 ? (
@@ -98,7 +98,7 @@ export default function ProductOrBrandPage() {
             Товарів цього бренду не знайдено.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 flex-1 rounded-xl h-full">
             {brandProducts.map((product) => (
               <div key={product.id} className="h-full">
                 <ProductCard product={product} clickable={true} />
@@ -137,7 +137,7 @@ export default function ProductOrBrandPage() {
 
   return (
     <div className="min-h-screen px-4 py-10 cursor-default space-y-16">
-      <div className="w-full max-w-6xl mx-auto bg-gray-50 rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
+      <div className="w-full max-w-6xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
         <div className="w-full md:basis-1/2 min-w-0 flex justify-center">
           <div className="w-full max-w-sm">
             <ProductGallery images={productImages} />
@@ -156,10 +156,10 @@ export default function ProductOrBrandPage() {
                 <p className="text-xl font-semibold">
                   {product.price_pair !== null ? (
                     <span className="text-black font-bold text-2xl">
-                      {product.price_pair} грн
+                      {product.price_pair} ₴
                     </span>
                   ) : (
-                    <span className="text-gray-600 font-medium text-md">
+                    <span className="text-gray-900 font-normal text-md">
                       За запитом
                     </span>
                   )}
@@ -171,10 +171,10 @@ export default function ProductOrBrandPage() {
                 <p className="text-xl font-semibold">
                   {product.price_set !== null ? (
                     <span className="text-black font-bold text-2xl">
-                      {product.price_set} грн
+                      {product.price_set} ₴
                     </span>
                   ) : (
-                    <span className="text-gray-600 font-medium text-normal">
+                    <span className="text-gray-900 font-normal text-md">
                       За запитом
                     </span>
                   )}
@@ -193,9 +193,9 @@ export default function ProductOrBrandPage() {
 
             {onlyPair && (
               <>
-                <p className="text-sm text-gray-600 mb-4 underline">
+                <p className="text-sm text-gray-600 mb-4">
                   Для замовлення цього товару доступна тільки{" "}
-                  <span className="font-semibold text-black">Пара</span>
+                  <span className="font-semibold text-black">Пара</span><span className="text-red-500 ml-0.5">*</span>
                 </p>
                 <p className="text-sm text-gray-400">
                   Інформацію про наявність комплекту можна дізнатися,
@@ -206,9 +206,9 @@ export default function ProductOrBrandPage() {
 
             {onlySet && (
               <>
-                <p className="text-sm text-gray-600 mb-4 underline">
+                <p className="text-sm text-gray-600 mb-4">
                   Для замовлення цього товару доступний тільки:{" "}
-                  <span className="font-semibold text-black">Комплект</span>
+                  <span className="font-semibold text-black">Комплект</span><span className="text-red-500 ml-0.5">*</span>
                 </p>
                 <p className="text-sm text-gray-400">
                   Інформацію про наявність пари можна дізнатися, зв'язавшись із
@@ -241,10 +241,10 @@ export default function ProductOrBrandPage() {
 
       {product.related?.length > 0 && (
         <div className="w-full max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">
             Схожі товари
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
             {product.related.map((p) => (
               <ProductCard key={p.id} product={p} clickable />
             ))}

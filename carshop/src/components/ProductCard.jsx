@@ -6,11 +6,11 @@ export default function ProductCard({ product, clickable = false }) {
   const content = (
     <div
       className={
-        "flex flex-col border border-gray-300 rounded-lg bg-white overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-[2px] h-full" +
+        "flex flex-col outline-1 outline-gray-300 bg-white overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-[2px] h-full" +
         (clickable ? " cursor-pointer" : "")
       }
     >
-      <div className="w-full aspect-[3/3] bg-white flex items-center justify-center p-4 border-b xl:border-gray-100 sm:border-gray-300">
+      <div className="w-full aspect-[3/3] bg-white flex items-center justify-center p-4">
         <img
           loading="lazy"
           src={product.image || "/placeholder.png"}
@@ -35,10 +35,10 @@ export default function ProductCard({ product, clickable = false }) {
             Пара:{" "}
             {product.price_pair !== null ? (
               <span className="text-gray-800 font-semibold text-base">
-                {product.price_pair} грн
+                {product.price_pair} ₴
               </span>
             ) : (
-              <span className="text-gray-600 font-medium">За запитом</span>
+              <span className="text-gray-800 font-normal xl:text-sm sm:text-base">За запитом</span>
             )}
           </p>
 
@@ -46,10 +46,10 @@ export default function ProductCard({ product, clickable = false }) {
             Комплект:{" "}
             {product.price_set !== null ? (
               <span className="text-gray-800 font-semibold text-base">
-                {product.price_set} грн
+                {product.price_set} ₴
               </span>
             ) : (
-              <span className="text-gray-600 font-medium">За запитом</span>
+              <span className="text-gray-800 font-normal xl:text-sm sm:text-base">За запитом</span>
             )}
           </p>
         </div>

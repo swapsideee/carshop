@@ -204,7 +204,7 @@ export default function ReviewsPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="bg-gray-100 rounded-2xl shadow-2xl w-full max-w-xl p-10 space-y-10">
+      <div className="bg-white rounded-lg shadow-2xl w-full max-w-xl p-10 space-y-10">
         <div>
           <h1 className="flex justify-center items-center text-3xl font-bold text-center text-gray-800 mb-6 cursor-default gap-1.5">
             Залишити відгук

@@ -8,12 +8,12 @@ export default function PriceSelector({
 }) {
   const options = [
     {
-      label: `Пара (${pricePair ?? "—"} грн)`,
+      label: `Пара (${pricePair ?? "—"} ₴)`,
       value: "pair",
       disabled: pricePair === null,
     },
     {
-      label: `Комплект (${priceSet ?? "—"} грн)`,
+      label: `Комплект (${priceSet ?? "—"} ₴)`,
       value: "set",
       disabled: priceSet === null,
     },

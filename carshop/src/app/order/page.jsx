@@ -102,7 +102,7 @@ export default function OrderPage() {
   if (submitted && submittedOrder) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-10">
-        <div className="w-full max-w-2xl bg-gray-100 rounded-2xl shadow-2xl p-6 space-y-6 text-gray-800 cursor-default">
+        <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl p-6 space-y-6 text-gray-800 cursor-default">
           <div className="flex items-center justify-center gap-3">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 text-center">
               Дякуємо! Підтвердження вже у вас на пошті. Чекайте на дзвінок або
@@ -141,7 +141,7 @@ export default function OrderPage() {
                   {item.name} {item.quantity} шт.
                 </span>
                 <span className="font-bold">
-                  {item.price * item.quantity} грн
+                  {item.price * item.quantity} ₴
                 </span>
               </li>
             ))}
@@ -154,7 +154,7 @@ export default function OrderPage() {
           />
 
           <div className="text-right font-bold text-xl text-gray-900">
-            Всього: {submittedOrder.total} грн
+            Всього: {submittedOrder.total} ₴
           </div>
 
           <Link
@@ -170,7 +170,7 @@ export default function OrderPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-10 cursor-default">
-      <div className="w-full max-w-2xl bg-gray-100 rounded-2xl shadow-2xl p-6 space-y-6">
+      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl p-6 space-y-6">
         <h1 className="text-center gap-2 text-3xl font-bold text-gray-900 mb-6 mt-2">
           Заповніть форму для замовлення
         </h1>
@@ -187,7 +187,7 @@ export default function OrderPage() {
                 {item.name} {item.quantity} шт.
               </span>
               <span className="text-gray-900 font-semibold">
-                {item.price * item.quantity} грн
+                {item.price * item.quantity} ₴
               </span>
             </li>
           ))}
@@ -205,7 +205,7 @@ export default function OrderPage() {
             (без вартостi доставки<span className="text-red-500 ml-0.5">*</span>
             ):{" "}
           </span>
-          <span className="font-bold">{total} грн</span>
+          <span className="font-bold">{total} ₴</span>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

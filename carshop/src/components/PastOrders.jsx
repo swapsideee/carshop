@@ -26,7 +26,7 @@ export default function PastOrders({ orders }) {
           .map((order, index) => (
             <div
               key={order.createdAt + index}
-              className="bg-gray-100 rounded-2xl shadow-2xl p-5 flex flex-col h-full"
+              className="bg-white rounded-2xl shadow-2xl p-5 flex flex-col h-full"
             >
               <div className="text-sm text-gray-500 mb-2 flex items-center gap-2">
                 📅 {formatDate(order.createdAt)}
@@ -57,13 +57,13 @@ export default function PastOrders({ orders }) {
                     <span>
                       {item.name} {item.quantity} шт.
                     </span>
-                    <span>{item.price * item.quantity} грн</span>
+                    <span>{item.price * item.quantity} ₴</span>
                   </li>
                 ))}
               </ul>
 
               <div className="text-right font-bold mt-2 text-gray-900">
-                Всього: {order.total} грн
+                Всього: {order.total} ₴
               </div>
             </div>
           ))}

@@ -72,8 +72,8 @@ export default function AllProductsPage() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row max-w-7xl mx-auto px-4 gap-8 py-10">
-      <div className="hidden md:block w-72 shrink-0">
+    <div className="flex flex-col md:flex-row max-w-7xl mx-auto px-4 gap-8 py-10 h-full min-h-screen">
+      <div className="hidden md:block w-72 shrink-0 h-full">
         <FiltersPanel
           brands={brands}
           selectedBrand={selectedBrand}
@@ -119,8 +119,8 @@ export default function AllProductsPage() {
         </AnimatePresence>
       </div>
 
-      <div className="flex-1 bg-white rounded-xl">
-        <main className="p-4">
+      <div className="flex-1 rounded-xl">
+        <main>
           {isLoading ? (
             <div className="text-center text-gray-500 mt-20 text-lg animate-pulse">
               Завантаження товарів...
@@ -128,7 +128,7 @@ export default function AllProductsPage() {
           ) : filteredProducts.length === 0 ? (
             <div className="flex flex-col items-center mt-20 text-gray-500"></div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
               {filteredProducts.map((product) => (
                 <ProductCard
                   key={product.id}

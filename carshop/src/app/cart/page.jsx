@@ -110,7 +110,7 @@ export default function CartPage() {
                       </p>
                     )}
                     <p className="text-lg font-semibold text-gray-800">
-                      Цiна: {item.price * item.quantity} грн
+                      Цiна: {item.price * item.quantity} ₴
                     </p>
                   </div>
 
@@ -136,7 +136,7 @@ export default function CartPage() {
                 доставки розраховується менеджером
                 <span className="text-red-500 ml-0.5">*</span>):{" "}
               </p>
-              <p className="text-3xl font-bold text-gray-900">{total} грн</p>
+              <p className="text-3xl font-bold text-gray-900">{total} ₴</p>
             </div>
             <motion.div
               initial={{ opacity: 0 }}

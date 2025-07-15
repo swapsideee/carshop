@@ -38,7 +38,7 @@ export default function Banner() {
   return (
     <div className="mt-14 flex justify-center px-4 sm:px-6 lg:px-8 cursor-default">
       <motion.div
-        className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-8 max-w-7xl w-full"
+        className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-7xl w-full"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -47,10 +47,10 @@ export default function Banner() {
           <motion.div
             key={brand.id}
             variants={itemVariants}
-            whileHover={{ scale: 1.02 }}
+            whileHover={{}}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="group relative w-full aspect-square rounded-2xl overflow-hidden bg-white shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer"
+            className="outline-1 outline-gray-300 group relative w-full aspect-square overflow-hidden bg-white transition-all hover:shadow-md duration-300 hover:-translate-y-[2px] cursor-pointer"
           >
             <Link href={`/products/${brand.slug}`}>
               <div className="w-full h-full flex flex-col items-center justify-center p-6">
@@ -65,7 +65,7 @@ export default function Banner() {
                   <h3 className="block sm:hidden text-md font-semibold text-gray-900 mb-1">
                     {brand.name}
                   </h3>
-                  <h3 className="hidden sm:block text-md font-semibold text-gray-600 mb-1">
+                  <h3 className="hidden sm:block text-md font-semibold text-gray-900 mb-1">
                     Підкрилки для {brand.name}
                   </h3>
                 </div>
