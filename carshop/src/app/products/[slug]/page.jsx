@@ -155,13 +155,7 @@ export default function ProductOrBrandPage() {
                 <p className="text-md text-gray-900">Ціна за пару:</p>
                 <p className="text-xl font-semibold">
                   {product.price_pair !== null ? (
-<<<<<<< HEAD
-                    <span className="text-gray-800 font-bold">
-                      {product.price_pair} грн
-                    </span>
-=======
                     <span className="text-black font-bold text-2xl">{product.price_pair} грн</span>
->>>>>>> 94af07cb48fc41c78b18149bbb01f51567523cce
                   ) : (
                     <span className="text-gray-600 font-medium text-md">
                       За запитом
@@ -174,19 +168,9 @@ export default function ProductOrBrandPage() {
                 <p className="text-md text-gray-900">Ціна за комплект:</p>
                 <p className="text-xl font-semibold">
                   {product.price_set !== null ? (
-<<<<<<< HEAD
-                    <span className="text-gray-800 font-bold">
-                      {product.price_set} грн
-                    </span>
-                  ) : (
-                    <span className="text-gray-600 font-medium text-md">
-                      За запитом
-                    </span>
-=======
                     <span className="text-black font-bold text-2xl">{product.price_set} грн</span>
                   ) : (
                     <span className="text-gray-600 font-medium text-normal">За запитом</span>
->>>>>>> 94af07cb48fc41c78b18149bbb01f51567523cce
                   )}
                 </p>
               </div>
