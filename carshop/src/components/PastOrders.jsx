@@ -15,7 +15,7 @@ export default function PastOrders({ orders }) {
   return (
     <div className="text-left max-w-2xl mx-auto">
       <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2 text-gray-800">
-        <Clock className="w-5 h-5 text-lime-600" />
+        <Clock className="w-6 h-6 text-lime-600 flex-shrink-0 self-start mt-1" />
         Останні замовлення
       </h2>
 
@@ -46,7 +46,7 @@ export default function PastOrders({ orders }) {
                   )}
                   <p>
                     <strong>Коментар:</strong>{" "}
-                    {order.comment || <span className="text-gray-400">—</span>}
+                    {order.comment || <span className="text-gray-400">-</span>}
                   </p>
                 </div>
               )}

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart, Menu, X, Car } from "lucide-react";
+import { ShoppingCart, Menu, X, Car, Star,Contact,ScrollText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
@@ -42,9 +42,9 @@ export default function Header() {
           Відгуки
         </Link>
         <Link href="/cart">
-          <div className="flex items-center space-x-2 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer">
-            <span>Кошик</span>
-            <ShoppingCart className="w-5 h-5" />
+          <div className="flex items-center text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer">
+            Кошик
+            <ShoppingCart className="w-5 h-5 ml-1.5" />
           </div>
         </Link>
       </nav>
@@ -68,29 +68,32 @@ export default function Header() {
           >
             <Link
               href="/products"
-              className="text-gray-900 hover:text-green-100 transition-colors duration-300"
+              className="flex items-center gap-1.5 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer"
               onClick={() => setMenuOpen(false)}
             >
+              <ScrollText className="w-5 h-5"/>
               Каталог
             </Link>
             <Link
               href="/contacts"
-              className="text-gray-900 hover:text-green-100 transition-colors duration-300"
+              className="flex items-center gap-1.5 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer"
               onClick={() => setMenuOpen(false)}
             >
+              <Contact className="w-5 h-5 mb-0.5" />
               Зв'язок
             </Link>
             <Link
               href="/reviews"
-              className="text-gray-900 hover:text-green-100 transition-colors duration-300"
+              className="flex items-center gap-1.5 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer"
               onClick={() => setMenuOpen(false)}
             >
+              <Star className="w-5 h-5 mb-0.5" />
               Відгуки
             </Link>
             <Link href="/cart" onClick={() => setMenuOpen(false)}>
-              <div className="flex items-center space-x-2 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer">
+              <div className="flex items-center gap-1.5 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer">
+                <ShoppingCart className="w-5 h-5 mb-1" />
                 <span>Кошик</span>
-                <ShoppingCart className="w-5 h-5" />
               </div>
             </Link>
           </motion.nav>

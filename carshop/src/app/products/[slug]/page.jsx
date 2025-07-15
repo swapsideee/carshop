@@ -9,7 +9,6 @@ import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/ProductGallery";
 import useCartStore from "@/app/store/cartStore";
 import PriceSelector from "@/components/PriceSelector";
-import { motion } from "framer-motion";
 
 export default function ProductOrBrandPage() {
   const params = useParams();
@@ -91,7 +90,7 @@ export default function ProductOrBrandPage() {
   if (!isProductId) {
     return (
       <div className="max-w-7xl mx-auto w-full bg-zinc-50 p-6 rounded-2xl shadow-md">
-        <h1 className="text-center text-4xl mb-4 text-gray-900 font-bold uppercase cursor-default">
+        <h1 className="text-center text-4xl mb-4 text-gray-800 font-bold uppercase cursor-default">
           {params.slug}
         </h1>
         {brandProducts.length === 0 ? (
@@ -153,12 +152,16 @@ export default function ProductOrBrandPage() {
 
             <div className="space-y-3 md:space-y-4 mb-6 md:mb-8 mt-6">
               <div>
-                <p className="text-md text-gray-800">Ціна за пару:</p>
+                <p className="text-md text-gray-900">Ціна за пару:</p>
                 <p className="text-xl font-semibold">
                   {product.price_pair !== null ? (
+<<<<<<< HEAD
                     <span className="text-gray-800 font-bold">
                       {product.price_pair} грн
                     </span>
+=======
+                    <span className="text-black font-bold text-2xl">{product.price_pair} грн</span>
+>>>>>>> 94af07cb48fc41c78b18149bbb01f51567523cce
                   ) : (
                     <span className="text-gray-600 font-medium text-md">
                       За запитом
@@ -171,6 +174,7 @@ export default function ProductOrBrandPage() {
                 <p className="text-md text-gray-900">Ціна за комплект:</p>
                 <p className="text-xl font-semibold">
                   {product.price_set !== null ? (
+<<<<<<< HEAD
                     <span className="text-gray-800 font-bold">
                       {product.price_set} грн
                     </span>
@@ -178,6 +182,11 @@ export default function ProductOrBrandPage() {
                     <span className="text-gray-600 font-medium text-md">
                       За запитом
                     </span>
+=======
+                    <span className="text-black font-bold text-2xl">{product.price_set} грн</span>
+                  ) : (
+                    <span className="text-gray-600 font-medium text-normal">За запитом</span>
+>>>>>>> 94af07cb48fc41c78b18149bbb01f51567523cce
                   )}
                 </p>
               </div>
@@ -198,7 +207,7 @@ export default function ProductOrBrandPage() {
                   Для замовлення цього товару доступна тільки{" "}
                   <span className="font-semibold text-black">Пара</span>
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-400">
                   Інформацію про наявність комплекту можна дізнатися,
                   зв'язавшись із менеджером
                 </p>
@@ -211,7 +220,7 @@ export default function ProductOrBrandPage() {
                   Для замовлення цього товару доступний тільки:{" "}
                   <span className="font-semibold text-black">Комплект</span>
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-400">
                   Інформацію про наявність пари можна дізнатися, зв'язавшись із
                   менеджером
                 </p>
