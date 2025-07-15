@@ -139,9 +139,7 @@ function ReviewForm({ onNewReview }) {
           Дякуємо за відгук!
         </p>
       )}
-      {error && (
-        <p className="text-center text-red-600 font-medium">{error}</p>  
-      )}
+      {error && <p className="text-center text-red-600 font-medium">{error}</p>}
     </form>
   );
 }

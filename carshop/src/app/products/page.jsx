@@ -119,7 +119,7 @@ export default function AllProductsPage() {
         </AnimatePresence>
       </div>
 
-      <div className="flex-1 bg-zinc-50 rounded-2xl shadow-md">
+      <div className="flex-1 bg-white rounded-xl">
         <main className="p-4">
           {isLoading ? (
             <div className="text-center text-gray-500 mt-20 text-lg animate-pulse">
@@ -128,7 +128,7 @@ export default function AllProductsPage() {
           ) : filteredProducts.length === 0 ? (
             <div className="flex flex-col items-center mt-20 text-gray-500"></div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
               {filteredProducts.map((product) => (
                 <ProductCard
                   key={product.id}

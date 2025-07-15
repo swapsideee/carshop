@@ -89,7 +89,7 @@ export default function ProductOrBrandPage() {
 
   if (!isProductId) {
     return (
-      <div className="max-w-7xl mx-auto w-full bg-zinc-50 p-6 rounded-2xl shadow-md">
+      <div className="max-w-7xl mx-auto w-full bg-white p-6 rounded-2xl shadow-md">
         <h1 className="text-center text-4xl mb-4 text-gray-800 font-bold uppercase cursor-default">
           {params.slug}
         </h1>
@@ -112,7 +112,7 @@ export default function ProductOrBrandPage() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-gray-100 py-10">
+      <div className="min-h-screen bg-white py-10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center text-gray-500 mt-20">
             <h1 className="text-2xl font-bold mb-4">Товар не знайдено</h1>
@@ -137,7 +137,7 @@ export default function ProductOrBrandPage() {
 
   return (
     <div className="min-h-screen px-4 py-10 cursor-default space-y-16">
-      <div className="w-full max-w-6xl mx-auto bg-gray-100 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
+      <div className="w-full max-w-6xl mx-auto bg-gray-50 rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
         <div className="w-full md:basis-1/2 min-w-0 flex justify-center">
           <div className="w-full max-w-sm">
             <ProductGallery images={productImages} />
@@ -155,9 +155,13 @@ export default function ProductOrBrandPage() {
                 <p className="text-md text-gray-900">Ціна за пару:</p>
                 <p className="text-xl font-semibold">
                   {product.price_pair !== null ? (
-                    <span className="text-black font-bold text-2xl">{product.price_pair} грн</span>
+                    <span className="text-black font-bold text-2xl">
+                      {product.price_pair} грн
+                    </span>
                   ) : (
-                    <span className="text-gray-600 font-medium text-md">За запитом</span>
+                    <span className="text-gray-600 font-medium text-md">
+                      За запитом
+                    </span>
                   )}
                 </p>
               </div>
@@ -166,9 +170,13 @@ export default function ProductOrBrandPage() {
                 <p className="text-md text-gray-900">Ціна за комплект:</p>
                 <p className="text-xl font-semibold">
                   {product.price_set !== null ? (
-                    <span className="text-black font-bold text-2xl">{product.price_set} грн</span>
+                    <span className="text-black font-bold text-2xl">
+                      {product.price_set} грн
+                    </span>
                   ) : (
-                    <span className="text-gray-600 font-medium text-normal">За запитом</span>
+                    <span className="text-gray-600 font-medium text-normal">
+                      За запитом
+                    </span>
                   )}
                 </p>
               </div>
@@ -236,7 +244,7 @@ export default function ProductOrBrandPage() {
           <h2 className="text-2xl font-bold text-gray-800 mb-6">
             Схожі товари
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
             {product.related.map((p) => (
               <ProductCard key={p.id} product={p} clickable />
             ))}

@@ -78,8 +78,8 @@ export default function CartPage() {
                         className={`shadow-md w-9 h-9 flex items-center justify-center rounded-full transition
                             ${
                               item.quantity === 1
-                              ? "bg-gray-200 cursor-not-allowed opacity-50"
-                              : "bg-gray-100 hover:bg-gray-200 active:scale-95"
+                                ? "bg-gray-200 cursor-not-allowed opacity-50"
+                                : "bg-gray-100 hover:bg-gray-200 active:scale-95"
                             }`}
                       >
                         <Minus className="w-5 h-5 text-lime-600 cursor-pointer" />

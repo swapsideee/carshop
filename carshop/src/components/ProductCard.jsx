@@ -6,11 +6,11 @@ export default function ProductCard({ product, clickable = false }) {
   const content = (
     <div
       className={
-        "bg-white rounded-2xl shadow-sm cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-300 p-5 flex flex-col h-full" +
+        "flex flex-col border border-gray-300 rounded-lg bg-white overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-[2px] h-full" +
         (clickable ? " cursor-pointer" : "")
       }
     >
-      <div className="w-full aspect-[4/3] bg-white border rounded-lg flex items-center justify-center mb-4">
+      <div className="w-full aspect-[3/3] bg-white flex items-center justify-center p-4 border-b xl:border-gray-100 sm:border-gray-300">
         <img
           loading="lazy"
           src={product.image || "/placeholder.png"}
@@ -19,22 +19,22 @@ export default function ProductCard({ product, clickable = false }) {
         />
       </div>
 
-      <div className="flex flex-col flex-grow items-center text-center">
+      <div className="p-3 flex flex-col flex-grow">
         {showName && (
-          <p className="text-xs uppercase text-gray-400 tracking-wide mb-1 line-clamp-1">
+          <p className="text-md text-gray-900 mb-1 line-clamp-1">
             {product.name}
           </p>
         )}
 
-        <p className="font-semibold text-base text-gray-800 mb-2 line-clamp-2">
+        <p className="xl:text-md font-extrabold text-gray-800 mb-2 line-clamp-2">
           {product.model}
         </p>
 
         <div className="mt-auto space-y-1">
-          <p className="text-sm text-gray-800">
+          <p className="sm:text-lg xl:text-sm text-gray-900">
             Пара:{" "}
             {product.price_pair !== null ? (
-              <span className="text-gray-800 font-bold text-base">
+              <span className="text-gray-800 font-semibold text-base">
                 {product.price_pair} грн
               </span>
             ) : (
@@ -42,10 +42,10 @@ export default function ProductCard({ product, clickable = false }) {
             )}
           </p>
 
-          <p className="text-sm text-gray-800">
+          <p className="sm:text-lg xl:text-sm text-gray-900">
             Комплект:{" "}
             {product.price_set !== null ? (
-              <span className="text-gray-800 font-bold text-base">
+              <span className="text-gray-800 font-semibold text-base">
                 {product.price_set} грн
               </span>
             ) : (

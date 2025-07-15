@@ -140,7 +140,9 @@ export default function OrderPage() {
                 <span>
                   {item.name} {item.quantity} шт.
                 </span>
-                <span className="font-bold">{item.price * item.quantity} грн</span>
+                <span className="font-bold">
+                  {item.price * item.quantity} грн
+                </span>
               </li>
             ))}
           </ul>
