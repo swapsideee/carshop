@@ -72,8 +72,8 @@ export default function AllProductsPage() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row max-w-7xl mx-auto px-4 gap-8 py-10 h-full min-h-screen">
-      <div className="hidden md:block w-72 shrink-0 h-full">
+    <div className="flex flex-col lg:flex-row lg:justify-center px-4 gap-8 py-10 h-full min-h-screen">
+      <div className="hidden lg:block w-72 shrink-0 h-full">
         <FiltersPanel
           brands={brands}
           selectedBrand={selectedBrand}
@@ -86,10 +86,10 @@ export default function AllProductsPage() {
         />
       </div>
 
-      <div className="md:hidden w-full mb-4">
+      <div className="lg:hidden w-full mb-4">
         <button
           onClick={() => setShowMobileFilters(!showMobileFilters)}
-          className="w-full bg-gray-900 text-white px-4 py-2 rounded-md flex items-center justify-center gap-2"
+          className="md:w-[450px] mx-auto w-full bg-gray-900 text-white px-4 py-2 rounded-md flex items-center justify-center gap-2"
         >
           {showMobileFilters ? "Фільтри" : "Фільтри"}
           <Funnel className="w-5 h-5" />
@@ -119,7 +119,7 @@ export default function AllProductsPage() {
         </AnimatePresence>
       </div>
 
-      <div className="flex-1 rounded-xl">
+      <div className="flex-1 rounded-xl max-w-[1300px] w-full">
         <main>
           {isLoading ? (
             <div className="text-center text-gray-500 mt-20 text-lg animate-pulse">
