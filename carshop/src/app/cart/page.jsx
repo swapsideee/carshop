@@ -40,7 +40,9 @@ export default function CartPage() {
           animate={{ opacity: 1 }}
           className="text-center text-xl text-gray-900 space-y-6"
         >
-          <p className="mb-30 text-gray-400 text-normal font-semibold">Кошик порожній</p>
+          <p className="mb-30 text-gray-400 text-normal font-semibold">
+            Кошик порожній
+          </p>
 
           {pastOrders.length > 0 && <PastOrders orders={pastOrders} />}
         </motion.div>
@@ -55,7 +57,7 @@ export default function CartPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
-                className="flex flex-col md:flex-row items-center gap-6 border rounded-2xl p-4 shadow-2xl bg-white transition-shadow duration-300 cursor-default"
+                className="flex flex-col md:flex-row items-center gap-6 border rounded-lg p-4 shadow-2xl bg-white transition-shadow duration-300 cursor-default"
               >
                 <Image
                   src={item.image || "/no-image.png"}

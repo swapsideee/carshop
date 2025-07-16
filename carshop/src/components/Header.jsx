@@ -1,7 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart, Menu, X, Car, Star,Contact,ScrollText } from "lucide-react";
+import {
+  ShoppingCart,
+  Menu,
+  X,
+  Car,
+  Star,
+  Contact,
+  ScrollText,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
@@ -71,7 +79,7 @@ export default function Header() {
               className="flex items-center gap-1.5 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer"
               onClick={() => setMenuOpen(false)}
             >
-              <ScrollText className="w-5 h-5"/>
+              <ScrollText className="w-5 h-5" />
               Каталог
             </Link>
             <Link

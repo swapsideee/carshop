@@ -18,13 +18,17 @@ export function generateOwnerEmailHtml(body) {
             </tr>
           </thead>
           <tbody>
-            ${body.cartItems?.map(item => `
+            ${body.cartItems
+              ?.map(
+                (item) => `
               <tr>
                 <td>${item.name}</td>
                 <td align="center">${item.quantity}</td>
                 <td align="right">${item.price * item.quantity} грн</td>
               </tr>
-            `).join("")}
+            `
+              )
+              .join("")}
           </tbody>
           <tfoot>
             <tr>
@@ -57,13 +61,17 @@ export function generateClientEmailHtml(body) {
             </tr>
           </thead>
           <tbody>
-            ${body.cartItems?.map(item => `
+            ${body.cartItems
+              ?.map(
+                (item) => `
               <tr>
                 <td>${item.name}</td>
                 <td align="center">${item.quantity}</td>
                 <td align="right">${item.price * item.quantity} грн</td>
               </tr>
-            `).join("")}
+            `
+              )
+              .join("")}
           </tbody>
           <tfoot>
             <tr>

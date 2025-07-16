@@ -137,7 +137,7 @@ export default function ProductOrBrandPage() {
 
   return (
     <div className="min-h-screen px-4 py-10 cursor-default space-y-16">
-      <div className="w-full max-w-6xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
+      <div className="w-full max-w-6xl mx-auto bg-white rounded-md shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
         <div className="w-full md:basis-1/2 min-w-0 flex justify-center">
           <div className="w-full max-w-sm">
             <ProductGallery images={productImages} />
@@ -195,7 +195,8 @@ export default function ProductOrBrandPage() {
               <>
                 <p className="text-sm text-gray-600 mb-4">
                   Для замовлення цього товару доступна тільки{" "}
-                  <span className="font-semibold text-black">Пара</span><span className="text-red-500 ml-0.5">*</span>
+                  <span className="font-semibold text-black">Пара</span>
+                  <span className="text-red-500 ml-0.5">*</span>
                 </p>
                 <p className="text-sm text-gray-400">
                   Інформацію про наявність комплекту можна дізнатися,
@@ -208,7 +209,8 @@ export default function ProductOrBrandPage() {
               <>
                 <p className="text-sm text-gray-600 mb-4">
                   Для замовлення цього товару доступний тільки:{" "}
-                  <span className="font-semibold text-black">Комплект</span><span className="text-red-500 ml-0.5">*</span>
+                  <span className="font-semibold text-black">Комплект</span>
+                  <span className="text-red-500 ml-0.5">*</span>
                 </p>
                 <p className="text-sm text-gray-400">
                   Інформацію про наявність пари можна дізнатися, зв'язавшись із

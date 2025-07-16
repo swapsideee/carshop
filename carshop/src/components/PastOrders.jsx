@@ -26,7 +26,7 @@ export default function PastOrders({ orders }) {
           .map((order, index) => (
             <div
               key={order.createdAt + index}
-              className="bg-white rounded-2xl shadow-2xl p-5 flex flex-col h-full"
+              className="bg-white rounded-lg shadow-2xl p-5 flex flex-col h-full"
             >
               <div className="text-sm text-gray-500 mb-2 flex items-center gap-2">
                 📅 {formatDate(order.createdAt)}
