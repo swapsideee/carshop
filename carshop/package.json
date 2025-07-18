@@ -4,20 +4,33 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:host": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.4",
+    "dotenv": "^16.4.7",
+    "framer-motion": "^12.6.2",
+    "lucide-react": "^0.522.0",
+    "mysql2": "^3.14.0",
+    "next": "15.2.3",
+    "nodemailer": "^7.0.3",
     "react": "^19.0.0",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^19.0.0",
-    "next": "15.2.3"
+    "react-hot-toast": "^2.5.2",
+    "swiper": "^11.2.8",
+    "yet-another-react-lightbox": "^3.23.3",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.2.3",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4"
   }
 }
