@@ -90,7 +90,7 @@ export default function ProductOrBrandPage() {
   if (!isProductId) {
     return (
       <div className="max-w-7xl mx-auto w-full p-6">
-        <h1 className="text-center text-5xl mb-8 text-gray-800 font-bold uppercase cursor-default">
+        <h1 className="text-center text-5xl mb-8 text-gray-800 font-bold uppercase">
           {params.slug}
         </h1>
         {brandProducts.length === 0 ? (
@@ -136,7 +136,7 @@ export default function ProductOrBrandPage() {
   const noPrice = product.price_pair === null && product.price_set === null;
 
   return (
-    <div className="min-h-screen px-4 py-10 cursor-default space-y-16">
+    <div className="min-h-screen px-4 py-10 space-y-16">
       <div className="w-full max-w-6xl mx-auto bg-white rounded-md shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
         <div className="w-full md:basis-1/2 min-w-0 flex justify-center">
           <div className="w-full max-w-sm">

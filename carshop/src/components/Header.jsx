@@ -27,7 +27,7 @@ export default function Header() {
         <p className="text-gray-900 text-2xl italic font-bold tracking-wider transition-colors duration-300 group-hover:text-lime-400">
           VADI-AVTO
         </p>
-        <Car className="w-9 h-9 text-gray-900 transition-colors duration-300 group-hover:text-lime-400" />
+        <Car className="mb-0.5 w-9 h-9 text-gray-900 transition-colors duration-300 group-hover:text-lime-400" />
       </Link>
 
       <nav className="hidden md:flex items-center space-x-4">

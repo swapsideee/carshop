@@ -3,16 +3,12 @@
 import { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import Zoom from "yet-another-react-lightbox/plugins/zoom";
-import Lightbox from "yet-another-react-lightbox";
 import "swiper/css";
 import "swiper/css/navigation";
-import "yet-another-react-lightbox/styles.css";
 
 export default function ProductGallery({ images }) {
   const swiperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
 
   const validImages = images.filter(
     (src) => typeof src === "string" && src.trim() !== ""
@@ -27,21 +23,6 @@ export default function ProductGallery({ images }) {
       />
     );
   }
-
-  const openLightbox = (index) => {
-    if (isOpen) return;
-
-    if (swiperRef.current) {
-      swiperRef.current.slideToLoop(index);
-    }
-
-    setTimeout(() => {
-      requestAnimationFrame(() => {
-        setActiveIndex(index);
-        setIsOpen(true);
-      });
-    }, 150);
-  };
 
   return (
     <div className="flex flex-col items-center">
@@ -62,7 +43,6 @@ export default function ProductGallery({ images }) {
             <img
               src={src}
               alt={`Фото ${index + 1}`}
-              onClick={() => openLightbox(index)}
               className="rounded-lg object-contain h-full mx-auto transition-transform duration-300 hover:scale-105"
             />
           </SwiperSlide>
@@ -75,7 +55,11 @@ export default function ProductGallery({ images }) {
             key={index}
             src={src}
             alt={`Thumb ${index + 1}`}
-            onClick={() => openLightbox(index)}
+            onClick={() => {
+              if (swiperRef.current) {
+                swiperRef.current.slideToLoop(index);
+              }
+            }}
             className={`h-16 w-16 object-cover rounded-md border-2 cursor-pointer transition 
               ${
                 activeIndex === index
@@ -85,23 +69,6 @@ export default function ProductGallery({ images }) {
           />
         ))}
       </div>
-
-      <Lightbox
-        open={isOpen}
-        close={() => setIsOpen(false)}
-        index={activeIndex}
-        slides={validImages.map((src) => ({ src }))}
-        carousel={{ finite: true }}
-        plugins={[Zoom]}
-        zoom={{
-          maxZoomPixelRatio: 2,
-          zoomInMultiplier: 1.2,
-          doubleTapDelay: 300,
-          doubleClickDelay: 300,
-          scrollToZoom: true,
-        }}
-        styles={{ container: { zIndex: 50 } }}
-      />
     </div>
   );
 }

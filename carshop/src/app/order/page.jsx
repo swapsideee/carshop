@@ -102,7 +102,7 @@ export default function OrderPage() {
   if (submitted && submittedOrder) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-10">
-        <div className="w-full max-w-2xl bg-white rounded-md shadow-2xl p-6 space-y-6 text-gray-800 cursor-default">
+        <div className="w-full max-w-2xl bg-white rounded-md shadow-2xl p-6 space-y-6 text-gray-800">
           <div className="flex items-center justify-center gap-3">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 text-center">
               Дякуємо! Підтвердження вже у вас на пошті. Чекайте на дзвінок або
@@ -136,11 +136,17 @@ export default function OrderPage() {
 
           <ul className="text-sm space-y-2">
             {submittedOrder.items.map((item) => (
-              <li key={item.id} className="flex justify-between">
+              <li
+                key={item.id}
+                className="grid grid-cols-[1fr_auto] gap-4 items-start"
+              >
                 <span>
                   {item.name} {item.quantity} шт.
                 </span>
-                <span className="font-bold">
+                <span
+                  className="
+                text-gray-900 font-semibold text-right min-w-[60px]"
+                >
                   {item.price * item.quantity} ₴
                 </span>
               </li>
@@ -169,7 +175,7 @@ export default function OrderPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-10 cursor-default">
+    <div className="min-h-screen flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-2xl bg-white rounded-lg shadow-2xl p-6 space-y-6">
         <h1 className="text-center gap-2 text-3xl font-bold text-gray-900 mb-6 mt-2">
           Заповніть форму для замовлення
@@ -182,11 +188,14 @@ export default function OrderPage() {
 
         <ul className="space-y-2 text-gray-800 text-sm">
           {cartItems.map((item) => (
-            <li key={item.id} className="flex justify-between">
+            <li
+              key={item.id}
+              className="grid grid-cols-[1fr_auto] gap-4 items-start"
+            >
               <span>
                 {item.name} {item.quantity} шт.
               </span>
-              <span className="text-gray-900 font-semibold">
+              <span className="text-gray-900 font-semibold text-right min-w-[60px]">
                 {item.price * item.quantity} ₴
               </span>
             </li>

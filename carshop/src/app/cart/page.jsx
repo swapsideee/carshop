@@ -28,8 +28,8 @@ export default function CartPage() {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto cursor-default">
-      <h1 className="text-3xl font-extrabold mb-10 text-center text-gray-900 flex items-center justify-center gap-2 cursor-default">
+    <div className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-extrabold mb-10 text-center text-gray-900 flex items-center justify-center gap-2">
         <SquareChartGantt className="flex w-9 h-9 flex-shrink-0 self-start" />
         Обранi товари
       </h1>
@@ -57,7 +57,7 @@ export default function CartPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
-                className="flex flex-col md:flex-row items-center gap-6 border rounded-lg p-4 shadow-2xl bg-white transition-shadow duration-300 cursor-default"
+                className="flex flex-col md:flex-row items-center gap-6 border rounded-lg p-4 shadow-2xl bg-white transition-shadow duration-300"
               >
                 <Image
                   src={item.image || "/no-image.png"}
@@ -118,7 +118,7 @@ export default function CartPage() {
 
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="text-red-500 hover:text-red-700 text-sm flex items-center justify-center mt-10 cursor-pointer"
+                    className="text-red-500 hover:text-red-700 text-sm flex items-center justify-center xl:mt-10 sm:mt-7  cursor-pointer"
                   >
                     <Trash2 className="w-9 h-9" />
                   </button>
@@ -148,7 +148,7 @@ export default function CartPage() {
             <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
               <button
                 onClick={handleClearCart}
-                className="px-6 py-3 text-sm font-semibold text-red-600 border  border-red-500 rounded-xl hover:bg-red-50 transition duration-200 cursor-pointer"
+                className="px-6 py-3 text-sm font-semibold text-red-600 border border-red-500 rounded-xl hover:bg-red-50 transition duration-200 cursor-pointer"
               >
                 Видалити все
               </button>
