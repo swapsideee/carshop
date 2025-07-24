@@ -135,7 +135,7 @@ function ReviewForm({ onNewReview }) {
       </button>
 
       {submitted && (
-        <p className="text-center text-green-700 font-medium cursor-default">
+        <p className="text-center text-green-700 font-medium">
           Дякуємо за відгук!
         </p>
       )}
@@ -163,7 +163,7 @@ function ReviewList({ refresh }) {
   }, [refresh]);
 
   return (
-    <div className="space-y-4 pt-8 cursor-default">
+    <div className="space-y-4 pt-8">
       <h2 className="text-xl font-semibold text-gray-800 text-center">
         Останні відгуки
       </h2>
@@ -206,7 +206,7 @@ export default function ReviewsPage() {
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="bg-white rounded-lg shadow-2xl w-full max-w-xl p-10 space-y-10">
         <div>
-          <h1 className="flex justify-center items-center text-3xl font-bold text-center text-gray-800 mb-6 cursor-default gap-1.5">
+          <h1 className="flex justify-center items-center text-3xl font-bold text-center text-gray-800 mb-6 gap-1.5">
             Залишити відгук
           </h1>
           <ReviewForm onNewReview={handleNewReview} />

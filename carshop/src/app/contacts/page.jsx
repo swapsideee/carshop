@@ -2,7 +2,7 @@
 import { Mail, Phone, MapPin, Building, Clock } from "lucide-react";
 const CompanyCard = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 cursor-default">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="bg-white rounded-md shadow-2xl w-full max-w-xl p-10 space-y-8">
         <div className="space-y-4">
           <h2 className="text-center text-3xl font-bold text-gray-800">

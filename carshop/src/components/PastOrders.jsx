@@ -51,9 +51,9 @@ export default function PastOrders({ orders }) {
                 </div>
               )}
 
-              <ul className="text-sm text-gray-700 space-y-1 border-t pt-2">
+              <ul className="text-sm text-gray-900 space-y-1 border-t border-gray-400 pt-2">
                 {order.items.map((item, idx) => (
-                  <li key={item.id + idx} className="flex justify-between">
+                  <li key={item.id + idx} className="grid grid-cols-[1fr_auto] gap-4 items-start">
                     <span>
                       {item.name} {item.quantity} шт.
                     </span>
@@ -62,7 +62,7 @@ export default function PastOrders({ orders }) {
                 ))}
               </ul>
 
-              <div className="text-right font-bold mt-2 text-gray-900">
+              <div className="text-gray-900 font-semibold text-right min-w-[60px] border-t border-gray-400 mt-2 pt-4">
                 Всього: {order.total} ₴
               </div>
             </div>
