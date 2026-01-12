@@ -1,10 +1,12 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
+
+import Image from 'next/image';
+import { useRef, useState } from 'react';
+import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 export default function ProductGallery({ images }) {
   const swiperRef = useRef(null);
@@ -14,7 +16,7 @@ export default function ProductGallery({ images }) {
 
   if (validImages.length === 0) {
     return (
-      <img
+      <Image
         src="/placeholder.png"
         alt="Фото недоступне"
         className="rounded-lg max-h-96 object-contain"
@@ -38,7 +40,7 @@ export default function ProductGallery({ images }) {
       >
         {validImages.map((src, index) => (
           <SwiperSlide key={index}>
-            <img
+            <Image
               src={src}
               alt={`Фото ${index + 1}`}
               className="rounded-lg object-contain h-full mx-auto transition-transform duration-300 hover:scale-105"
@@ -49,7 +51,7 @@ export default function ProductGallery({ images }) {
 
       <div className="flex justify-center mt-4 gap-2 flex-wrap">
         {validImages.map((src, index) => (
-          <img
+          <Image
             key={index}
             src={src}
             alt={`Thumb ${index + 1}`}

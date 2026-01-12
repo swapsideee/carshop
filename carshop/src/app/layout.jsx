@@ -1,7 +1,9 @@
 import './globals.css';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+
 import { Toaster } from 'react-hot-toast';
+
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
 
 export const metadata = {
   title: 'Iнтернет-магазин VADI-AVTO',
@@ -19,7 +21,7 @@ export default function RootLayout({ children }) {
     <html lang="ru">
       <body className="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
         <Header />
-        <main className="p-4 flex-grow">{children}</main>
+        <main className="p-4 grow">{children}</main>
         <Footer />
         <Toaster position="top-center" />
       </body>

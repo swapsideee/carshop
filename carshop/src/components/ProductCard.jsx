@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function ProductCard({ product, clickable = false }) {
@@ -6,20 +7,22 @@ export default function ProductCard({ product, clickable = false }) {
   const content = (
     <div
       className={
-        'flex flex-col outline-1 outline-gray-300 bg-white overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-[2px] h-full' +
+        'flex flex-col outline-1 outline-gray-300 bg-white overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 h-full' +
         (clickable ? ' cursor-pointer' : '')
       }
     >
-      <div className="w-full aspect-[3/3] bg-white flex items-center justify-center p-4">
-        <img
+      <div className="relative w-full aspect-square bg-white flex items-center justify-center p-4">
+        <Image
           loading="lazy"
           src={product.image || '/placeholder.png'}
-          alt={product.name}
-          className="max-h-full max-w-full object-contain"
+          alt={product.name || product.model || 'Product image'}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          className="object-contain"
         />
       </div>
 
-      <div className="p-3 flex flex-col flex-grow">
+      <div className="p-3 flex flex-col grow">
         {showName && <p className="text-md text-gray-900 mb-1 line-clamp-1">{product.name}</p>}
 
         <p className="xl:text-md font-extrabold text-gray-800 mb-2 line-clamp-2">{product.model}</p>

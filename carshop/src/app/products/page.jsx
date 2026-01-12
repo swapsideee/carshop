@@ -1,10 +1,11 @@
 'use client';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Funnel } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { normalize } from '@/lib/normalize';
+
 import FiltersPanel from '@/components/FiltersPanel';
 import ProductCard from '@/components/ProductCard';
-import { Funnel } from 'lucide-react';
+import { normalize } from '@/lib/normalize';
 
 export default function AllProductsPage() {
   const [allProducts, setAllProducts] = useState([]);
@@ -83,7 +84,7 @@ export default function AllProductsPage() {
       <div className="lg:hidden w-full mb-4">
         <button
           onClick={() => setShowMobileFilters(!showMobileFilters)}
-          className="md:w-[450px] mx-auto w-full bg-gray-900 text-white px-4 py-2 rounded-md flex items-center justify-center gap-2"
+          className="md:w-112.5 mx-auto w-full bg-gray-900 text-white px-4 py-2 rounded-md flex items-center justify-center gap-2"
         >
           {showMobileFilters ? 'Фільтри' : 'Фільтри'}
           <Funnel className="w-5 h-5" />
@@ -113,7 +114,7 @@ export default function AllProductsPage() {
         </AnimatePresence>
       </div>
 
-      <div className="flex-1 rounded-xl max-w-[1300px] w-full">
+      <div className="flex-1 rounded-xl max-w-325 w-full">
         <main>
           {isLoading ? (
             <div className="text-center text-gray-500 mt-20 text-lg animate-pulse">

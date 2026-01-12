@@ -1,11 +1,14 @@
 'use client';
-import { useState } from 'react';
-import useCartStore from '@/app/store/cartStore';
+
+import { AnimatePresence, motion } from 'framer-motion';
+import { Minus, Plus, SquareChartGantt, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
+
+import useCartStore from '@/app/store/cartStore';
 import PastOrders from '@/components/PastOrders';
-import { motion, AnimatePresence } from 'framer-motion';
-import { SquareChartGantt, Plus, Minus, Trash2 } from 'lucide-react';
+
 export default function CartPage() {
   const { cartItems, addToCart, decreaseQuantity, removeFromCart, clearCart, pastOrders } =
     useCartStore();
@@ -21,7 +24,7 @@ export default function CartPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <h1 className="text-3xl font-extrabold mb-10 text-center text-gray-900 flex items-center justify-center gap-2">
-        <SquareChartGantt className="flex w-9 h-9 flex-shrink-0 self-start" />
+        <SquareChartGantt className="flex w-9 h-9 shrink-0 self-start" />
         Обранi товари
       </h1>
 

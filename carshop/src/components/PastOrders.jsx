@@ -15,7 +15,7 @@ export default function PastOrders({ orders }) {
   return (
     <div className="text-left max-w-2xl mx-auto">
       <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2 text-gray-800">
-        <Clock className="w-6 h-6 text-lime-600 flex-shrink-0 self-start mt-1" />
+        <Clock className="w-6 h-6 text-lime-600 shrink-0 self-start mt-1" />
         Останні замовлення
       </h2>
 
@@ -36,7 +36,7 @@ export default function PastOrders({ orders }) {
                 <div className="text-sm text-gray-800 space-y-1 mb-2">
                   {order.name && (
                     <p>
-                      <strong>Ім'я:</strong> {order.name}
+                      <strong>Ім&apos;я:</strong> {order.name}
                     </p>
                   )}
                   {order.phone && (
@@ -62,7 +62,7 @@ export default function PastOrders({ orders }) {
                 ))}
               </ul>
 
-              <div className="text-gray-900 font-semibold text-right min-w-[60px] border-t border-gray-400 mt-2 pt-4">
+              <div className="text-gray-900 font-semibold text-right min-w-15 border-t border-gray-400 mt-2 pt-4">
                 Всього: {order.total} ₴
               </div>
             </div>

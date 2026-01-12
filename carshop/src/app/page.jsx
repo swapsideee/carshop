@@ -1,6 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+
 import Banner from '@/components/Banner';
 
 export default function Home() {
@@ -19,30 +21,36 @@ export default function Home() {
       >
         Автомобільні підкрилки
       </motion.h2>
-      <motion.p
+
+      <motion.div
         className="text-lg text-gray-900 max-w-2xl mx-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
         <div className="mt-8 rounded-lg shadow-sm py-2 px-2 bg-white">
-          VADI-AVTO - надійний інтернет-магазин автозапчастин з досвідом роботи. Пропонуємо
-          підкрилки для понад 250 моделей авто за вигідними цінами. Працюємо онлайн та офлайн -
-          замовляйте зручно або завітайте до нас особисто у мiстi Харкiв! <br></br>
+          <p>
+            VADI-AVTO - надійний інтернет-магазин автозапчастин з досвідом роботи. Пропонуємо
+            підкрилки для понад 250 моделей авто за вигідними цінами. Працюємо онлайн та офлайн -
+            замовляйте зручно або завітайте до нас особисто у мiстi Харкiв!
+          </p>
+          <br />
         </div>
-      </motion.p>
+      </motion.div>
+
       <motion.div
         className="mt-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.6 }}
       >
-        <a
+        <Link
           href="/products"
-          className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg text-lg  transition-colors duration-300 shadow-2xl"
+          className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg text-lg transition-colors duration-300 shadow-2xl inline-block"
         >
           Перейти до каталогу товарiв
-        </a>
+        </Link>
+
         <Banner />
       </motion.div>
     </motion.section>

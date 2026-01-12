@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 function Star({ filled, onClick }) {
   return (
     <svg
@@ -107,7 +107,7 @@ function ReviewForm({ onNewReview }) {
 
       <div>
         <label className="block mb-1 text-base text-gray-700 font-medium">
-          Коментар (необов'язково)
+          Коментар (необов&apos;язково)
         </label>
         <textarea
           value={comment}
