@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { Clock } from "lucide-react";
+import { Clock } from 'lucide-react';
 
 export default function PastOrders({ orders }) {
   const formatDate = (date) =>
-    new Date(date).toLocaleString("uk-UA", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+    new Date(date).toLocaleString('uk-UA', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     });
 
   return (
@@ -45,7 +45,7 @@ export default function PastOrders({ orders }) {
                     </p>
                   )}
                   <p>
-                    <strong>Коментар:</strong>{" "}
+                    <strong>Коментар:</strong>{' '}
                     {order.comment || <span className="text-gray-400">-</span>}
                   </p>
                 </div>

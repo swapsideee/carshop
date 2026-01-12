@@ -1,13 +1,11 @@
-"use client";
-import { Mail, Phone, MapPin, Building, Clock } from "lucide-react";
+'use client';
+import { Mail, Phone, MapPin, Building, Clock } from 'lucide-react';
 const CompanyCard = () => {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="bg-white rounded-md shadow-2xl w-full max-w-xl p-10 space-y-8">
         <div className="space-y-4">
-          <h2 className="text-center text-3xl font-bold text-gray-800">
-            Контактна інформація
-          </h2>
+          <h2 className="text-center text-3xl font-bold text-gray-800">Контактна інформація</h2>
           <p className="text-lg text-gray-700 flex items-center gap-2">
             <Mail className="w-5 h-5 flex-shrink-0 self-start mt-1" />
             <a
@@ -19,10 +17,7 @@ const CompanyCard = () => {
           </p>
           <p className="text-lg text-gray-700 flex items-center gap-2">
             <Phone className="w-5 h-5 flex-shrink-0 self-start mt-1" />
-            <a
-              href="tel:+380961365299"
-              className="text-gray-700 underline hover:text-gray-500"
-            >
+            <a href="tel:+380961365299" className="text-gray-700 underline hover:text-gray-500">
               +38 096 136 5299
             </a>
           </p>

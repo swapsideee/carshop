@@ -1,18 +1,18 @@
-"use client";
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
-import { normalize } from "@/lib/normalize";
-import FiltersPanel from "@/components/FiltersPanel";
-import ProductCard from "@/components/ProductCard";
-import { Funnel } from "lucide-react";
+'use client';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { normalize } from '@/lib/normalize';
+import FiltersPanel from '@/components/FiltersPanel';
+import ProductCard from '@/components/ProductCard';
+import { Funnel } from 'lucide-react';
 
 export default function AllProductsPage() {
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [brands, setBrands] = useState([]);
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [sort, setSort] = useState("");
-  const [query, setQuery] = useState("");
+  const [selectedBrand, setSelectedBrand] = useState('');
+  const [sort, setSort] = useState('');
+  const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
@@ -21,19 +21,16 @@ export default function AllProductsPage() {
       try {
         setIsLoading(true);
         const [productsRes, brandsRes] = await Promise.all([
-          fetch("/api/products"),
-          fetch("/api/brands"),
+          fetch('/api/products'),
+          fetch('/api/brands'),
         ]);
-        const [products, brands] = await Promise.all([
-          productsRes.json(),
-          brandsRes.json(),
-        ]);
+        const [products, brands] = await Promise.all([productsRes.json(), brandsRes.json()]);
 
         setAllProducts(products);
         setFilteredProducts(products);
         setBrands(brands);
       } catch (err) {
-        console.error("Fetch error:", err);
+        console.error('Fetch error:', err);
       } finally {
         setIsLoading(false);
       }
@@ -45,8 +42,7 @@ export default function AllProductsPage() {
   useEffect(() => {
     let filtered = [...allProducts];
 
-    if (selectedBrand)
-      filtered = filtered.filter((p) => p.brand_slug === selectedBrand);
+    if (selectedBrand) filtered = filtered.filter((p) => p.brand_slug === selectedBrand);
 
     if (query.trim()) {
       const terms = normalize(query).split(/\s+/);
@@ -57,18 +53,16 @@ export default function AllProductsPage() {
       });
     }
 
-    if (sort === "asc")
-      filtered.sort((a, b) => (a.price_pair || 0) - (b.price_pair || 0));
-    else if (sort === "desc")
-      filtered.sort((a, b) => (b.price_pair || 0) - (a.price_pair || 0));
+    if (sort === 'asc') filtered.sort((a, b) => (a.price_pair || 0) - (b.price_pair || 0));
+    else if (sort === 'desc') filtered.sort((a, b) => (b.price_pair || 0) - (a.price_pair || 0));
 
     setFilteredProducts(filtered);
   }, [selectedBrand, sort, query, allProducts]);
 
   const resetFilters = () => {
-    setSelectedBrand("");
-    setSort("");
-    setQuery("");
+    setSelectedBrand('');
+    setSort('');
+    setQuery('');
   };
 
   return (
@@ -91,7 +85,7 @@ export default function AllProductsPage() {
           onClick={() => setShowMobileFilters(!showMobileFilters)}
           className="md:w-[450px] mx-auto w-full bg-gray-900 text-white px-4 py-2 rounded-md flex items-center justify-center gap-2"
         >
-          {showMobileFilters ? "Фільтри" : "Фільтри"}
+          {showMobileFilters ? 'Фільтри' : 'Фільтри'}
           <Funnel className="w-5 h-5" />
         </button>
 
@@ -130,11 +124,7 @@ export default function AllProductsPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
               {filteredProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  clickable={true}
-                />
+                <ProductCard key={product.id} product={product} clickable={true} />
               ))}
             </div>
           )}

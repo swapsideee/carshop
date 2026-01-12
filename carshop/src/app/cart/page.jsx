@@ -1,27 +1,18 @@
-"use client";
-import { useState } from "react";
-import useCartStore from "@/app/store/cartStore";
-import Image from "next/image";
-import Link from "next/link";
-import PastOrders from "@/components/PastOrders";
-import { motion, AnimatePresence } from "framer-motion";
-import { SquareChartGantt, Plus, Minus, Trash2 } from "lucide-react";
+'use client';
+import { useState } from 'react';
+import useCartStore from '@/app/store/cartStore';
+import Image from 'next/image';
+import Link from 'next/link';
+import PastOrders from '@/components/PastOrders';
+import { motion, AnimatePresence } from 'framer-motion';
+import { SquareChartGantt, Plus, Minus, Trash2 } from 'lucide-react';
 export default function CartPage() {
-  const {
-    cartItems,
-    addToCart,
-    decreaseQuantity,
-    removeFromCart,
-    clearCart,
-    pastOrders,
-  } = useCartStore();
+  const { cartItems, addToCart, decreaseQuantity, removeFromCart, clearCart, pastOrders } =
+    useCartStore();
 
   const [errorItemId, setErrorItemId] = useState(null);
 
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const handleClearCart = () => {
     clearCart();
@@ -40,9 +31,7 @@ export default function CartPage() {
           animate={{ opacity: 1 }}
           className="text-center text-xl text-gray-900 space-y-6"
         >
-          <p className="mb-30 text-gray-400 text-normal font-semibold">
-            Кошик порожній
-          </p>
+          <p className="mb-30 text-gray-400 text-normal font-semibold">Кошик порожній</p>
 
           {pastOrders.length > 0 && <PastOrders orders={pastOrders} />}
         </motion.div>
@@ -60,7 +49,7 @@ export default function CartPage() {
                 className="flex flex-col md:flex-row items-center gap-6 border rounded-lg p-4 shadow-2xl bg-white transition-shadow duration-300"
               >
                 <Image
-                  src={item.image || "/no-image.png"}
+                  src={item.image || '/no-image.png'}
                   alt={item.name}
                   width={120}
                   height={120}
@@ -69,9 +58,7 @@ export default function CartPage() {
 
                 <div className="flex-1 w-full flex flex-col md:flex-row justify-between items-center md:items-start gap-4">
                   <div className="text-center md:text-left">
-                    <h2 className="text-xl font-bold text-gray-900">
-                      {item.name}
-                    </h2>
+                    <h2 className="text-xl font-bold text-gray-900">{item.name}</h2>
 
                     <div className="flex items-center justify-center md:justify-start gap-4 mb-4 mt-4">
                       <button
@@ -80,16 +67,14 @@ export default function CartPage() {
                         className={`shadow-md w-9 h-9 flex items-center justify-center rounded-full transition
                             ${
                               item.quantity === 1
-                                ? "bg-gray-200 cursor-not-allowed opacity-50"
-                                : "bg-gray-100 hover:bg-gray-200 active:scale-95"
+                                ? 'bg-gray-200 cursor-not-allowed opacity-50'
+                                : 'bg-gray-100 hover:bg-gray-200 active:scale-95'
                             }`}
                       >
                         <Minus className="w-5 h-5 text-lime-600 cursor-pointer" />
                       </button>
 
-                      <span className="font-bold text-xl text-gray-900">
-                        {item.quantity}
-                      </span>
+                      <span className="font-bold text-xl text-gray-900">{item.quantity}</span>
 
                       <button
                         onClick={() => {
@@ -134,9 +119,9 @@ export default function CartPage() {
           >
             <div className="text-left">
               <p className="text-base text-gray-600 mb-1">
-                <span className="text-gray-900">Сума замовлення</span> (Вартість
-                доставки розраховується менеджером
-                <span className="text-red-500 ml-0.5">*</span>):{" "}
+                <span className="text-gray-900">Сума замовлення</span> (Вартість доставки
+                розраховується менеджером
+                <span className="text-red-500 ml-0.5">*</span>):{' '}
               </p>
               <p className="text-3xl font-bold text-gray-900">{total} ₴</p>
             </div>

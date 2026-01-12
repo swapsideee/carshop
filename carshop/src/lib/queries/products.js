@@ -1,17 +1,13 @@
-export const getAllProducts = ({
-  brand,
-  sortBy = "price_pair",
-  sortOrder = "ASC",
-}) => {
-  const validSortColumns = ["price_pair", "model"];
-  const safeSortBy = validSortColumns.includes(sortBy) ? sortBy : "price_pair";
-  const safeSortOrder = sortOrder === "DESC" ? "DESC" : "ASC";
+export const getAllProducts = ({ brand, sortBy = 'price_pair', sortOrder = 'ASC' }) => {
+  const validSortColumns = ['price_pair', 'model'];
+  const safeSortBy = validSortColumns.includes(sortBy) ? sortBy : 'price_pair';
+  const safeSortOrder = sortOrder === 'DESC' ? 'DESC' : 'ASC';
 
-  let query = "SELECT * FROM products";
+  let query = 'SELECT * FROM products';
   const params = [];
 
   if (brand) {
-    query += " WHERE brand_slug = ?";
+    query += ' WHERE brand_slug = ?';
     params.push(brand);
   }
 
@@ -21,12 +17,12 @@ export const getAllProducts = ({
 };
 
 export const getProductById = (id) => ({
-  query: "SELECT * FROM products WHERE id = ?",
+  query: 'SELECT * FROM products WHERE id = ?',
   params: [id],
 });
 
 export const getProductImages = (productId) => ({
-  query: "SELECT image_url FROM product_images WHERE product_id = ?",
+  query: 'SELECT image_url FROM product_images WHERE product_id = ?',
   params: [productId],
 });
 

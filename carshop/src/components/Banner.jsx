@@ -1,16 +1,17 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+
 export default function Banner() {
   const [brands, setBrands] = useState([]);
 
   useEffect(() => {
-    fetch("/api/brands")
+    fetch('/api/brands')
       .then((res) => res.json())
       .then((data) => setBrands(data))
-      .catch((err) => console.error("Error loading brands:", err));
+      .catch((err) => console.error('Error loading brands:', err));
   }, []);
 
   const containerVariants = {

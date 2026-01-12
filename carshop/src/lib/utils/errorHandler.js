@@ -3,8 +3,8 @@ export function ErrorHandler(handler) {
     try {
       return await handler(request, context);
     } catch (err) {
-      console.error("API Error:", err);
-      return new Response(JSON.stringify({ error: "Internal server error" }), {
+      console.error('API Error:', err);
+      return new Response(JSON.stringify({ error: 'Internal server error' }), {
         status: 500,
       });
     }

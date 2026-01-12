@@ -1,18 +1,16 @@
-"use client";
+'use client';
 
-import { useRef, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
+import { useRef, useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 export default function ProductGallery({ images }) {
   const swiperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const validImages = images.filter(
-    (src) => typeof src === "string" && src.trim() !== ""
-  );
+  const validImages = images.filter((src) => typeof src === 'string' && src.trim() !== '');
 
   if (validImages.length === 0) {
     return (
@@ -61,11 +59,7 @@ export default function ProductGallery({ images }) {
               }
             }}
             className={`h-16 w-16 object-cover rounded-md border-2 cursor-pointer transition 
-              ${
-                activeIndex === index
-                  ? "bg-gray-900 ring-2 ring-gray-900"
-                  : "border-gray-300"
-              }`}
+              ${activeIndex === index ? 'bg-gray-900 ring-2 ring-gray-900' : 'border-gray-300'}`}
           />
         ))}
       </div>
