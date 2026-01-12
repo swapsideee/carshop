@@ -1,35 +1,36 @@
-import { FlatCompat } from '@eslint/eslintrc';
-import prettierPlugin from 'eslint-plugin-prettier';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import nextVitals from 'eslint-config-next/core-web-vitals';
+import nextTs from 'eslint-config-next/typescript';
+import prettier from 'eslint-config-prettier/flat';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const config = [
-  ...compat.extends('next/core-web-vitals'),
+export default defineConfig([
+  ...nextVitals,
 
   {
-    plugins: {
-      prettier: prettierPlugin,
-      'simple-import-sort': simpleImportSort,
-    },
-    rules: {
-      'prettier/prettier': 'error',
+    files: ['**/*.ts', '**/*.tsx'],
+    rules: Object.fromEntries(nextTs.flatMap((c) => Object.entries(c.rules ?? {}))),
+    languageOptions: nextTs.find((c) => c.languageOptions)?.languageOptions,
+    plugins: nextTs.find((c) => c.plugins)?.plugins,
+  },
 
+  prettier,
+
+  {
+    plugins: { 'simple-import-sort': simpleImportSort },
+    rules: {
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
-
       'sort-imports': 'off',
     },
   },
 
-  ...compat.extends('prettier'),
-];
-
-export default config;
+  globalIgnores([
+    '.next/**',
+    'out/**',
+    'build/**',
+    'node_modules/**',
+    'next-env.d.ts',
+    '*.tsbuildinfo',
+  ]),
+]);
