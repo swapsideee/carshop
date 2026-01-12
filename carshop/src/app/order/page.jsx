@@ -1,11 +1,12 @@
 'use client';
 
-import useCartStore from '@/app/store/cartStore';
+import { motion } from 'framer-motion';
+import { Mail, NotebookPen } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { validatePhone, validateName } from '@/lib/utils/validator';
-import { motion } from 'framer-motion';
-import { NotebookPen, Mail } from 'lucide-react';
+
+import useCartStore from '@/app/store/cartStore';
+import { validateName, validatePhone } from '@/lib/utils/validator';
 
 export default function OrderPage() {
   const { cartItems, clearCart, saveOrder } = useCartStore();
@@ -102,7 +103,7 @@ export default function OrderPage() {
 
           <div className="text-sm space-y-1">
             <p>
-              <strong>Ім'я:</strong> {submittedOrder.name}
+              <strong>Ім&apos;я:</strong> {submittedOrder.name}
             </p>
             <p>
               <strong>Телефон:</strong> {submittedOrder.phone}
@@ -128,10 +129,7 @@ export default function OrderPage() {
                 <span>
                   {item.name} {item.quantity} шт.
                 </span>
-                <span
-                  className="
-                text-gray-900 font-semibold text-right min-w-[60px]"
-                >
+                <span className="text-gray-900 font-semibold text-right min-w-15">
                   {item.price * item.quantity} ₴
                 </span>
               </li>
@@ -177,7 +175,7 @@ export default function OrderPage() {
               <span>
                 {item.name} {item.quantity} шт.
               </span>
-              <span className="text-gray-900 font-semibold text-right min-w-[60px]">
+              <span className="text-gray-900 font-semibold text-right min-w-15">
                 {item.price * item.quantity} ₴
               </span>
             </li>
@@ -193,8 +191,7 @@ export default function OrderPage() {
         <div className="text-right font-base text-xl text-gray-900">
           Всього до сплати{' '}
           <span className="text-gray-600 text-lg">
-            (без вартостi доставки<span className="text-red-500 ml-0.5">*</span>
-            ):{' '}
+            (без вартостi доставки<span className="text-red-500 ml-0.5">*</span>):{' '}
           </span>
           <span className="font-bold">{total} ₴</span>
         </div>
@@ -232,7 +229,7 @@ export default function OrderPage() {
             placeholder="Коментар до замовлення (необов’язково)"
             value={form.comment}
             onChange={handleChange}
-            className="w-full border border-gray-400 rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-lime-500 transition min-h-[100px]"
+            className="w-full border border-gray-400 rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-lime-500 transition min-h-25"
           />
 
           <button

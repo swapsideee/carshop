@@ -1,19 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 export default function Footer() {
-  const [year, setYear] = useState(null);
-
-  useEffect(() => {
-    setYear(new Date().getFullYear());
-  }, []);
+  const year = new Date().getFullYear();
 
   return (
     <footer className="bg-lime-600 shadow-md text-gray-900 mt-16 py-6 text-center text-sm">
       <p>@ {year} VADI-AVTO. Усі права захищені.</p>
       <p className="mt-1">
-        Зв'язок:{' '}
+        Зв&apos;язок:{' '}
         <a href="mailto:Vadi-Avto@ukr.net" className="text-gray-900 hover:text-gray-700">
           vadiavtoua@gmail.com
         </a>{' '}

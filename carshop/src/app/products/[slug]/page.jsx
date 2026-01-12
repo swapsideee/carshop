@@ -1,14 +1,15 @@
 'use client';
 
 import { ShoppingCart } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { toast } from 'react-hot-toast';
 import Link from 'next/link';
-import ProductCard from '@/components/ProductCard';
-import ProductGallery from '@/components/ProductGallery';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
+
 import useCartStore from '@/app/store/cartStore';
 import PriceSelector from '@/components/PriceSelector';
+import ProductCard from '@/components/ProductCard';
+import ProductGallery from '@/components/ProductGallery';
 
 export default function ProductOrBrandPage() {
   const params = useParams();
@@ -185,7 +186,7 @@ export default function ProductOrBrandPage() {
                   <span className="text-red-500 ml-0.5">*</span>
                 </p>
                 <p className="text-sm text-gray-400">
-                  Інформацію про наявність комплекту можна дізнатися, зв'язавшись із менеджером
+                  Інформацію про наявність комплекту можна дізнатися, зв&apos;язавшись із менеджером
                 </p>
               </>
             )}
@@ -198,7 +199,7 @@ export default function ProductOrBrandPage() {
                   <span className="text-red-500 ml-0.5">*</span>
                 </p>
                 <p className="text-sm text-gray-400">
-                  Інформацію про наявність пари можна дізнатися, зв'язавшись із менеджером
+                  Інформацію про наявність пари можна дізнатися, зв&apos;язавшись із менеджером
                 </p>
               </>
             )}
@@ -246,7 +247,7 @@ function DescriptionBlock() {
 
 Сучасні технології та професіоналізм дозволили створити матриці захисних арок для багатьох моделей автомобілів, завдяки чому підкрилки ідеально відповідають формі колісних арок. Вони кріпляться трьома-сімома саморізами по краю крила та двома в глибині ніші.
 
-Перед запуском серійного виробництва кожна нова модель підкрилків проходить ретельні випробування та обов'язкову сертифікацію у Держспоживстандарті України.
+Перед запуском серійного виробництва кожна нова модель підкрилків проходить ретельні випробування та обов&apos;язкову сертифікацію у Держспоживстандарті України.
 
 У нашому інтернет-магазині ви можете придбати підкрилки від ТМ "Mega Locker" — якісні, доступні та практичні вироби, що стануть надійним захистом вашого авто.
 `;
@@ -255,7 +256,7 @@ function DescriptionBlock() {
       <h2 className="text-gray-900 text-xl font-semibold mb-6">Опис товару</h2>
       <p
         className={`text-gray-700 text-sm leading-relaxed transition-all duration-300 ease-in-out ${
-          expanded ? 'line-clamp-none max-h-none' : 'max-h-[4rem] overflow-hidden'
+          expanded ? 'line-clamp-none max-h-none' : 'max-h-16 overflow-hidden'
         }`}
       >
         {text}
