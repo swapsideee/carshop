@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 const generateOrderId = () => crypto.randomUUID?.() || Date.now();
 
@@ -18,9 +18,7 @@ const useCartStore = create(
         if (existingItem) {
           set({
             cartItems: cartItems.map((item) =>
-              item.id === product.id
-                ? { ...item, quantity: item.quantity + 1 }
-                : item
+              item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item,
             ),
           });
         } else {
@@ -33,9 +31,7 @@ const useCartStore = create(
       decreaseQuantity: (id) => {
         const { cartItems } = get();
         const updated = cartItems
-          .map((item) =>
-            item.id === id ? { ...item, quantity: item.quantity - 1 } : item
-          )
+          .map((item) => (item.id === id ? { ...item, quantity: item.quantity - 1 } : item))
           .filter((item) => item.quantity > 0);
 
         set({ cartItems: updated });
@@ -60,8 +56,8 @@ const useCartStore = create(
         set({ pastOrders: [...pastOrders, newOrder] });
       },
     }),
-    { name: "cart-storage" }
-  )
+    { name: 'cart-storage' },
+  ),
 );
 
 export default useCartStore;

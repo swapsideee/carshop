@@ -1,16 +1,16 @@
-import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { Toaster } from "react-hot-toast";
+import './globals.css';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { Toaster } from 'react-hot-toast';
 
 export const metadata = {
-  title: "Iнтернет-магазин VADI-AVTO",
+  title: 'Iнтернет-магазин VADI-AVTO',
   description:
-    "VADI-AVTO - надійний інтернет-магазин автозапчастин з досвідом роботи. Пропонуємо підкрилки для понад 250 моделей авто за вигідними цінами. Працюємо онлайн та офлайн - замовляйте зручно або завітайте до нас особисто у мiстi Харкiв!",
+    'VADI-AVTO - надійний інтернет-магазин автозапчастин з досвідом роботи. Пропонуємо підкрилки для понад 250 моделей авто за вигідними цінами. Працюємо онлайн та офлайн - замовляйте зручно або завітайте до нас особисто у мiстi Харкiв!',
 };
 
 export const viewport = {
-  width: "device-width",
+  width: 'device-width',
   initialScale: 1,
 };
 

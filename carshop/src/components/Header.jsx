@@ -1,17 +1,9 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import {
-  ShoppingCart,
-  Menu,
-  X,
-  Car,
-  Star,
-  Contact,
-  ScrollText,
-} from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import Link from 'next/link';
+import { ShoppingCart, Menu, X, Car, Star, Contact, ScrollText } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -69,7 +61,7 @@ export default function Header() {
         {menuOpen && (
           <motion.nav
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
+            animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
             className="absolute top-full left-0 right-0 bg-lime-600 flex flex-col items-start space-y-2 px-6 py-4 shadow-md md:hidden"

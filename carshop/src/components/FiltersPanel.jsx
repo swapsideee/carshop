@@ -16,9 +16,7 @@ export default function FiltersPanel({
         </h2>
 
         <div>
-          <label className="block mb-1 text-sm text-gray-700 font-medium">
-            Пошук
-          </label>
+          <label className="block mb-1 text-sm text-gray-700 font-medium">Пошук</label>
           <input
             type="text"
             value={query}
@@ -29,9 +27,7 @@ export default function FiltersPanel({
         </div>
 
         <div>
-          <label className="block mb-1 text-sm text-gray-700 font-medium">
-            Сортування
-          </label>
+          <label className="block mb-1 text-sm text-gray-700 font-medium">Сортування</label>
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
@@ -44,9 +40,7 @@ export default function FiltersPanel({
         </div>
 
         <div>
-          <label className="block mb-1 text-sm text-gray-700 font-medium">
-            Марка
-          </label>
+          <label className="block mb-1 text-sm text-gray-700 font-medium">Марка</label>
           <select
             value={selectedBrand}
             onChange={(e) => setSelectedBrand(e.target.value)}

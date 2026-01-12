@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { ShoppingCart } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { toast } from "react-hot-toast";
-import Link from "next/link";
-import ProductCard from "@/components/ProductCard";
-import ProductGallery from "@/components/ProductGallery";
-import useCartStore from "@/app/store/cartStore";
-import PriceSelector from "@/components/PriceSelector";
+import { ShoppingCart } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { toast } from 'react-hot-toast';
+import Link from 'next/link';
+import ProductCard from '@/components/ProductCard';
+import ProductGallery from '@/components/ProductGallery';
+import useCartStore from '@/app/store/cartStore';
+import PriceSelector from '@/components/PriceSelector';
 
 export default function ProductOrBrandPage() {
   const params = useParams();
   const [product, setProduct] = useState(null);
   const [brandProducts, setBrandProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedOption, setSelectedOption] = useState("pair");
+  const [selectedOption, setSelectedOption] = useState('pair');
   const addToCart = useCartStore((state) => state.addToCart);
   const isProductId = !isNaN(Number(params.slug));
 
@@ -33,7 +33,7 @@ export default function ProductOrBrandPage() {
           setBrandProducts(data);
         }
       } catch (err) {
-        console.error("Fetch error:", err);
+        console.error('Fetch error:', err);
       } finally {
         setIsLoading(false);
       }
@@ -44,9 +44,9 @@ export default function ProductOrBrandPage() {
   useEffect(() => {
     if (product) {
       if (product.price_pair !== null && product.price_set === null) {
-        setSelectedOption("pair");
+        setSelectedOption('pair');
       } else if (product.price_set !== null && product.price_pair === null) {
-        setSelectedOption("set");
+        setSelectedOption('set');
       }
     }
   }, [product]);
@@ -54,25 +54,22 @@ export default function ProductOrBrandPage() {
   const handleAddToCart = () => {
     if (!product) return;
 
-    const price =
-      selectedOption === "pair" ? product.price_pair : product.price_set;
+    const price = selectedOption === 'pair' ? product.price_pair : product.price_set;
 
     if (!price) {
-      toast.error("Ціна для обраного варіанту відсутня");
+      toast.error('Ціна для обраного варіанту відсутня');
       return;
     }
 
     const cartItem = {
       id: `${product.id}-${selectedOption}`,
-      name: `${product.model} (${
-        selectedOption === "pair" ? "Пара" : "Комплект"
-      })`,
+      name: `${product.model} (${selectedOption === 'pair' ? 'Пара' : 'Комплект'})`,
       price,
       image: product.image,
     };
 
     addToCart(cartItem);
-    toast.success("Товар додано до кошику");
+    toast.success('Товар додано до кошику');
   };
 
   if (isLoading) {
@@ -94,9 +91,7 @@ export default function ProductOrBrandPage() {
           {params.slug}
         </h1>
         {brandProducts.length === 0 ? (
-          <div className="text-gray-900 text-center text-sm">
-            Товарів цього бренду не знайдено.
-          </div>
+          <div className="text-gray-900 text-center text-sm">Товарів цього бренду не знайдено.</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 flex-1 rounded-xl h-full">
             {brandProducts.map((product) => (
@@ -129,8 +124,7 @@ export default function ProductOrBrandPage() {
     ? [product.image, ...product.images]
     : [product.image].filter(Boolean);
 
-  const bothPricesAvailable =
-    product.price_pair !== null && product.price_set !== null;
+  const bothPricesAvailable = product.price_pair !== null && product.price_set !== null;
   const onlyPair = product.price_pair !== null && product.price_set === null;
   const onlySet = product.price_set !== null && product.price_pair === null;
   const noPrice = product.price_pair === null && product.price_set === null;
@@ -155,13 +149,9 @@ export default function ProductOrBrandPage() {
                 <p className="text-md text-gray-900">Ціна за пару:</p>
                 <p className="text-xl font-semibold">
                   {product.price_pair !== null ? (
-                    <span className="text-black font-bold text-2xl">
-                      {product.price_pair} ₴
-                    </span>
+                    <span className="text-black font-bold text-2xl">{product.price_pair} ₴</span>
                   ) : (
-                    <span className="text-gray-900 font-normal text-md">
-                      За запитом
-                    </span>
+                    <span className="text-gray-900 font-normal text-md">За запитом</span>
                   )}
                 </p>
               </div>
@@ -170,13 +160,9 @@ export default function ProductOrBrandPage() {
                 <p className="text-md text-gray-900">Ціна за комплект:</p>
                 <p className="text-xl font-semibold">
                   {product.price_set !== null ? (
-                    <span className="text-black font-bold text-2xl">
-                      {product.price_set} ₴
-                    </span>
+                    <span className="text-black font-bold text-2xl">{product.price_set} ₴</span>
                   ) : (
-                    <span className="text-gray-900 font-normal text-md">
-                      За запитом
-                    </span>
+                    <span className="text-gray-900 font-normal text-md">За запитом</span>
                   )}
                 </p>
               </div>
@@ -194,13 +180,12 @@ export default function ProductOrBrandPage() {
             {onlyPair && (
               <>
                 <p className="text-sm text-gray-600 mb-4">
-                  Для замовлення цього товару доступна тільки{" "}
+                  Для замовлення цього товару доступна тільки{' '}
                   <span className="font-semibold text-black">Пара</span>
                   <span className="text-red-500 ml-0.5">*</span>
                 </p>
                 <p className="text-sm text-gray-400">
-                  Інформацію про наявність комплекту можна дізнатися,
-                  зв'язавшись із менеджером
+                  Інформацію про наявність комплекту можна дізнатися, зв'язавшись із менеджером
                 </p>
               </>
             )}
@@ -208,13 +193,12 @@ export default function ProductOrBrandPage() {
             {onlySet && (
               <>
                 <p className="text-sm text-gray-600 mb-4">
-                  Для замовлення цього товару доступний тільки:{" "}
+                  Для замовлення цього товару доступний тільки:{' '}
                   <span className="font-semibold text-black">Комплект</span>
                   <span className="text-red-500 ml-0.5">*</span>
                 </p>
                 <p className="text-sm text-gray-400">
-                  Інформацію про наявність пари можна дізнатися, зв'язавшись із
-                  менеджером
+                  Інформацію про наявність пари можна дізнатися, зв'язавшись із менеджером
                 </p>
               </>
             )}
@@ -226,12 +210,12 @@ export default function ProductOrBrandPage() {
               disabled={noPrice}
               className={`${
                 noPrice
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-gray-900 hover:bg-gray-800 text-white"
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-gray-900 hover:bg-gray-800 text-white'
               } text-sm md:text-base py-3 px-4 md:py-4 md:px-6 rounded-2xl shadow-md font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer`}
             >
               <ShoppingCart className="w-5 h-5" />
-              {noPrice ? "Недоступно" : "Додати до кошика"}
+              {noPrice ? 'Недоступно' : 'Додати до кошика'}
             </button>
           </div>
         </div>
@@ -243,9 +227,7 @@ export default function ProductOrBrandPage() {
 
       {product.related?.length > 0 && (
         <div className="w-full max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">
-            Схожі товари
-          </h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Схожі товари</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
             {product.related.map((p) => (
               <ProductCard key={p.id} product={p} clickable />
@@ -273,21 +255,17 @@ function DescriptionBlock() {
       <h2 className="text-gray-900 text-xl font-semibold mb-6">Опис товару</h2>
       <p
         className={`text-gray-700 text-sm leading-relaxed transition-all duration-300 ease-in-out ${
-          expanded
-            ? "line-clamp-none max-h-none"
-            : "max-h-[4rem] overflow-hidden"
+          expanded ? 'line-clamp-none max-h-none' : 'max-h-[4rem] overflow-hidden'
         }`}
       >
         {text}
-        {!expanded && (
-          <div className="absolute bottom-0 left-0 w-full h-10 pointer-events-none" />
-        )}
+        {!expanded && <div className="absolute bottom-0 left-0 w-full h-10 pointer-events-none" />}
       </p>
       <button
         onClick={() => setExpanded((prev) => !prev)}
         className="mt-2 text-sm font-bold text-lime-700 hover:text-lime-600 focus:outline-none transition-colors cursor-pointer"
       >
-        {expanded ? "Згорнути" : "Розгорнути повнiстю"}
+        {expanded ? 'Згорнути' : 'Розгорнути повнiстю'}
       </button>
     </div>
   );

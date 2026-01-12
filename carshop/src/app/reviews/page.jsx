@@ -1,12 +1,12 @@
-"use client";
-import { useState, useEffect } from "react";
+'use client';
+import { useState, useEffect } from 'react';
 function Star({ filled, onClick }) {
   return (
     <svg
       onClick={onClick}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      fill={filled ? "#84cc16" : "none"}
+      fill={filled ? '#84cc16' : 'none'}
       stroke="#84cc16"
       strokeWidth="1.5"
       className="w-5 h-5 cursor-pointer"
@@ -22,65 +22,63 @@ function Star({ filled, onClick }) {
 
 function ReviewForm({ onNewReview }) {
   const [products, setProducts] = useState([]);
-  const [productId, setProductId] = useState("");
+  const [productId, setProductId] = useState('');
   const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch("/api/products")
+    fetch('/api/products')
       .then((res) => res.json())
       .then((data) => setProducts(data))
-      .catch((err) => console.error("Error loading products:", err));
+      .catch((err) => console.error('Error loading products:', err));
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
 
     if (!productId && rating === 0) {
-      setError("Будь ласка, оберiть товар i поставте оцiнку");
-      setTimeout(() => setError(""), 3000);
+      setError('Будь ласка, оберiть товар i поставте оцiнку');
+      setTimeout(() => setError(''), 3000);
       return;
     }
 
     if (!productId) {
-      setError("Будь ласка, оберіть товар");
-      setTimeout(() => setError(""), 3000);
+      setError('Будь ласка, оберіть товар');
+      setTimeout(() => setError(''), 3000);
       return;
     }
     if (rating === 0) {
-      setError("Будь ласка, поставте оцiнку");
-      setTimeout(() => setError(""), 3000);
+      setError('Будь ласка, поставте оцiнку');
+      setTimeout(() => setError(''), 3000);
       return;
     }
 
     try {
-      await fetch("/api/reviews", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId, rating, comment }),
       });
 
-      setProductId("");
+      setProductId('');
       setRating(0);
-      setComment("");
+      setComment('');
       setSubmitted(true);
-      setError("");
+      setError('');
       onNewReview();
       setTimeout(() => setSubmitted(false), 3000);
     } catch (err) {
-      setError("Сталася помилка під час надсилання відгуку.");
+      setError('Сталася помилка під час надсилання відгуку.');
     }
   };
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
       <div>
-        <label className="block mb-1 text-base text-gray-700 font-medium">
-          Пошук
-        </label>
+        <label className="block mb-1 text-base text-gray-700 font-medium">Пошук</label>
         <select
           value={productId}
           onChange={(e) => setProductId(e.target.value)}
@@ -88,11 +86,10 @@ function ReviewForm({ onNewReview }) {
         >
           <option value="">Оберіть товар</option>
           {products.map((p) => {
-            const label =
-              p.name && p.name !== p.model ? `${p.name} ${p.model}` : p.model;
+            const label = p.name && p.name !== p.model ? `${p.name} ${p.model}` : p.model;
             return (
               <option key={p.id} value={p.id} title={label}>
-                {label.length > 30 ? label.slice(0, 30) + "..." : label}
+                {label.length > 30 ? label.slice(0, 30) + '...' : label}
               </option>
             );
           })}
@@ -100,16 +97,10 @@ function ReviewForm({ onNewReview }) {
       </div>
 
       <div>
-        <label className="block mb-1 text-base text-gray-700 font-medium">
-          Оцінка
-        </label>
+        <label className="block mb-1 text-base text-gray-700 font-medium">Оцінка</label>
         <div className="flex space-x-1">
           {[1, 2, 3, 4, 5].map((num) => (
-            <Star
-              key={num}
-              filled={num <= rating}
-              onClick={() => setRating(num)}
-            />
+            <Star key={num} filled={num <= rating} onClick={() => setRating(num)} />
           ))}
         </div>
       </div>
@@ -134,11 +125,7 @@ function ReviewForm({ onNewReview }) {
         Надіслати відгук
       </button>
 
-      {submitted && (
-        <p className="text-center text-green-700 font-medium">
-          Дякуємо за відгук!
-        </p>
-      )}
+      {submitted && <p className="text-center text-green-700 font-medium">Дякуємо за відгук!</p>}
       {error && <p className="text-center text-red-600 font-medium">{error}</p>}
     </form>
   );
@@ -148,10 +135,10 @@ function ReviewList({ refresh }) {
   const [reviews, setReviews] = useState([]);
 
   const fetchReviews = () => {
-    fetch("/api/reviews")
+    fetch('/api/reviews')
       .then((res) => res.json())
       .then(setReviews)
-      .catch((err) => console.error("Error loading reviews:", err));
+      .catch((err) => console.error('Error loading reviews:', err));
   };
 
   useEffect(() => {
@@ -164,9 +151,7 @@ function ReviewList({ refresh }) {
 
   return (
     <div className="space-y-4 pt-8">
-      <h2 className="text-xl font-semibold text-gray-800 text-center">
-        Останні відгуки
-      </h2>
+      <h2 className="text-xl font-semibold text-gray-800 text-center">Останні відгуки</h2>
       {reviews.length === 0 ? (
         <p className="text-gray-500 text-center">Відгуків ще немає</p>
       ) : (
@@ -174,12 +159,10 @@ function ReviewList({ refresh }) {
           <div key={r.id} className="border rounded-lg p-4 bg-white shadow-sm">
             <div className="flex justify-between items-center mb-1">
               <span className="text-gray-900 font-medium">
-                {r.name && r.name !== r.model
-                  ? `${r.name} ${r.model}`
-                  : r.model}
+                {r.name && r.name !== r.model ? `${r.name} ${r.model}` : r.model}
               </span>
               <span className="text-sm text-gray-500">
-                {new Date(r.created_at).toLocaleDateString("uk-UA")}
+                {new Date(r.created_at).toLocaleDateString('uk-UA')}
               </span>
             </div>
             <div className="flex items-center mb-1">
