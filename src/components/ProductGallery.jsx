@@ -12,15 +12,19 @@ export default function ProductGallery({ images }) {
   const swiperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const validImages = images.filter((src) => typeof src === 'string' && src.trim() !== '');
+  const validImages = (images ?? []).filter((src) => typeof src === 'string' && src.trim() !== '');
 
   if (validImages.length === 0) {
     return (
-      <Image
-        src="/placeholder.png"
-        alt="Фото недоступне"
-        className="rounded-lg max-h-96 object-contain"
-      />
+      <div className="relative w-full max-w-lg h-96">
+        <Image
+          src="/placeholder.png"
+          alt="Фото недоступне"
+          fill
+          sizes="(max-width: 1024px) 100vw, 512px"
+          className="rounded-lg object-contain"
+        />
+      </div>
     );
   }
 
@@ -40,29 +44,37 @@ export default function ProductGallery({ images }) {
       >
         {validImages.map((src, index) => (
           <SwiperSlide key={index}>
-            <Image
-              src={src}
-              alt={`Фото ${index + 1}`}
-              className="rounded-lg object-contain h-full mx-auto transition-transform duration-300 hover:scale-105"
-            />
+            <div className="relative w-full h-96">
+              <Image
+                src={src}
+                alt={`Фото ${index + 1}`}
+                fill
+                sizes="(max-width: 1024px) 100vw, 512px"
+                className="rounded-lg object-contain mx-auto transition-transform duration-300 hover:scale-105"
+              />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
 
       <div className="flex justify-center mt-4 gap-2 flex-wrap">
         {validImages.map((src, index) => (
-          <Image
+          <button
             key={index}
-            src={src}
-            alt={`Thumb ${index + 1}`}
-            onClick={() => {
-              if (swiperRef.current) {
-                swiperRef.current.slideToLoop(index);
-              }
-            }}
-            className={`h-16 w-16 object-cover rounded-md border-2 cursor-pointer transition 
-              ${activeIndex === index ? 'bg-gray-900 ring-2 ring-gray-900' : 'border-gray-300'}`}
-          />
+            type="button"
+            onClick={() => swiperRef.current?.slideToLoop(index)}
+            className={`relative h-16 w-16 rounded-md border-2 overflow-hidden transition
+              ${activeIndex === index ? 'border-gray-900 ring-2 ring-gray-900' : 'border-gray-300'}`}
+            aria-label={`Open image ${index + 1}`}
+          >
+            <Image
+              src={src}
+              alt={`Thumb ${index + 1}`}
+              fill
+              sizes="64px"
+              className="object-cover"
+            />
+          </button>
         ))}
       </div>
     </div>
