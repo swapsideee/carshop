@@ -4,10 +4,10 @@ import { ErrorHandler } from '@/lib/utils/errorHandler';
 
 export const GET = ErrorHandler(async () => {
   const db = await getDB();
-  console.log('[API] подключение к БД прошло');
+  console.log('[API] Connection to the database was successful');
 
   const [rows] = await db.query(getAllBrands);
-  console.log('[API] результат запроса:', rows);
+  console.log('[API] query result:', rows);
 
   return Response.json(rows);
 });

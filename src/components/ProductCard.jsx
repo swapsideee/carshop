@@ -7,7 +7,9 @@ export default function ProductCard({ product, clickable = false }) {
   const content = (
     <div
       className={
-        'flex flex-col outline-1 outline-gray-300 bg-white overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 h-full' +
+        'flex flex-col border-2 border-gray-300 bg-white rounded-xl overflow-hidden ' +
+        'transition-[box-shadow,border-color] duration-400 ease-in-out ' +
+        'hover:shadow-lg hover:border-gray-500 h-full' +
         (clickable ? ' cursor-pointer' : '')
       }
     >

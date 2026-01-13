@@ -1,19 +1,48 @@
-export const getAllProducts = ({ brand, sortBy = 'price_pair', sortOrder = 'ASC' }) => {
+export const getAllProductsPaged = ({
+  brand,
+  q,
+  sortBy = 'price_pair',
+  sortOrder = 'ASC',
+  limit = 24,
+  page = 1,
+}) => {
   const validSortColumns = ['price_pair', 'model'];
   const safeSortBy = validSortColumns.includes(sortBy) ? sortBy : 'price_pair';
   const safeSortOrder = sortOrder === 'DESC' ? 'DESC' : 'ASC';
 
-  let query = 'SELECT * FROM products';
+  const where = [];
   const params = [];
 
   if (brand) {
-    query += ' WHERE brand_slug = ?';
+    where.push('brand_slug = ?');
     params.push(brand);
   }
 
-  query += ` ORDER BY ${safeSortBy} ${safeSortOrder}`;
+  const terms = String(q || '')
+    .trim()
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean);
 
-  return { query, params };
+  if (terms.length) {
+    const col = "LOWER(CONCAT_WS(' ', COALESCE(name,''), COALESCE(model,'')))";
+    terms.forEach((t) => {
+      where.push(`${col} LIKE ?`);
+      params.push(`%${t}%`);
+    });
+  }
+
+  const whereSql = where.length ? ` WHERE ${where.join(' AND ')}` : '';
+
+  const offset = (Math.max(page, 1) - 1) * limit;
+
+  const countQuery = `SELECT COUNT(*) as total FROM products${whereSql}`;
+  const countParams = [...params];
+
+  const itemsQuery = `SELECT * FROM products${whereSql} ORDER BY ${safeSortBy} ${safeSortOrder} LIMIT ? OFFSET ?`;
+  const itemsParams = [...params, Number(limit), Number(offset)];
+
+  return { itemsQuery, itemsParams, countQuery, countParams };
 };
 
 export const getProductById = (id) => ({

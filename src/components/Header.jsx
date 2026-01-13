@@ -17,7 +17,7 @@ export default function Header() {
     >
       <Link href="/" className="group flex items-center gap-2 cursor-pointer">
         <p className="text-gray-900 text-2xl italic font-bold tracking-wider transition-colors duration-300 group-hover:text-lime-400">
-          VADI-AVTO
+          PLAST-AVTO
         </p>
         <Car className="mb-0.5 w-9 h-9 text-gray-900 transition-colors duration-300 group-hover:text-lime-400" />
       </Link>
