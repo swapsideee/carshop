@@ -10,7 +10,6 @@ export default function Pagination({ page, totalPages, onChange, scrollTargetId,
 
   const loadedMax = Math.max(page, Number(loadedTo) || page);
 
-  // сколько страниц показываем в "окне" загруженных
   const windowSize = 5;
 
   const items = useMemo(() => {
@@ -22,30 +21,23 @@ export default function Pagination({ page, totalPages, onChange, scrollTargetId,
       return out;
     };
 
-    // если страниц мало — показываем все
     if (totalPages <= 7) return range(1, totalPages);
 
-    // --- ВОТ ТУТ СУТЬ ---
-    // Мы показываем "хвост" загруженных страниц: loadedMax-windowSize+1 ... loadedMax
-    const tailEnd = Math.min(totalPages - 1, loadedMax); // чтобы оставить место под last page
-    const tailStart = Math.max(2, tailEnd - (windowSize - 1)); // не залезаем на 1, минимум 2
+    const tailEnd = Math.min(totalPages - 1, loadedMax);
+    const tailStart = Math.max(2, tailEnd - (windowSize - 1));
 
     const res = [1];
 
-    // троеточие после 1, если окно начинается далеко
     if (tailStart > 2) res.push('…');
     else res.push(2);
 
-    // само окно
     res.push(...range(tailStart, tailEnd));
 
-    // если справа ещё есть страницы до last — ставим …
     if (tailEnd < totalPages - 1) res.push('…');
     else if (tailEnd === totalPages - 2) res.push(totalPages - 1);
 
     res.push(totalPages);
 
-    // чистим дубли
     const compact = [];
     const seen = new Set();
     for (const it of res) {
@@ -143,7 +135,6 @@ export default function Pagination({ page, totalPages, onChange, scrollTargetId,
               const p = it;
               const active = p === page;
 
-              // loaded подсветка: страница считается "загруженной", если <= loadedMax
               const loaded = !active && p <= loadedMax;
 
               return (

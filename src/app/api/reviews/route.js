@@ -41,6 +41,6 @@ export const GET = ErrorHandler(async (req) => {
       page,
       limit,
     }),
-    { status: 200, headers: { 'Content-Type': 'application/json' } }
+    { status: 200, headers: { 'Content-Type': 'application/json' } },
   );
 });
