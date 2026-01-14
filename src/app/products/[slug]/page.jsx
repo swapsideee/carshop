@@ -59,7 +59,7 @@ export default function ProductOrBrandPage() {
 
     const price = selectedOption === 'pair' ? product.price_pair : product.price_set;
 
-    if (!price) {
+    if (price == null) {
       toast.error('Ціна для обраного варіанту відсутня');
       return;
     }
@@ -70,8 +70,13 @@ export default function ProductOrBrandPage() {
       price,
       image: product.image,
     };
+    const res = addToCart(cartItem);
 
-    addToCart(cartItem);
+    if (!res?.ok) {
+      toast.error(res?.message || 'Не вдалося додати товар');
+      return;
+    }
+
     toast.success('Товар додано до кошику');
   };
 
