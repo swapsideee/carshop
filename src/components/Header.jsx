@@ -1,104 +1,205 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Car, Contact, Menu, ScrollText, ShoppingCart, Star, X } from 'lucide-react';
+import { Car, Menu, ShoppingCart, X } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useMemo, useState } from 'react';
+
+import { useSmartHeader } from '../lib/utils/useSmartHeader';
+
+const NAV = [
+  { href: '/products', label: 'Каталог' },
+  { href: '/contacts', label: "Зв'язок" },
+  { href: '/reviews', label: 'Відгуки' },
+];
+
+function cx(...v) {
+  return v.filter(Boolean).join(' ');
+}
 
 export default function Header() {
+  const pathname = usePathname();
+  return <HeaderInner key={pathname} pathname={pathname} />;
+}
+
+function HeaderInner({ pathname }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { hidden, scrolled } = useSmartHeader(menuOpen);
+
+  const cartCount = 0;
+
+  const isActive = useMemo(
+    () => (href) => (href === '/' ? pathname === '/' : pathname?.startsWith(href)),
+    [pathname],
+  );
+
+  const closeMenu = () => setMenuOpen(false);
+
+  const headerBg =
+    'pointer-events-none absolute inset-0 bg-white/90 supports-[backdrop-filter]:bg-white/80 supports-[backdrop-filter]:backdrop-blur-sm';
+
+  const headerBgMobile =
+    'pointer-events-none absolute inset-0 bg-white/95 supports-[backdrop-filter]:bg-white/85 supports-[backdrop-filter]:backdrop-blur-sm';
 
   return (
     <motion.header
-      initial={{ y: -50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="bg-lime-600 shadow-md py-4 px-6 flex justify-between items-center sticky top-0 z-50"
+      initial={{ y: -16, opacity: 0 }}
+      animate={hidden ? { y: -120, opacity: 0 } : { y: 0, opacity: 1 }}
+      transition={{ duration: 0.22, ease: 'easeOut' }}
+      className="sticky top-0 z-50 bg-transparent py-3"
+      style={{ pointerEvents: hidden ? 'none' : 'auto' }}
     >
-      <Link href="/" className="group flex items-center gap-2 cursor-pointer">
-        <p className="text-gray-900 text-2xl italic font-bold tracking-wider transition-colors duration-300 group-hover:text-lime-400">
-          PLAST-AVTO
-        </p>
-        <Car className="mb-0.5 w-9 h-9 text-gray-900 transition-colors duration-300 group-hover:text-lime-400" />
-      </Link>
-
-      <nav className="hidden md:flex items-center space-x-4">
-        <Link
-          href="/products"
-          className="text-gray-900 hover:text-green-100 transition-colors duration-300"
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div
+          className={cx(
+            'relative overflow-hidden rounded-3xl border border-black/10 ring-1 ring-black/5',
+            scrolled
+              ? 'shadow-[0_18px_45px_-30px_rgba(0,0,0,0.6)] ring-black/10'
+              : 'shadow-[0_14px_40px_-32px_rgba(0,0,0,0.45)]',
+            'transition-shadow',
+          )}
         >
-          Каталог
-        </Link>
-        <Link
-          href="/contacts"
-          className="text-gray-900 hover:text-green-100 transition-colors duration-300"
-        >
-          Зв&apos;язок
-        </Link>
-        <Link
-          href="/reviews"
-          className="text-gray-900 hover:text-green-100 transition-colors duration-300"
-        >
-          Відгуки
-        </Link>
-        <Link href="/cart">
-          <div className="flex items-center text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer">
-            Кошик
-            <ShoppingCart className="w-5 h-5 ml-1.5" />
-          </div>
-        </Link>
-      </nav>
+          <div className={headerBg} />
+          <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-linear-to-r from-transparent via-white/80 to-transparent" />
 
-      <button
-        className="md:hidden text-gray-900"
-        onClick={() => setMenuOpen((v) => !v)}
-        aria-label="Toggle navigation"
-      >
-        {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-      </button>
-
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.nav
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 right-0 bg-lime-600 flex flex-col items-start space-y-2 px-6 py-4 shadow-md md:hidden"
+          <div
+            className={cx(
+              'relative px-3 sm:px-4 transition-[height] duration-200 ease-out',
+              scrolled ? 'h-14' : 'h-16',
+            )}
           >
-            <Link
-              href="/products"
-              className="flex items-center gap-1.5 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer"
-              onClick={() => setMenuOpen(false)}
-            >
-              <ScrollText className="w-5 h-5" />
-              Каталог
-            </Link>
-            <Link
-              href="/contacts"
-              className="flex items-center gap-1.5 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer"
-              onClick={() => setMenuOpen(false)}
-            >
-              <Contact className="w-5 h-5 mb-0.5" />
-              Зв&apos;язок
-            </Link>
-            <Link
-              href="/reviews"
-              className="flex items-center gap-1.5 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer"
-              onClick={() => setMenuOpen(false)}
-            >
-              <Star className="w-5 h-5 mb-0.5" />
-              Відгуки
-            </Link>
-            <Link href="/cart" onClick={() => setMenuOpen(false)}>
-              <div className="flex items-center gap-1.5 text-gray-900 hover:text-green-100 transition-colors duration-300 cursor-pointer">
-                <ShoppingCart className="w-5 h-5 mb-1" />
-                <span>Кошик</span>
+            <div className="flex h-full items-center justify-between">
+              <Link
+                href="/"
+                onClick={closeMenu}
+                className="group flex items-center gap-2 rounded-2xl px-2 py-1 transition hover:bg-black/5"
+              >
+                <span
+                  className={cx(
+                    'relative inline-flex items-center justify-center rounded-2xl bg-lime-500/15 ring-1 ring-lime-600/25 transition group-hover:bg-lime-500/20',
+                    scrolled ? 'h-9 w-9' : 'h-10 w-10',
+                  )}
+                >
+                  <span className="absolute -inset-2 rounded-2xl bg-lime-500/20 blur-xl opacity-0 transition group-hover:opacity-100" />
+                  <Car className="relative h-6 w-6 text-lime-700" />
+                </span>
+
+                <div className="leading-tight">
+                  <p className="text-[15px] font-extrabold tracking-wide text-slate-900">
+                    PLAST<span className="text-lime-700">-</span>AVTO
+                  </p>
+                  <p className="hidden text-xs text-slate-500 sm:block">Автотовари • Підкрилки</p>
+                </div>
+              </Link>
+
+              <nav className="hidden items-center gap-1 md:flex">
+                {NAV.map((item) => {
+                  const active = isActive(item.href);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={closeMenu}
+                      className={cx(
+                        'group relative rounded-2xl px-3 py-2 text-sm font-semibold transition',
+                        active
+                          ? 'bg-black/5 text-slate-900'
+                          : 'text-slate-700 hover:bg-black/5 hover:text-slate-900',
+                      )}
+                    >
+                      {item.label}
+                      <span
+                        className={cx(
+                          'pointer-events-none absolute left-3 right-3 -bottom-0.5 h-0.5 rounded-full bg-lime-600 transition-all',
+                          active ? 'opacity-100' : 'opacity-0 group-hover:opacity-100',
+                        )}
+                      />
+                    </Link>
+                  );
+                })}
+              </nav>
+
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/cart"
+                  onClick={closeMenu}
+                  className="relative inline-flex items-center gap-2 rounded-2xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-black/5 hover:text-slate-900"
+                  aria-label="Cart"
+                >
+                  <ShoppingCart className="h-5 w-5" />
+                  <span className="hidden sm:inline">Кошик</span>
+
+                  {cartCount > 0 && (
+                    <span className="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-lime-600 px-1 text-xs font-bold text-white">
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
+
+                <button
+                  type="button"
+                  className="md:hidden inline-flex items-center justify-center rounded-2xl p-2 text-slate-800 transition hover:bg-black/5"
+                  onClick={() => setMenuOpen((v) => !v)}
+                  aria-label="Toggle navigation"
+                  aria-expanded={menuOpen}
+                  aria-controls="mobile-nav"
+                >
+                  {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                </button>
               </div>
-            </Link>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+            </div>
+          </div>
+
+          <AnimatePresence initial={false}>
+            {menuOpen && (
+              <motion.div
+                id="mobile-nav"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.18, ease: 'easeOut' }}
+                className="relative border-t border-black/10 md:hidden"
+              >
+                <div className={headerBgMobile} />
+                <div className="relative flex flex-col gap-1 px-3 py-3 sm:px-4">
+                  {NAV.map((item) => {
+                    const active = isActive(item.href);
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={closeMenu}
+                        className={cx(
+                          'rounded-2xl px-3 py-2 text-sm font-semibold transition',
+                          active
+                            ? 'bg-lime-500/15 text-slate-900 ring-1 ring-lime-600/25'
+                            : 'text-slate-700 hover:bg-black/5 hover:text-slate-900',
+                        )}
+                      >
+                        {item.label}
+                      </Link>
+                    );
+                  })}
+
+                  <Link
+                    href="/cart"
+                    onClick={closeMenu}
+                    className={cx(
+                      'rounded-2xl px-3 py-2 text-sm font-semibold transition',
+                      pathname?.startsWith('/cart')
+                        ? 'bg-lime-500/15 text-slate-900 ring-1 ring-lime-600/25'
+                        : 'text-slate-700 hover:bg-black/5 hover:text-slate-900',
+                    )}
+                  >
+                    Кошик
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
     </motion.header>
   );
 }

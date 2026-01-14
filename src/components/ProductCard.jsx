@@ -7,13 +7,13 @@ export default function ProductCard({ product, clickable = false }) {
   const content = (
     <div
       className={
-        'flex flex-col border-2 border-gray-300 bg-white rounded-xl overflow-hidden ' +
+        'flex h-full flex-col overflow-hidden rounded-xl border-2 border-gray-300 bg-white ' +
         'transition-[box-shadow,border-color] duration-400 ease-in-out ' +
-        'hover:shadow-lg hover:border-gray-500 h-full' +
+        'hover:border-gray-500 hover:shadow-lg' +
         (clickable ? ' cursor-pointer' : '')
       }
     >
-      <div className="relative w-full aspect-square bg-white flex items-center justify-center p-4">
+      <div className="relative flex aspect-square w-full items-center justify-center bg-white p-4">
         <Image
           loading="lazy"
           src={product.image || '/placeholder.png'}
@@ -24,27 +24,27 @@ export default function ProductCard({ product, clickable = false }) {
         />
       </div>
 
-      <div className="p-3 flex flex-col grow">
-        {showName && <p className="text-md text-gray-900 mb-1 line-clamp-1">{product.name}</p>}
+      <div className="flex grow flex-col p-3">
+        {showName && <p className="mb-1 line-clamp-1 text-md text-gray-900">{product.name}</p>}
 
-        <p className="xl:text-md font-extrabold text-gray-800 mb-2 line-clamp-2">{product.model}</p>
+        <p className="mb-2 line-clamp-2 font-extrabold text-gray-800 xl:text-md">{product.model}</p>
 
         <div className="mt-auto space-y-1">
-          <p className="sm:text-lg xl:text-sm text-gray-900">
+          <p className="text-gray-900 sm:text-lg xl:text-sm">
             Пара:{' '}
             {product.price_pair !== null ? (
-              <span className="text-gray-800 font-semibold text-base">{product.price_pair} ₴</span>
+              <span className="text-base font-semibold text-gray-800">{product.price_pair} ₴</span>
             ) : (
-              <span className="text-gray-800 font-normal xl:text-sm sm:text-base">За запитом</span>
+              <span className="font-normal text-gray-800 xl:text-sm sm:text-base">За запитом</span>
             )}
           </p>
 
-          <p className="sm:text-lg xl:text-sm text-gray-900">
+          <p className="text-gray-900 sm:text-lg xl:text-sm">
             Комплект:{' '}
             {product.price_set !== null ? (
-              <span className="text-gray-800 font-semibold text-base">{product.price_set} ₴</span>
+              <span className="text-base font-semibold text-gray-800">{product.price_set} ₴</span>
             ) : (
-              <span className="text-gray-800 font-normal xl:text-sm sm:text-base">За запитом</span>
+              <span className="font-normal text-gray-800 xl:text-sm sm:text-base">За запитом</span>
             )}
           </p>
         </div>

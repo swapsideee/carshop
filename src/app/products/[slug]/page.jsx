@@ -24,6 +24,7 @@ export default function ProductOrBrandPage() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
+
         if (isProductId) {
           const response = await fetch(`/api/products/${params.slug}`);
           const data = await response.json();
@@ -31,7 +32,7 @@ export default function ProductOrBrandPage() {
         } else {
           const response = await fetch(`/api/products?brand=${params.slug}`);
           const data = await response.json();
-          setBrandProducts(data);
+          setBrandProducts(Array.isArray(data?.items) ? data.items : []);
         }
       } catch (err) {
         console.error('Fetch error:', err);
@@ -39,6 +40,7 @@ export default function ProductOrBrandPage() {
         setIsLoading(false);
       }
     };
+
     fetchData();
   }, [params.slug, isProductId]);
 
@@ -76,8 +78,8 @@ export default function ProductOrBrandPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-white py-10">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center text-gray-900 mt-20 text-lg animate-pulse">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="mt-20 animate-pulse text-center text-lg text-gray-900">
             Завантаження...
           </div>
         </div>
@@ -86,22 +88,33 @@ export default function ProductOrBrandPage() {
   }
 
   if (!isProductId) {
+    const brandName = String(params.slug || '').toUpperCase();
+
     return (
-      <div className="max-w-7xl mx-auto w-full p-6">
-        <h1 className="text-center text-5xl mb-8 text-gray-800 font-bold uppercase">
-          {params.slug}
-        </h1>
-        {brandProducts.length === 0 ? (
-          <div className="text-gray-900 text-center text-sm">Товарів цього бренду не знайдено.</div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 flex-1 rounded-xl h-full">
-            {brandProducts.map((product) => (
-              <div key={product.id} className="h-full">
-                <ProductCard product={product} clickable={true} />
+      <div className="min-h-screen bg-white">
+        <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+          <h1 className="text-center text-4xl font-extrabold tracking-wide text-gray-900 sm:text-5xl">
+            Підкрилки для бренду <span className="uppercase">{brandName}</span>
+          </h1>
+
+          <div className="mt-10">
+            {brandProducts.length === 0 ? (
+              <div className="text-center text-sm text-gray-900">
+                Товарів цього бренду не знайдено.
               </div>
-            ))}
+            ) : (
+              <div className="mx-auto w-full max-w-6xl">
+                <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-3 xl:grid-cols-4 sm:grid-cols-2 justify-items-center">
+                  {brandProducts.map((p) => (
+                    <div key={p.id} className="w-full">
+                      <ProductCard product={p} clickable />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     );
   }
@@ -109,9 +122,9 @@ export default function ProductOrBrandPage() {
   if (!product) {
     return (
       <div className="min-h-screen bg-white py-10">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center text-gray-500 mt-20">
-            <h1 className="text-2xl font-bold mb-4">Товар не знайдено</h1>
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="mt-20 text-center text-gray-500">
+            <h1 className="mb-4 text-2xl font-bold">Товар не знайдено</h1>
             <Link href="/products" className="text-gray-900 hover:underline">
               Повернутися до каталогу
             </Link>
@@ -131,28 +144,28 @@ export default function ProductOrBrandPage() {
   const noPrice = product.price_pair === null && product.price_set === null;
 
   return (
-    <div className="min-h-screen px-4 py-10 space-y-16">
-      <div className="w-full max-w-6xl mx-auto bg-white rounded-md shadow-2xl overflow-hidden flex flex-col md:flex-row gap-8 p-4 md:p-8">
-        <div className="w-full md:basis-1/2 min-w-0 flex justify-center">
+    <div className="min-h-screen space-y-16 px-4 py-10">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 overflow-hidden rounded-md bg-white p-4 shadow-2xl md:flex-row md:p-8">
+        <div className="flex w-full min-w-0 justify-center md:basis-1/2">
           <div className="w-full max-w-sm">
             <ProductGallery images={productImages} />
           </div>
         </div>
 
-        <div className="w-full md:basis-1/2 min-w-0 flex flex-col gap-6">
+        <div className="flex w-full min-w-0 flex-col gap-6 md:basis-1/2">
           <div>
-            <h1 className="text-2xl md:text-4xl font-extrabold text-gray-800 mb-4 md:mb-6">
+            <h1 className="mb-4 text-2xl font-extrabold text-gray-800 md:mb-6 md:text-4xl">
               {product.model}
             </h1>
 
-            <div className="space-y-3 md:space-y-4 mb-6 md:mb-8 mt-6">
+            <div className="mb-6 mt-6 space-y-3 md:mb-8 md:space-y-4">
               <div>
                 <p className="text-md text-gray-900">Ціна за пару:</p>
                 <p className="text-xl font-semibold">
                   {product.price_pair !== null ? (
-                    <span className="text-black font-bold text-2xl">{product.price_pair} ₴</span>
+                    <span className="text-2xl font-bold text-black">{product.price_pair} ₴</span>
                   ) : (
-                    <span className="text-gray-900 font-normal text-md">За запитом</span>
+                    <span className="text-md font-normal text-gray-900">За запитом</span>
                   )}
                 </p>
               </div>
@@ -161,9 +174,9 @@ export default function ProductOrBrandPage() {
                 <p className="text-md text-gray-900">Ціна за комплект:</p>
                 <p className="text-xl font-semibold">
                   {product.price_set !== null ? (
-                    <span className="text-black font-bold text-2xl">{product.price_set} ₴</span>
+                    <span className="text-2xl font-bold text-black">{product.price_set} ₴</span>
                   ) : (
-                    <span className="text-gray-900 font-normal text-md">За запитом</span>
+                    <span className="text-md font-normal text-gray-900">За запитом</span>
                   )}
                 </p>
               </div>
@@ -180,10 +193,10 @@ export default function ProductOrBrandPage() {
 
             {onlyPair && (
               <>
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="mb-4 text-sm text-gray-600">
                   Для замовлення цього товару доступна тільки{' '}
                   <span className="font-semibold text-black">Пара</span>
-                  <span className="text-red-500 ml-0.5">*</span>
+                  <span className="ml-0.5 text-red-500">*</span>
                 </p>
                 <p className="text-sm text-gray-400">
                   Інформацію про наявність комплекту можна дізнатися, зв&apos;язавшись із менеджером
@@ -193,10 +206,10 @@ export default function ProductOrBrandPage() {
 
             {onlySet && (
               <>
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="mb-4 text-sm text-gray-600">
                   Для замовлення цього товару доступний тільки:{' '}
                   <span className="font-semibold text-black">Комплект</span>
-                  <span className="text-red-500 ml-0.5">*</span>
+                  <span className="ml-0.5 text-red-500">*</span>
                 </p>
                 <p className="text-sm text-gray-400">
                   Інформацію про наявність пари можна дізнатися, зв&apos;язавшись із менеджером
@@ -205,31 +218,31 @@ export default function ProductOrBrandPage() {
             )}
           </div>
 
-          <div className="flex items-center gap-2 mt-auto">
+          <div className="mt-auto flex items-center gap-2">
             <button
               onClick={handleAddToCart}
               disabled={noPrice}
               className={`${
                 noPrice
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-gray-900 hover:bg-gray-800 text-white'
-              } text-sm md:text-base py-3 px-4 md:py-4 md:px-6 rounded-2xl shadow-md font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer`}
+                  ? 'cursor-not-allowed bg-gray-300 text-gray-500'
+                  : 'bg-gray-900 text-white hover:bg-gray-800'
+              } flex cursor-pointer items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold shadow-md transition-colors md:px-6 md:py-4 md:text-base`}
             >
-              <ShoppingCart className="w-5 h-5" />
+              <ShoppingCart className="h-5 w-5" />
               {noPrice ? 'Недоступно' : 'Додати до кошика'}
             </button>
           </div>
         </div>
       </div>
 
-      <div className="w-full max-w-6xl mx-auto">
+      <div className="mx-auto w-full max-w-6xl">
         <DescriptionBlock />
       </div>
 
       {product.related?.length > 0 && (
-        <div className="w-full max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Схожі товари</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+        <div className="mx-auto w-full max-w-6xl">
+          <h2 className="mb-6 text-3xl font-bold text-gray-800">Схожі товари</h2>
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-3 xl:grid-cols-4 sm:grid-cols-2">
             {product.related.map((p) => (
               <ProductCard key={p.id} product={p} clickable />
             ))}
@@ -247,24 +260,25 @@ function DescriptionBlock() {
 
 Сучасні технології та професіоналізм дозволили створити матриці захисних арок для багатьох моделей автомобілів, завдяки чому підкрилки ідеально відповідають формі колісних арок. Вони кріпляться трьома-сімома саморізами по краю крила та двома в глибині ніші.
 
-Перед запуском серійного виробництва кожна нова модель підкрилків проходить ретельні випробування та обов&apos;язкову сертифікацію у Держспоживстандарті України.
+Перед запуском серійного виробництва кожна нова модель підкрилків проходить ретельні випробування та обов'язкову сертифікацію у Держспоживстандарті України.
 
 У нашому інтернет-магазині ви можете придбати підкрилки від ТМ "Mega Locker" — якісні, доступні та практичні вироби, що стануть надійним захистом вашого авто.
 `;
+
   return (
     <div className="relative mt-6">
-      <h2 className="text-gray-900 text-xl font-semibold mb-6">Опис товару</h2>
+      <h2 className="mb-6 text-xl font-semibold text-gray-900">Опис товару</h2>
       <p
-        className={`text-gray-700 text-sm leading-relaxed transition-all duration-300 ease-in-out ${
+        className={`text-sm leading-relaxed text-gray-700 transition-all duration-300 ease-in-out ${
           expanded ? 'line-clamp-none max-h-none' : 'max-h-16 overflow-hidden'
         }`}
       >
         {text}
-        {!expanded && <div className="absolute bottom-0 left-0 w-full h-10 pointer-events-none" />}
+        {!expanded && <div className="pointer-events-none absolute bottom-0 left-0 h-10 w-full" />}
       </p>
       <button
         onClick={() => setExpanded((prev) => !prev)}
-        className="mt-2 text-sm font-bold text-lime-700 hover:text-lime-600 focus:outline-none transition-colors cursor-pointer"
+        className="mt-2 cursor-pointer text-sm font-bold text-lime-700 transition-colors hover:text-lime-600 focus:outline-none"
       >
         {expanded ? 'Згорнути' : 'Розгорнути повнiстю'}
       </button>
