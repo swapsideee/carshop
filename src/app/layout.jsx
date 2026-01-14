@@ -19,9 +19,13 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ru">
-      <body className="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
+      <body className="text-gray-900 flex flex-col min-h-screen bg-gray-50">
         <Header />
-        <main className="p-4 grow">{children}</main>
+
+        <main className="grow bg-white">
+          <div className="p-4 pb-16">{children}</div>
+        </main>
+
         <Footer />
         <Toaster position="top-center" />
       </body>
