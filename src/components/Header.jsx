@@ -6,6 +6,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo, useState } from 'react';
 
+import { selectCartCount } from '@/app/store/cartSelectors';
+import useCartStore from '@/app/store/cartStore';
+
 import { useSmartHeader } from '../lib/utils/useSmartHeader';
 
 const NAV = [
@@ -27,7 +30,7 @@ function HeaderInner({ pathname }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { hidden, scrolled } = useSmartHeader(menuOpen);
 
-  const cartCount = 0;
+  const cartCount = useCartStore(selectCartCount);
 
   const isActive = useMemo(
     () => (href) => (href === '/' ? pathname === '/' : pathname?.startsWith(href)),
@@ -35,12 +38,6 @@ function HeaderInner({ pathname }) {
   );
 
   const closeMenu = () => setMenuOpen(false);
-
-  const headerBg =
-    'pointer-events-none absolute inset-0 bg-white/90 supports-[backdrop-filter]:bg-white/80 supports-[backdrop-filter]:backdrop-blur-sm';
-
-  const headerBgMobile =
-    'pointer-events-none absolute inset-0 bg-white/95 supports-[backdrop-filter]:bg-white/85 supports-[backdrop-filter]:backdrop-blur-sm';
 
   return (
     <motion.header
@@ -60,7 +57,7 @@ function HeaderInner({ pathname }) {
             'transition-shadow',
           )}
         >
-          <div className={headerBg} />
+          <div className="pointer-events-none absolute inset-0 bg-white/90 supports-backdrop-filter:bg-white/80 supports-backdrop-filter:backdrop-blur-sm" />
           <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-linear-to-r from-transparent via-white/80 to-transparent" />
 
           <div
@@ -161,7 +158,8 @@ function HeaderInner({ pathname }) {
                 transition={{ duration: 0.18, ease: 'easeOut' }}
                 className="relative border-t border-black/10 md:hidden"
               >
-                <div className={headerBgMobile} />
+                <div className="pointer-events-none absolute inset-0 bg-white/95 supports-backdrop-filter:bg-white/85 supports-backdrop-filter:backdrop-blur-sm" />
+
                 <div className="relative flex flex-col gap-1 px-3 py-3 sm:px-4">
                   {NAV.map((item) => {
                     const active = isActive(item.href);
@@ -186,13 +184,19 @@ function HeaderInner({ pathname }) {
                     href="/cart"
                     onClick={closeMenu}
                     className={cx(
-                      'rounded-2xl px-3 py-2 text-sm font-semibold transition',
+                      'flex items-center justify-between rounded-2xl px-3 py-2 text-sm font-semibold transition',
                       pathname?.startsWith('/cart')
                         ? 'bg-lime-500/15 text-slate-900 ring-1 ring-lime-600/25'
                         : 'text-slate-700 hover:bg-black/5 hover:text-slate-900',
                     )}
                   >
-                    Кошик
+                    <span>Кошик</span>
+
+                    {cartCount > 0 && (
+                      <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-lime-600 px-1 text-xs font-bold text-white">
+                        {cartCount}
+                      </span>
+                    )}
                   </Link>
                 </div>
               </motion.div>
