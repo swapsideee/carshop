@@ -416,7 +416,7 @@ export default function ReviewsPage() {
       <div className="mx-auto max-w-6xl px-4 py-10">
         <div className="mb-8">
           <h1 className="text-3xl font-extrabold text-gray-900">Відгуки</h1>
-          <p className="mt-2 text-gray-600">Реальні відгуки покупців про товари PLAST-AVTO.</p>
+          <p className="mt-2 text-gray-600">Відгуки від наших покупців</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">

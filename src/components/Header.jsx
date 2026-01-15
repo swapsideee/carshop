@@ -8,6 +8,7 @@ import { useMemo, useState } from 'react';
 
 import { selectCartCount } from '@/app/store/cartSelectors';
 import useCartStore from '@/app/store/cartStore';
+import { cx } from '@/lib/utils/cx';
 
 import { useSmartHeader } from '../lib/utils/useSmartHeader';
 
@@ -16,10 +17,6 @@ const NAV = [
   { href: '/contacts', label: "Зв'язок" },
   { href: '/reviews', label: 'Відгуки' },
 ];
-
-function cx(...v) {
-  return v.filter(Boolean).join(' ');
-}
 
 export default function Header() {
   const pathname = usePathname();
