@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 
 import Banner from '@/components/Banner';
 
@@ -28,7 +27,7 @@ export default function Home() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <div className="mt-8 rounded-lg shadow-sm py-2 px-2 bg-white">
+        <div className="mt-8 rounded-lg shadow-sm py-2 px-2 bg-white"> 
           <p>
             PLAST-AVTO - надійний інтернет-магазин автозапчастин з досвідом роботи. Пропонуємо
             підкрилки для понад 250 моделей авто за вигідними цінами. Працюємо онлайн та офлайн -
@@ -44,13 +43,6 @@ export default function Home() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.6 }}
       >
-        <Link
-          href="/products"
-          className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg text-lg transition-colors duration-300 shadow-2xl inline-block"
-        >
-          Перейти до каталогу товарiв
-        </Link>
-
         <Banner />
       </motion.div>
     </motion.section>
