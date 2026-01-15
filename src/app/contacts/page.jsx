@@ -1,7 +1,7 @@
 'use client';
 
 import { Building, Check, Clock, Copy, ExternalLink, Mail, MapPin, Phone } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { cx } from '@/lib/utils/cx';
 
@@ -88,7 +88,26 @@ export default function ContactsPage() {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [copiedKey, setCopiedKey] = useState('');
 
-  const openNow = useMemo(() => isOpenNow(), []);
+  const [openNow, setOpenNow] = useState(isOpenNow());
+
+  useEffect(() => {
+    const update = () => setOpenNow(isOpenNow());
+    update();
+
+    const now = new Date();
+    const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+
+    let intervalId;
+    const timeoutId = setTimeout(() => {
+      update();
+      intervalId = setInterval(update, 60_000);
+    }, msToNextMinute);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, []);
 
   useEffect(() => {
     if (!copiedKey) return;
