@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 
-import Banner from '@/components/Banner';
+import Banner from '@/widgets/layout/banner/ui/Banner';
 
 export default function Home() {
   return (
@@ -27,7 +27,7 @@ export default function Home() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <div className="mt-8 rounded-lg shadow-sm py-2 px-2 bg-white"> 
+        <div className="mt-8 rounded-lg shadow-sm py-2 px-2 bg-white">
           <p>
             PLAST-AVTO - надійний інтернет-магазин автозапчастин з досвідом роботи. Пропонуємо
             підкрилки для понад 250 моделей авто за вигідними цінами. Працюємо онлайн та офлайн -

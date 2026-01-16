@@ -2,8 +2,8 @@ import './globals.css';
 
 import { Toaster } from 'react-hot-toast';
 
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
+import Footer from '@/widgets/layout/footer/ui/Footer';
+import Header from '@/widgets/layout/header/ui/Header';
 
 export const metadata = {
   title: 'Iнтернет-магазин PLAST-AVTO',

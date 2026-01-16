@@ -8,7 +8,7 @@ import { useCallback, useState } from 'react';
 
 import { selectCartItems, selectCartTotal } from '@/app/store/cartSelectors';
 import useCartStore from '@/app/store/cartStore';
-import PastOrders from '@/components/PastOrders';
+import PastOrders from '@/widgets/past-orders/ui/PastOrders';
 
 export default function CartPage() {
   const cartItems = useCartStore(selectCartItems);
