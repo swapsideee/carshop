@@ -9,8 +9,7 @@ import { useMemo, useState } from 'react';
 import { selectCartCount } from '@/app/store/cartSelectors';
 import useCartStore from '@/app/store/cartStore';
 import { cx } from '@/lib/utils/cx';
-
-import { useSmartHeader } from '../lib/utils/useSmartHeader';
+import { useSmartHeader } from '@/lib/utils/useSmartHeader';
 
 const NAV = [
   { href: '/products', label: 'Каталог' },

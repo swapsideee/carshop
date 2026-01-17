@@ -5,7 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import LoadMoreButton from '@/components/LoadMoreButton';
+import { getBrands } from '@/entities/brand/api/getBrands';
+import LoadMoreButton from '@/shared/ui/LoadMoreButton/LoadMoreButton';
 
 function SkeletonCard() {
   return (
@@ -35,10 +36,8 @@ export default function Banner() {
     const loadBrands = async () => {
       setLoading(true);
       try {
-        const res = await fetch('/api/brands', { signal: controller.signal, cache: 'no-store' });
-        if (!res.ok) throw new Error(`Failed to load brands: ${res.status}`);
+        const data = await getBrands({ signal: controller.signal });
 
-        const data = await res.json();
         if (myReqId !== reqIdRef.current) return;
 
         const safe = Array.isArray(data) ? data : [];

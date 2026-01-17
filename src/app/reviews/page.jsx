@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import LoadMoreButton from '@/components/LoadMoreButton';
+import LoadMoreButton from '@/shared/ui/LoadMoreButton/LoadMoreButton';
 
 function Star({ filled, onClick, onMouseEnter, size = 20, clickable = true, title }) {
   return (
