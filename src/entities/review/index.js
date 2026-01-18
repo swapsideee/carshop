@@ -1,1 +1,1 @@
-export { clampRating, avgRating } from './model/selectors';
+export { avgRating, clampRating } from './model/selectors';
