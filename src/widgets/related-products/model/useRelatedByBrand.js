@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { getProductsByBrand } from '@/entities/product/api/getProductsByBrand';
+import { getProductsByBrand } from '@/entities/product/api/client';
 import { getBrandSlug } from '@/entities/product/model/selectors';
 
 export function useRelatedByBrand(product) {

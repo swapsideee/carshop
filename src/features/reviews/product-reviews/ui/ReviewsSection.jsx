@@ -1,6 +1,6 @@
 'use client';
 
-import { clampRating } from '@/entities/review/model/selectors';
+import { clampRating } from '@/entities/review';
 import { formatDateUA } from '@/shared/lib/formatDateUA';
 import LoadMoreButton from '@/shared/ui/LoadMoreButton/LoadMoreButton';
 import Stars from '@/shared/ui/Stars';

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { getBrands } from '@/entities/brand/api/getBrands';
+import { getBrands } from '@/entities/brand/api/client';
 import LoadMoreButton from '@/shared/ui/LoadMoreButton/LoadMoreButton';
 
 function SkeletonCard() {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { getProductById } from '@/entities/product/api/getProductById';
+import { getProductById } from '@/entities/product/api/client';
 
 export function useProduct(productId) {
   const id = Number(productId);
