@@ -1,1 +1,3 @@
-// client-safe public API (no server exports here yet)
+// client-safe public API
+
+export * from './api/client';

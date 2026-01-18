@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
 
-import { getBrands } from '@/entities/brand/api/client';
+import { getBrands } from '@/entities/brand';
 import { getProducts } from '@/entities/product/api/client';
 
 export function useProductsCatalog() {

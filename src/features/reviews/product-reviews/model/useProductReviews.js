@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { clampRating } from '@/entities/review';
-import { getReviews, REVIEWS_LIMIT_DEFAULT } from '@/entities/review/api/client';
+import { getReviews, REVIEWS_LIMIT_DEFAULT } from '@/entities/review';
 
 export function useProductReviews({
   productId,
