@@ -3,7 +3,7 @@
 import { Building, Check, Clock, Copy, ExternalLink, Mail, MapPin, Phone } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { cx } from '@/lib/utils/cx';
+import { cx } from '@/shared/lib';
 
 const CONTACTS = {
   email: 'example@gmail.com',

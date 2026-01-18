@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { cx } from '@/lib/utils/cx';
+import { cx } from '@/shared/lib';
 
 export default function DescriptionBlock() {
   const [expanded, setExpanded] = useState(false);

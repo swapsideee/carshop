@@ -1,7 +1,7 @@
 import { Star } from 'lucide-react';
 
 import { clampRating } from '@/entities/review/model/selectors';
-import { cx } from '@/lib/utils/cx';
+import { cx } from '@/shared/lib';
 
 export default function Stars({ value, size = 'md' }) {
   const v = clampRating(value);

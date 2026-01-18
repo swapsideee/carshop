@@ -9,7 +9,7 @@ import {
   getProductImages,
 } from '@/entities/product/model/selectors';
 import { useAddToCart } from '@/features/cart/add-to-cart/model/useAddToCart';
-import { cx } from '@/lib/utils/cx';
+import { cx } from '@/shared/lib';
 import PriceSelector from '@/shared/ui/PriceSelector/PriceSelector';
 import ProductGallery from '@/shared/ui/ProductGallery/ProductGallery';
 

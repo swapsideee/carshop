@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 
 import ProductCard from '@/entities/product/ui/ProductCard/ProductCard';
-import { cx } from '@/lib/utils/cx';
+import { cx } from '@/shared/lib';
 
 export default function RelatedRow({ title, items, loading }) {
   const ref = useRef(null);
