@@ -1,6 +1,6 @@
 'use client';
 
-import ProductCard from '@/entities/product/ui/ProductCard/ProductCard';
+import { ProductCard } from '@/entities/product';
 
 import { useBrandProducts } from '../model/useBrandProducts';
 
