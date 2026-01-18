@@ -12,7 +12,7 @@ import Pagination from '@/shared/ui/Pagination/Pagination';
 import { useProductsCatalog } from '../model/useProductsCatalog';
 import SkeletonCard from './SkeletonCard';
 
-export default function ProductsCatalogPage() {
+export default function ProductsCatalog() {
   const {
     page,
     selectedBrand,
