@@ -1,1 +1,1 @@
-export * as reviewSelectors from './model/selectors';
+export { clampRating, avgRating } from './model/selectors';
