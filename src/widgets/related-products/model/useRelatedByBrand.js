@@ -36,7 +36,14 @@ export function useRelatedByBrand(product) {
     })();
 
     return () => controller.abort();
-  }, [product?.id, product.brand_slug, product.brand, product.brandName, product.brand_name, product]);
+  }, [
+    product?.id,
+    product.brand_slug,
+    product.brand,
+    product.brandName,
+    product.brand_name,
+    product,
+  ]);
 
   return { items, loading };
 }
