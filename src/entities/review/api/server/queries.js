@@ -1,3 +1,5 @@
+import 'server-only';
+
 export const insertReviewQuery = `
   INSERT INTO reviews (product_id, rating, author_name, comment, created_at)
   VALUES (?, ?, ?, ?, NOW())
