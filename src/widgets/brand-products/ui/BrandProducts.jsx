@@ -4,7 +4,7 @@ import ProductCard from '@/entities/product/ui/ProductCard/ProductCard';
 
 import { useBrandProducts } from '../model/useBrandProducts';
 
-export default function BrandProductsPage({ brand }) {
+export default function BrandProducts({ brand }) {
   const brandName = String(brand || '').toUpperCase();
   const { items, loading } = useBrandProducts(brand);
 
