@@ -1,4 +1,4 @@
-import { sendOrderEmail } from '@/shared/api/sendOrderEmail';
+import { sendOrderEmail } from '@/shared/api/server/sendOrderEmail';
 import { ErrorHandler } from '@/shared/lib';
 
 const handler = async (req) => {
