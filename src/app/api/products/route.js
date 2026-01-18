@@ -1,6 +1,5 @@
-import { getDB } from '@/lib/db';
-import { getAllProductsPaged } from '@/lib/queries/products';
-import { ErrorHandler } from '@/lib/utils/errorHandler';
+import { getProductsPaged } from '@/entities/product';
+import { ErrorHandler } from '@/shared/lib';
 
 export const GET = ErrorHandler(async (req) => {
   const { searchParams } = new URL(req.url);
@@ -13,7 +12,7 @@ export const GET = ErrorHandler(async (req) => {
   const sortBy = searchParams.get('sort_by') || 'price_pair';
   const q = searchParams.get('q') || '';
 
-  const { itemsQuery, itemsParams, countQuery, countParams } = getAllProductsPaged({
+  const data = await getProductsPaged({
     brand,
     q,
     sortBy,
@@ -22,18 +21,5 @@ export const GET = ErrorHandler(async (req) => {
     page,
   });
 
-  const db = await getDB();
-
-  const [[countRow]] = await db.query(countQuery, countParams);
-  const total = Number(countRow?.total) || 0;
-  const totalPages = Math.max(1, Math.ceil(total / limit));
-
-  const [items] = await db.query(itemsQuery, itemsParams);
-
-  return Response.json({
-    items,
-    page,
-    total,
-    totalPages,
-  });
+  return Response.json(data);
 });

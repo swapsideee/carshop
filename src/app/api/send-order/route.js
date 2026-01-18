@@ -4,7 +4,7 @@ import {
   generateClientEmailHtml,
   generateOwnerEmailHtml,
 } from '@/app/api/send-order/emailTemplates';
-import { ErrorHandler } from '@/lib/utils/errorHandler';
+import { ErrorHandler } from '@/shared/lib';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
