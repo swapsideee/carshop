@@ -6,8 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
 
-import { selectCartItems, selectCartTotal } from '@/app/store/cartSelectors';
-import useCartStore from '@/app/store/cartStore';
+import { selectCartItems, selectCartTotal, useCartStore } from '@/features/cart/model';
 import PastOrders from '@/widgets/past-orders/ui/PastOrders';
 
 export default function CartPage() {

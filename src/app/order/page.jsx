@@ -1,12 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Mail, NotebookPen } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import useCartStore from '@/app/store/cartStore';
-import { validateName, validatePhone } from '@/lib/utils/validator';
+import { useCartStore } from '@/features/cart/model';
+import { validateName, validatePhone } from '@/shared/lib';
 
 export default function OrderPage() {
   const { cartItems, clearCart, saveOrder } = useCartStore();
