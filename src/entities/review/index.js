@@ -1,1 +1,1 @@
-export { createReview, getReviewsByProduct, getReviewsFeed } from './api/server';
+export * as reviewSelectors from './model/selectors';

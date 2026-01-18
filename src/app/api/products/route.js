@@ -1,4 +1,4 @@
-import { getProductsPaged } from '@/entities/product';
+import { getProductsPaged } from '@/entities/product/server';
 import { ErrorHandler } from '@/shared/lib';
 
 export const GET = ErrorHandler(async (req) => {

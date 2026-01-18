@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { getProductDetailsById } from '@/entities/product';
+import { getProductDetailsById } from '@/entities/product/server';
 import { ErrorHandler } from '@/shared/lib';
 
 async function getProductHandler(request, context) {

@@ -1,1 +1,1 @@
-export { getAllBrands } from './api/server';
+// client-safe public API (no server exports here yet)

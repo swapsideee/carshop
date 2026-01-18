@@ -1,1 +1,2 @@
-export { getProductDetailsById,getProductsPaged } from './api/server';
+export * as productSelectors from './model/selectors';
+export { default as ProductCard } from './ui/ProductCard/ProductCard';

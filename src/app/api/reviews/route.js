@@ -1,4 +1,4 @@
-import { createReview, getReviewsByProduct, getReviewsFeed } from '@/entities/review';
+import { createReview, getReviewsByProduct, getReviewsFeed } from '@/entities/review/server';
 import { ErrorHandler } from '@/shared/lib';
 
 export const POST = ErrorHandler(async (req) => {
