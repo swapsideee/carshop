@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { getReviews, REVIEWS_LIMIT_DEFAULT } from '@/entities/review/api/getReviews';
-import { clampRating } from '@/entities/review/model/selectors';
+import { clampRating } from '@/entities/review';
+import { getReviews, REVIEWS_LIMIT_DEFAULT } from '@/entities/review';
 
 export function useProductReviews({
   productId,

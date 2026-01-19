@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-import { getProductsByBrand } from '@/entities/product/api/getProductsByBrand';
-import { getBrandSlug } from '@/entities/product/model/selectors';
+import { getProductsByBrand } from '@/entities/product';
+import { getBrandSlug } from '@/entities/product';
 
 export function useRelatedByBrand(product) {
   const [items, setItems] = useState([]);
@@ -36,7 +36,14 @@ export function useRelatedByBrand(product) {
     })();
 
     return () => controller.abort();
-  }, [product?.id, product.brand_slug, product.brand, product.brandName, product.brand_name, product]);
+  }, [
+    product?.id,
+    product.brand_slug,
+    product.brand,
+    product.brandName,
+    product.brand_name,
+    product,
+  ]);
 
   return { items, loading };
 }

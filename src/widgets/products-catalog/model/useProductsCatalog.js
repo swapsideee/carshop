@@ -3,8 +3,8 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
 
-import { getBrands } from '@/entities/brand/api/getBrands';
-import { getProducts } from '@/entities/product/api/getProducts';
+import { getBrands } from '@/entities/brand';
+import { getProducts } from '@/entities/product';
 
 export function useProductsCatalog() {
   const router = useRouter();

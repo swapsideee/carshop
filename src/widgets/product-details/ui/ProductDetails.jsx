@@ -3,15 +3,10 @@
 import { ShoppingCart } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
-import {
-  getDefaultOption,
-  getPriceState,
-  getProductImages,
-} from '@/entities/product/model/selectors';
-import { useAddToCart } from '@/features/cart/add-to-cart/model/useAddToCart';
-import { cx } from '@/lib/utils/cx';
-import PriceSelector from '@/shared/ui/PriceSelector/PriceSelector';
-import ProductGallery from '@/shared/ui/ProductGallery/ProductGallery';
+import { getDefaultOption, getPriceState, getProductImages } from '@/entities/product';
+import { useAddToCart } from '@/features/cart/add-to-cart';
+import { cx } from '@/shared/lib';
+import { PriceSelector, ProductGallery } from '@/shared/ui';
 
 export default function ProductDetails({ product }) {
   const defaultOption = useMemo(() => getDefaultOption(product), [product]);

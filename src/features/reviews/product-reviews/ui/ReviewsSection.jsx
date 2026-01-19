@@ -1,12 +1,11 @@
 'use client';
 
-import { clampRating } from '@/entities/review/model/selectors';
-import { formatDateUA } from '@/shared/lib/formatDateUA';
-import LoadMoreButton from '@/shared/ui/LoadMoreButton/LoadMoreButton';
-import Stars from '@/shared/ui/Stars';
+import { clampRating } from '@/entities/review';
+import { formatDateUA } from '@/shared/lib';
+import { LoadMoreButton, Stars } from '@/shared/ui';
 
 import { useProductReviews } from '../model/useProductReviews';
-import ReviewSkeleton from './ReviewSkeleton';
+import ReviewSkeleton from './ProductReviewsSkeleton';
 
 export default function ReviewsSection({ productId }) {
   const { items, loading, loadingMore, total, avgRating, hasMore, loadMore } = useProductReviews({
