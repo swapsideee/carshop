@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { SquareChartGantt } from 'lucide-react';
 
-import { selectCartItems, selectCartTotal, useCartStore } from '@/features/cart/model';
+import { selectCartItems, selectCartTotal, useCartStore } from '@/features/cart';
 
 import { useCartLineError } from '../model/useCartLineError';
 import CartEmptyState from './CartEmptyState';

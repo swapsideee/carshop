@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { useCartStore } from '@/features/cart/model';
+import { useCartStore } from '@/features/cart';
 import { validateName, validatePhone } from '@/shared/lib';
 
 export default function OrderPage() {

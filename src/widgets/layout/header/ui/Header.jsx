@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo, useState } from 'react';
 
-import { selectCartCount, useCartStore } from '@/features/cart/model';
+import { selectCartCount, useCartStore } from '@/features/cart';
 import { cx, useSmartHeader } from '@/shared/lib';
 
 const NAV = [

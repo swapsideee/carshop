@@ -2,7 +2,7 @@
 
 import { toast } from 'react-hot-toast';
 
-import { useCartStore } from '@/features/cart/model';
+import { useCartStore } from '@/features/cart';
 
 export function useAddToCart() {
   const addToCart = useCartStore((s) => s.addToCart);
