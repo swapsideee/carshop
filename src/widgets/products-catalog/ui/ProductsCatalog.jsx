@@ -4,10 +4,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Funnel } from 'lucide-react';
 import { useEffect } from 'react';
 
-import ProductCard from '@/entities/product/ui/ProductCard/ProductCard';
-import FiltersPanel from '@/features/products/catalog-filters/ui/FiltersPanel';
-import LoadMoreButton from '@/shared/ui/LoadMoreButton/LoadMoreButton';
-import Pagination from '@/shared/ui/Pagination/Pagination';
+import { ProductCard } from '@/entities/product';
+import { FiltersPanel } from '@/features/products/catalog-filters';
+import { LoadMoreButton, Pagination } from '@/shared/ui';
 
 import { useProductsCatalog } from '../model/useProductsCatalog';
 import SkeletonCard from './SkeletonCard';
