@@ -1,4 +1,4 @@
-import { fetchJson } from '@/shared/api/fetchJson';
+import { fetchJson } from '@/shared/api';
 
 export const REVIEWS_LIMIT_DEFAULT = 10;
 

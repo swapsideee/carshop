@@ -1,4 +1,4 @@
-import { fetchJson } from '@/shared/api/fetchJson';
+import { fetchJson } from '@/shared/api';
 
 export async function getProducts({ page, brand, sort, q, limit, signal } = {}) {
   const params = new URLSearchParams();
