@@ -2,7 +2,7 @@ import 'server-only';
 
 import nodemailer from 'nodemailer';
 
-import { generateClientEmailHtml, generateOwnerEmailHtml } from '@/shared/lib/emailTemplates';
+import { generateClientEmailHtml, generateOwnerEmailHtml } from '@/shared/lib';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
