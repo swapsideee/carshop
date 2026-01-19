@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-import { getProductsByBrand } from '@/entities/product/api/client';
-import { getBrandSlug } from '@/entities/product/model/selectors';
+import { getProductsByBrand } from '@/entities/product';
+import { getBrandSlug } from '@/entities/product';
 
 export function useRelatedByBrand(product) {
   const [items, setItems] = useState([]);

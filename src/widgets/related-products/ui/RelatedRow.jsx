@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 
-import ProductCard from '@/entities/product/ui/ProductCard/ProductCard';
+import { ProductCard } from '@/entities/product';
 import { cx } from '@/shared/lib';
 
 export default function RelatedRow({ title, items, loading }) {
