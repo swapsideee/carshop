@@ -2,14 +2,7 @@
 
 import { motion } from 'framer-motion';
 
-export default function CheckoutForm({
-  cartItems,
-  total,
-  form,
-  onChange,
-  onSubmit,
-  isSubmitting,
-}) {
+export default function CheckoutForm({ cartItems, total, form, onChange, onSubmit, isSubmitting }) {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-2xl bg-white rounded-lg shadow-2xl p-6 space-y-6">

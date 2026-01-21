@@ -5,6 +5,17 @@ import prettier from 'eslint-config-prettier/flat';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default defineConfig([
+  globalIgnores([
+    '.next/**',
+    'out/**',
+    'build/**',
+    'dist/**',
+    'node_modules/**',
+    'coverage/**',
+    'next-env.d.ts',
+    '*.tsbuildinfo',
+  ]),
+
   ...nextVitals,
 
   {
@@ -24,13 +35,4 @@ export default defineConfig([
       'sort-imports': 'off',
     },
   },
-
-  globalIgnores([
-    '.next/**',
-    'out/**',
-    'build/**',
-    'node_modules/**',
-    'next-env.d.ts',
-    '*.tsbuildinfo',
-  ]),
 ]);
