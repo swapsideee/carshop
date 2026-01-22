@@ -7,7 +7,7 @@ import { useCartStore } from '@/features/cart';
 import { validateOrderForm } from '../lib/validation';
 
 export function useCheckout() {
-  const { cartItems, clearCart, saveOrder } = useCartStore();
+  const { cartItems } = useCartStore();
 
   const total = useMemo(
     () => cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
@@ -16,9 +16,6 @@ export function useCheckout() {
 
   const [form, setForm] = useState({ name: '', phone: '', email: '', comment: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submittedOrder, setSubmittedOrder] = useState(null);
-
-  const submitted = Boolean(submittedOrder);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -31,46 +28,38 @@ export function useCheckout() {
     const v = validateOrderForm(form);
     if (!v.ok) return { ok: false, message: v.error };
 
+    if (!cartItems?.length) return { ok: false, message: 'Кошик порожній' };
+
     setIsSubmitting(true);
 
-    const orderData = {
-      items: cartItems,
-      total,
-      name: v.cleaned.name,
-      phone: v.cleaned.phone,
-      email: v.cleaned.email,
-      comment: v.cleaned.comment,
-      createdAt: new Date().toISOString(),
-    };
-
     try {
-      const res = await fetch('/api/send-order', {
+      const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: orderData.name,
-          phone: orderData.phone,
-          email: orderData.email,
-          comment: orderData.comment,
+          customer: {
+            name: v.cleaned.name,
+            phone: v.cleaned.phone,
+            email: v.cleaned.email,
+            comment: v.cleaned.comment,
+          },
           cartItems,
           total,
         }),
       });
 
-      const result = await res.json().catch(() => null);
+      const data = await res.json().catch(() => null);
 
-      if (!res.ok || !result?.success) {
-        throw new Error(result?.error || 'Сталася помилка під час надсилання листа.');
+      if (!res.ok || !data?.url) {
+        throw new Error(data?.message || 'Не вдалося створити Stripe Checkout сесію');
       }
 
-      saveOrder(orderData);
-      clearCart();
-      setSubmittedOrder(orderData);
+      window.location.href = data.url;
 
-      return { ok: true, order: orderData };
+      return { ok: true };
     } catch (err) {
-      console.error('Помилка:', err);
-      return { ok: false, message: 'Сталася помилка при оформленні замовлення. Спробуйте ще раз.' };
+      console.error(err);
+      return { ok: false, message: 'Не вдалося перейти до оплати. Спробуйте ще раз.' };
     } finally {
       setIsSubmitting(false);
     }
@@ -79,14 +68,9 @@ export function useCheckout() {
   return {
     cartItems,
     total,
-
     form,
     onChange,
-
     isSubmitting,
-    submitted,
-    submittedOrder,
-
     submit,
   };
 }
