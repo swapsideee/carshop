@@ -1,12 +1,13 @@
 import { sendOrderEmail } from '@/shared/api/server';
-import { ErrorHandler } from '@/shared/lib';
+import { ErrorHandler, HttpError } from '@/shared/lib';
 
 const handler = async (req) => {
-  const body = await req.json();
+  const body = await req.json().catch(() => null);
+  if (!body) throw new HttpError(400, 'Invalid JSON');
 
   await sendOrderEmail(body);
 
-  return Response.json({ success: true });
+  return Response.json({ ok: true });
 };
 
 export const POST = ErrorHandler(handler);
