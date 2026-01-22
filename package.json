@@ -27,6 +27,7 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "^19.2.3",
     "react-hot-toast": "^2.6.0",
+    "stripe": "^20.2.0",
     "swiper": "^12.0.3",
     "yet-another-react-lightbox": "^3.28.0",
     "zustand": "^5.0.9"
