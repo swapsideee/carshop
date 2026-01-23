@@ -4,6 +4,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 const LIMIT_DEFAULT = 5;
 
+function isAbortError(e) {
+  return (
+    e?.name === 'AbortError' ||
+    e?.code === 20 ||
+    (typeof DOMException !== 'undefined' && e instanceof DOMException && e.name === 'AbortError')
+  );
+}
+
 export function useReviewsFeed({ limit = LIMIT_DEFAULT } = {}) {
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
@@ -19,6 +27,7 @@ export function useReviewsFeed({ limit = LIMIT_DEFAULT } = {}) {
   const fetchPage = useCallback(
     async (p, { append } = { append: false }) => {
       if (abortRef.current) abortRef.current.abort();
+
       const controller = new AbortController();
       abortRef.current = controller;
 
@@ -28,6 +37,7 @@ export function useReviewsFeed({ limit = LIMIT_DEFAULT } = {}) {
       });
 
       if (!res.ok) throw new Error(`GET /api/reviews failed: ${res.status}`);
+
       const data = await res.json();
 
       const nextItems = Array.isArray(data?.items) ? data.items : [];
@@ -50,7 +60,9 @@ export function useReviewsFeed({ limit = LIMIT_DEFAULT } = {}) {
     try {
       await fetchPage(1, { append: false });
     } catch (e) {
+      if (isAbortError(e)) return;
       console.error(e);
+
       if (nonce === refreshNonceRef.current) {
         setItems([]);
         setTotalPages(1);
@@ -74,6 +86,7 @@ export function useReviewsFeed({ limit = LIMIT_DEFAULT } = {}) {
     try {
       await fetchPage(page + 1, { append: true });
     } catch (e) {
+      if (isAbortError(e)) return;
       console.error(e);
     } finally {
       setLoadingMore(false);

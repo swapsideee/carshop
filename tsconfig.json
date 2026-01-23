@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "es2022"],
     "allowJs": true,
+    "checkJs": false,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true,
     "module": "esnext",
-    "esModuleInterop": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -22,7 +24,7 @@
       "@/*": ["./src/*"],
       "@/pages/*": ["./src/pages/*"]
     },
-    "strictNullChecks": true
+    "esModuleInterop": true
   },
   "include": [
     "next-env.d.ts",
