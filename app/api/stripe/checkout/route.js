@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { cartItemsToLineItems } from '@/features/order/checkout/lib/stripeMappers';
-import { getAppUrl,stripe } from '@/shared/api/server/stripeClient';
+import { getAppUrl, stripe } from '@/shared/api/server/stripeClient';
 import { ErrorHandler, HttpError } from '@/shared/lib';
 
 export const runtime = 'nodejs';
