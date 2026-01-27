@@ -1,5 +1,6 @@
-export function normalize(str) {
+export function normalize(str?: string | null): string {
   if (!str) return '';
+
   return str
     .toLowerCase()
     .replace(/ё/g, 'е')

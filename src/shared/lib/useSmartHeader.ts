@@ -3,7 +3,23 @@
 import { useMotionValueEvent, useScroll } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
-const DEFAULTS = {
+type SmartHeaderOptions = {
+  topRevealY?: number;
+  scrolledY?: number;
+
+  hideAfterDownPx?: number;
+  showAfterUpPx?: number;
+
+  hideVelocity?: number;
+  showVelocity?: number;
+
+  idleMs?: number;
+  decisionCooldownMs?: number;
+
+  rafThrottle?: boolean;
+};
+
+const DEFAULTS: Required<SmartHeaderOptions> = {
   topRevealY: 24,
   scrolledY: 10,
 
@@ -19,7 +35,20 @@ const DEFAULTS = {
   rafThrottle: true,
 };
 
-export function useSmartHeader(menuOpen, opts = {}) {
+type RefsState = {
+  lastY: number;
+  downAcc: number;
+  upAcc: number;
+  lastDecisionAt: number;
+  idleTimer: ReturnType<typeof setTimeout> | null;
+  raf: number;
+  latest: number;
+};
+
+export function useSmartHeader(
+  menuOpen: boolean,
+  opts: SmartHeaderOptions = {},
+): { hidden: boolean; scrolled: boolean } {
   const cfg = { ...DEFAULTS, ...opts };
 
   const [scrolled, setScrolled] = useState(false);
@@ -27,7 +56,7 @@ export function useSmartHeader(menuOpen, opts = {}) {
 
   const { scrollY } = useScroll();
 
-  const refs = useRef({
+  const refs = useRef<RefsState>({
     lastY: 0,
     downAcc: 0,
     upAcc: 0,
@@ -61,16 +90,20 @@ export function useSmartHeader(menuOpen, opts = {}) {
 
   useEffect(() => {
     if (!menuOpen) return;
+
     const r = refs.current;
     resetAcc();
     r.lastY = r.latest;
     r.lastDecisionAt = performance.now();
+
     if (r.idleTimer) clearTimeout(r.idleTimer);
   }, [menuOpen]);
 
   const scheduleRevealOnIdle = () => {
     const r = refs.current;
+
     if (r.idleTimer) clearTimeout(r.idleTimer);
+
     r.idleTimer = setTimeout(() => {
       if (!menuOpen) reveal();
     }, cfg.idleMs);
@@ -129,7 +162,7 @@ export function useSmartHeader(menuOpen, opts = {}) {
     }
   };
 
-  useMotionValueEvent(scrollY, 'change', (latest) => {
+  useMotionValueEvent(scrollY, 'change', (latest: number) => {
     const r = refs.current;
     r.latest = latest;
 
@@ -139,6 +172,7 @@ export function useSmartHeader(menuOpen, opts = {}) {
     }
 
     if (r.raf) return;
+
     r.raf = requestAnimationFrame(() => {
       r.raf = 0;
       decide();

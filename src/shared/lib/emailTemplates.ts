@@ -1,4 +1,19 @@
-export function generateOwnerEmailHtml(body) {
+export type EmailCartItem = {
+  name: string;
+  quantity: number;
+  price: number;
+};
+
+export type OrderEmailBody = {
+  name?: string;
+  phone?: string;
+  email?: string;
+  comment?: string;
+  cartItems?: EmailCartItem[];
+  total?: number;
+};
+
+export function generateOwnerEmailHtml(body: OrderEmailBody): string {
   return `
     <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f6f6f6; color: #333;">
       <div style="max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
@@ -18,17 +33,19 @@ export function generateOwnerEmailHtml(body) {
             </tr>
           </thead>
           <tbody>
-            ${body.cartItems
-              ?.map(
-                (item) => `
+            ${
+              body.cartItems
+                ?.map(
+                  (item) => `
               <tr>
                 <td>${item.name}</td>
                 <td align="center">${item.quantity}</td>
                 <td align="right">${item.price * item.quantity} грн</td>
               </tr>
             `,
-              )
-              .join('')}
+                )
+                .join('') ?? ''
+            }
           </tbody>
           <tfoot>
             <tr>
@@ -42,7 +59,7 @@ export function generateOwnerEmailHtml(body) {
   `;
 }
 
-export function generateClientEmailHtml(body) {
+export function generateClientEmailHtml(body: OrderEmailBody): string {
   return `
     <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f6f6f6; color: #333;">
       <div style="max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
@@ -61,17 +78,19 @@ export function generateClientEmailHtml(body) {
             </tr>
           </thead>
           <tbody>
-            ${body.cartItems
-              ?.map(
-                (item) => `
+            ${
+              body.cartItems
+                ?.map(
+                  (item) => `
               <tr>
                 <td>${item.name}</td>
                 <td align="center">${item.quantity}</td>
                 <td align="right">${item.price * item.quantity} грн</td>
               </tr>
             `,
-              )
-              .join('')}
+                )
+                .join('') ?? ''
+            }
           </tbody>
           <tfoot>
             <tr>
