@@ -2,8 +2,14 @@ import 'server-only';
 
 import Stripe from 'stripe';
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const secretKey = process.env.STRIPE_SECRET_KEY;
 
-export function getAppUrl() {
+if (!secretKey) {
+  throw new Error('Missing STRIPE_SECRET_KEY env var');
+}
+
+export const stripe = new Stripe(secretKey);
+
+export function getAppUrl(): string {
   return process.env.APP_URL || 'http://localhost:3000';
 }
