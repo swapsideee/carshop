@@ -5,18 +5,34 @@ import { useMemo } from 'react';
 
 import styles from './Pagination.module.css';
 
-export default function Pagination({ page, totalPages, onChange, scrollTargetId, loadedTo }) {
-  const clamp = (n) => Math.min(Math.max(n, 1), totalPages);
+type PaginationItem = number | '…';
+
+type PaginationProps = {
+  page: number;
+  totalPages: number;
+  onChange: (page: number) => void;
+  scrollTargetId?: string;
+  loadedTo?: number | string | null;
+};
+
+export default function Pagination({
+  page,
+  totalPages,
+  onChange,
+  scrollTargetId,
+  loadedTo,
+}: PaginationProps) {
+  const clamp = (n: number) => Math.min(Math.max(n, 1), totalPages);
 
   const loadedMax = Math.max(page, Number(loadedTo) || page);
 
   const windowSize = 5;
 
-  const items = useMemo(() => {
+  const items = useMemo<PaginationItem[]>(() => {
     if (totalPages <= 1) return [];
 
-    const range = (from, to) => {
-      const out = [];
+    const range = (from: number, to: number) => {
+      const out: number[] = [];
       for (let i = from; i <= to; i++) out.push(i);
       return out;
     };
@@ -26,7 +42,7 @@ export default function Pagination({ page, totalPages, onChange, scrollTargetId,
     const tailEnd = Math.min(totalPages - 1, loadedMax);
     const tailStart = Math.max(2, tailEnd - (windowSize - 1));
 
-    const res = [1];
+    const res: PaginationItem[] = [1];
 
     if (tailStart > 2) res.push('…');
     else res.push(2);
@@ -38,8 +54,9 @@ export default function Pagination({ page, totalPages, onChange, scrollTargetId,
 
     res.push(totalPages);
 
-    const compact = [];
-    const seen = new Set();
+    const compact: PaginationItem[] = [];
+    const seen = new Set<number>();
+
     for (const it of res) {
       if (typeof it === 'number') {
         if (seen.has(it)) continue;
@@ -62,7 +79,7 @@ export default function Pagination({ page, totalPages, onChange, scrollTargetId,
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const go = (next) => {
+  const go = (next: number) => {
     if (next === page) return;
     onChange(next);
     setTimeout(scrollToTop, 0);
@@ -134,7 +151,6 @@ export default function Pagination({ page, totalPages, onChange, scrollTargetId,
 
               const p = it;
               const active = p === page;
-
               const loaded = !active && p <= loadedMax;
 
               return (

@@ -1,6 +1,15 @@
 'use client';
 
 import { RefreshCw } from 'lucide-react';
+import type { ReactNode } from 'react';
+
+type LoadMoreButtonProps = {
+  onClick?: () => void;
+  disabled?: boolean;
+  loading?: boolean;
+  children?: ReactNode;
+  className?: string;
+};
 
 export default function LoadMoreButton({
   onClick,
@@ -8,7 +17,7 @@ export default function LoadMoreButton({
   loading = false,
   children = 'Показати ще',
   className = '',
-}) {
+}: LoadMoreButtonProps) {
   return (
     <button
       type="button"

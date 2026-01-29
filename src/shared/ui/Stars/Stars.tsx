@@ -3,7 +3,14 @@ import { Star } from 'lucide-react';
 import { clampRating } from '@/entities/review';
 import { cx } from '@/shared/lib';
 
-export default function Stars({ value, size = 'md' }) {
+type StarsSize = 'sm' | 'md';
+
+type StarsProps = {
+  value: number;
+  size?: StarsSize;
+};
+
+export default function Stars({ value, size = 'md' }: StarsProps) {
   const v = clampRating(value);
   const full = Math.max(0, Math.min(5, Math.round(v)));
   const empty = 5 - full;

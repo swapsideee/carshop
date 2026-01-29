@@ -5,14 +5,21 @@ import 'swiper/css/navigation';
 
 import Image from 'next/image';
 import { useRef, useState } from 'react';
+import type { Swiper as SwiperClass } from 'swiper';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-export default function ProductGallery({ images }) {
-  const swiperRef = useRef(null);
+type ProductGalleryProps = {
+  images?: Array<string | null | undefined> | null;
+};
+
+export default function ProductGallery({ images }: ProductGalleryProps) {
+  const swiperRef = useRef<SwiperClass | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const validImages = (images ?? []).filter((src) => typeof src === 'string' && src.trim() !== '');
+  const validImages = (images ?? []).filter(
+    (src): src is string => typeof src === 'string' && src.trim() !== '',
+  );
 
   if (validImages.length === 0) {
     return (
@@ -39,7 +46,9 @@ export default function ProductGallery({ images }) {
         spaceBetween={20}
         slidesPerView={1}
         onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-        onSwiper={(swiper) => (swiperRef.current = swiper)}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+        }}
         className="w-full max-w-lg h-96 cursor-pointer"
       >
         {validImages.map((src, index) => (
