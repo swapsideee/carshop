@@ -1,4 +1,6 @@
-export function formatDateUA(dateValue) {
+export type DateInput = Date | string | number | null | undefined;
+
+export function formatDateUA(dateValue: DateInput): string {
   if (dateValue == null || dateValue === '') return '';
 
   const d = new Date(dateValue);

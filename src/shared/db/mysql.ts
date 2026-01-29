@@ -1,10 +1,11 @@
 import 'server-only';
 
+import type { Pool } from 'mysql2/promise';
 import mysql from 'mysql2/promise';
 
-let pool;
+let pool: Pool | undefined;
 
-export const getDB = async () => {
+export async function getDB(): Promise<Pool> {
   if (!pool) {
     pool = mysql.createPool({
       host: process.env.DB_HOST,
@@ -17,5 +18,6 @@ export const getDB = async () => {
       queueLimit: 0,
     });
   }
+
   return pool;
-};
+}

@@ -1,7 +1,21 @@
 'use client';
 
-export default function PriceSelector({ pricePair, priceSet, selected, onSelect }) {
-  const options = [
+type PriceMode = 'pair' | 'set';
+
+type PriceSelectorProps = {
+  pricePair?: number | null;
+  priceSet?: number | null;
+  selected: PriceMode | null;
+  onSelect: (value: PriceMode) => void;
+};
+
+export default function PriceSelector({
+  pricePair,
+  priceSet,
+  selected,
+  onSelect,
+}: PriceSelectorProps) {
+  const options: Array<{ label: string; value: PriceMode; disabled: boolean }> = [
     {
       label: `Пара (${pricePair ?? '—'} ₴)`,
       value: 'pair',
