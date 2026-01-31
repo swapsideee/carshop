@@ -96,3 +96,44 @@ export const buildRelatedProductsQuery = ({
   `,
   params: [brandId, `%${modelDigits}%`, excludeId],
 });
+
+export type ProductsSelectQueryArgs = {
+  brand?: string;
+  q?: string;
+  limit?: number;
+};
+
+export const buildProductsForSelectQuery = ({ brand, q, limit }: ProductsSelectQueryArgs = {}) => {
+  const where: string[] = [];
+  const params: Array<string | number> = [];
+
+  if (brand) {
+    where.push('brand_slug = ?');
+    params.push(brand);
+  }
+
+  const terms = String(q || '')
+    .trim()
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (terms.length) {
+    const col = "LOWER(CONCAT_WS(' ', COALESCE(name,''), COALESCE(model,'')))";
+    terms.forEach((t) => {
+      where.push(`${col} LIKE ?`);
+      params.push(`%${t}%`);
+    });
+  }
+
+  const whereSql = where.length ? ` WHERE ${where.join(' AND ')}` : '';
+
+  let query = `SELECT id, name, model FROM products${whereSql} ORDER BY model ASC`;
+
+  if (typeof limit === 'number' && Number.isFinite(limit) && limit > 0) {
+    query += ' LIMIT ?';
+    params.push(Math.floor(limit));
+  }
+
+  return { query, params };
+};
