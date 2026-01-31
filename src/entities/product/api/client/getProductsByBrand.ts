@@ -1,6 +1,6 @@
 import { fetchJson } from '@/shared/api';
 
-import type { ProductSortBy, ProductsPagedResult,SortOrder } from '../../model/types';
+import type { ProductSortBy, ProductsPagedResult, SortOrder } from '../../model/types';
 
 export type GetProductsByBrandParams = {
   brand?: string;

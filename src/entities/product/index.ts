@@ -11,6 +11,12 @@
 export * from './api/client';
 export * from './model/selectors';
 export * as productSelectors from './model/selectors';
-export type { Product, ProductSortBy, ProductsPagedResult, RelatedProduct, SortOrder } from './model/types';
+export type {
+  Product,
+  ProductSortBy,
+  ProductsPagedResult,
+  RelatedProduct,
+  SortOrder,
+} from './model/types';
 export * from './model/useProduct';
 export { default as ProductCard } from './ui/ProductCard/ProductCard';
