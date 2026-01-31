@@ -1,1 +1,0 @@
-export { getBrands } from './getBrands';

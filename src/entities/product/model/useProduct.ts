@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 
 import { getProductById } from '@/entities/product';
 
-export function useProduct(productId) {
+import type { Product } from './types';
+
+export function useProduct(productId: unknown): { product: Product | null; loading: boolean } {
   const id = Number(productId);
 
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,8 +26,14 @@ export function useProduct(productId) {
         setLoading(true);
         const data = await getProductById({ id, signal: controller.signal });
         setProduct(data ?? null);
-      } catch (e) {
-        if (e?.name === 'AbortError') return;
+      } catch (e: unknown) {
+        if (
+          e &&
+          typeof e === 'object' &&
+          'name' in e &&
+          (e as { name?: string }).name === 'AbortError'
+        )
+          return;
         setProduct(null);
       } finally {
         setLoading(false);

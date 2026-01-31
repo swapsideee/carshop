@@ -12,3 +12,10 @@
 import 'server-only';
 
 export { getProductDetailsById, getProductsPaged } from './api/server';
+export type {
+  Product,
+  ProductSortBy,
+  ProductsPagedResult,
+  RelatedProduct,
+  SortOrder,
+} from './model/types';

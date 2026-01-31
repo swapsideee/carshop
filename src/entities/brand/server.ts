@@ -7,3 +7,4 @@
 import 'server-only';
 
 export { getAllBrands } from './api/server';
+export type { Brand } from './model/types';
