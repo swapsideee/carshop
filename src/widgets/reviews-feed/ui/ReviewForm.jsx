@@ -60,15 +60,27 @@ export default function ReviewForm({ onNewReview }) {
 
     (async () => {
       try {
-        const res = await fetch('/api/products?limit=60&page=1', { cache: 'no-store' });
-        if (!res.ok) {
-          if (!cancelled) setProducts([]);
-          return;
+        const LIMIT = 200;
+        let page = 1;
+        let totalPages = 1;
+        const all = [];
+
+        while (!cancelled && page <= totalPages) {
+          const res = await fetch('/api/products?forSelect=1', { cache: 'no-store' });
+          if (!res.ok) break;
+
+          const data = await res.json();
+
+          const items = Array.isArray(data?.items) ? data.items : [];
+          all.push(...items);
+
+          totalPages = Number(data?.totalPages) || 1;
+          page += 1;
+
+          if (page > 100) break;
         }
 
-        const data = await res.json();
-        const items = Array.isArray(data?.items) ? data.items : [];
-        if (!cancelled) setProducts(items);
+        if (!cancelled) setProducts(all);
       } catch {
         if (!cancelled) setProducts([]);
       }
