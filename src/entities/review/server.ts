@@ -7,4 +7,10 @@
 import 'server-only';
 
 export { createReview, getReviewsByProduct, getReviewsFeed } from './api/server';
-export type { CreateReviewInput,Review, ReviewFeedItem, ReviewsByProductResult, ReviewsPageResult } from './model/types';
+export type {
+  CreateReviewInput,
+  Review,
+  ReviewFeedItem,
+  ReviewsByProductResult,
+  ReviewsPageResult,
+} from './model/types';
