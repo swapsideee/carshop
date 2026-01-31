@@ -4,7 +4,7 @@ import { ShoppingCart } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 import { getDefaultOption, getPriceState, getProductImages } from '@/entities/product';
-import { useAddToCart } from '@/features/cart/add-to-cart';
+import { useAddToCart } from '@/features/cart';
 import { cx } from '@/shared/lib';
 import { PriceSelector, ProductGallery } from '@/shared/ui';
 

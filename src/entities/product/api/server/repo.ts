@@ -14,6 +14,7 @@ import type {
 import {
   buildProductByIdQuery,
   buildProductImagesQuery,
+  buildProductsForSelectQuery,
   buildProductsPagedQueries,
   buildRelatedProductsQuery,
   type ProductsPagedQueryArgs,
@@ -84,4 +85,27 @@ export async function getProductDetailsById(id: number): Promise<ProductRow | nu
   }
 
   return product;
+}
+
+type ProductSelectRow = RowDataPacket & { id: number; name: string | null; model: string | null };
+
+export async function getProductsForSelect({
+  brand,
+  q,
+  limit,
+}: {
+  brand?: string;
+  q?: string;
+  limit?: number;
+} = {}): Promise<Array<{ id: number; name: string | null; model: string | null }>> {
+  const db = await getDB();
+
+  const { query, params } = buildProductsForSelectQuery({ brand, q, limit });
+  const [rows] = await db.query<ProductSelectRow[]>(query, params);
+
+  return rows.map((r) => ({
+    id: Number(r.id),
+    name: r.name ?? null,
+    model: r.model ?? null,
+  }));
 }
