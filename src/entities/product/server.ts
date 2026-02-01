@@ -11,7 +11,8 @@
 
 import 'server-only';
 
-export { getProductDetailsById, getProductsPaged } from './api/server';
+export type { GetProductsPagedArgs } from './api/server';
+export { getProductDetailsById, getProductsForSelect, getProductsPaged } from './api/server';
 export type {
   Product,
   ProductSortBy,

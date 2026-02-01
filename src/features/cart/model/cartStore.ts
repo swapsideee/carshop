@@ -1,20 +1,28 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-const generateOrderId = () => crypto.randomUUID?.() || Date.now();
+import type { CartActionResult, CartItem, CartStore } from './types';
+
+const generateOrderId = (): string =>
+  (globalThis.crypto?.randomUUID?.() as string | undefined) ?? String(Date.now());
 
 const MAX_QTY_PER_LINE = 10;
 
-const ok = (extra = {}) => ({ ok: true, ...extra });
-const fail = (message, extra = {}) => ({ ok: false, message, ...extra });
+const ok = (extra: Record<string, unknown> = {}): CartActionResult => ({ ok: true, ...extra });
 
-const useCartStore = create(
+const fail = (message: string, extra: Record<string, unknown> = {}): CartActionResult => ({
+  ok: false,
+  message,
+  ...extra,
+});
+
+const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       cartItems: [],
       pastOrders: [],
 
-      addToCart: (product) => {
+      addToCart: (product: CartItem) => {
         if (!product?.id) return fail('Некоректний товар: немає id');
         if (product?.price == null) return fail('Некоректний товар: немає ціни');
 
@@ -23,6 +31,8 @@ const useCartStore = create(
 
         if (idx !== -1) {
           const current = cartItems[idx];
+          if (!current) return fail('Товар не знайдено в кошику');
+
           if ((current.quantity || 0) >= MAX_QTY_PER_LINE) {
             return fail(`Максимум ${MAX_QTY_PER_LINE} одиниць цього товару`);
           }
@@ -41,12 +51,14 @@ const useCartStore = create(
         return ok();
       },
 
-      increment: (id) => {
+      increment: (id: string) => {
         const { cartItems } = get();
         const idx = cartItems.findIndex((i) => i.id === id);
         if (idx === -1) return fail('Товар не знайдено в кошику');
 
         const current = cartItems[idx];
+        if (!current) return fail('Товар не знайдено в кошику');
+
         if ((current.quantity || 0) >= MAX_QTY_PER_LINE) {
           return fail(`Максимум ${MAX_QTY_PER_LINE} одиниць цього товару`);
         }
@@ -59,7 +71,7 @@ const useCartStore = create(
         return ok();
       },
 
-      decrement: (id) => {
+      decrement: (id: string) => {
         const { cartItems } = get();
         const next = cartItems
           .map((item) => (item.id === id ? { ...item, quantity: (item.quantity || 0) - 1 } : item))
@@ -69,7 +81,7 @@ const useCartStore = create(
         return ok();
       },
 
-      removeFromCart: (id) => {
+      removeFromCart: (id: string) => {
         const { cartItems } = get();
         set({ cartItems: cartItems.filter((i) => i.id !== id) });
         return ok();
@@ -80,11 +92,11 @@ const useCartStore = create(
         return ok();
       },
 
-      saveOrder: (orderData) => {
+      saveOrder: (orderData: Record<string, unknown>) => {
         const { pastOrders } = get();
         const newOrder = { ...orderData, id: generateOrderId() };
         set({ pastOrders: [...pastOrders, newOrder] });
-        return ok({ orderId: newOrder.id });
+        return ok({ orderId: String(newOrder.id) });
       },
     }),
     { name: 'cart-storage' },
