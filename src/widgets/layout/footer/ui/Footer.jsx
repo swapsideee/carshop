@@ -1,6 +1,6 @@
 'use client';
 
-import { CreditCard, ShieldCheck, Truck } from 'lucide-react';
+import { CreditCard, Mail, Phone, ShieldCheck, Truck } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Footer() {
@@ -51,72 +51,89 @@ export default function Footer() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <p className="text-sm font-semibold text-slate-900">Магазин</p>
-                <ul className="mt-3 space-y-2 text-sm">
-                  <li>
-                    <Link href="/products" className="text-slate-600 hover:text-slate-900">
-                      Каталог
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/reviews" className="text-slate-600 hover:text-slate-900">
-                      Відгуки
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/cart" className="text-slate-600 hover:text-slate-900">
-                      Кошик
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+            <div className="md:col-span-2 rounded-2xl border border-black/5 bg-white/70 backdrop-blur supports-backdrop-filter:bg-white/60 ring-1 ring-black/5 shadow-[0_10px_30px_-22px_rgba(0,0,0,0.35)]">
+              <div className="grid gap-8 p-5 sm:grid-cols-2 lg:grid-cols-3">
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Магазин</p>
+                  <ul className="mt-3 space-y-2 text-sm">
+                    <li>
+                      <Link href="/products" className="text-slate-600 hover:text-slate-900">
+                        Каталог
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/reviews" className="text-slate-600 hover:text-slate-900">
+                        Відгуки
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/cart" className="text-slate-600 hover:text-slate-900">
+                        Кошик
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
 
-              <div>
-                <p className="text-sm font-semibold text-slate-900">Підтримка</p>
-                <ul className="mt-3 space-y-2 text-sm">
-                  <li>
-                    <Link href="/contacts" className="text-slate-600 hover:text-slate-900">
-                      Зв&apos;язок
-                    </Link>
-                  </li>
-                  <li>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Підтримка</p>
+                  <ul className="mt-3 space-y-2 text-sm">
+                    <li>
+                      <Link href="/contacts" className="text-slate-600 hover:text-slate-900">
+                        Зв&apos;язок
+                      </Link>
+                    </li>
+                    <li>
+                      <a
+                        href="mailto:example@gmail.com"
+                        className="text-slate-600 hover:text-slate-900"
+                      >
+                        example@gmail.com
+                      </a>
+                    </li>
+                    <li>
+                      <a href="tel:+381234567899" className="text-slate-600 hover:text-slate-900">
+                        +38 123 456 7899
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Контакти</p>
+                  <p className="mt-3 text-sm text-slate-600">
+                    Напишіть або зателефонуйте — підкажемо по наявності та підбору.
+                  </p>
+
+                  <div className="mt-4 space-y-2 text-sm">
                     <a
                       href="mailto:example@gmail.com"
-                      className="text-slate-600 hover:text-slate-900"
+                      className={[
+                        'group flex items-center gap-2 rounded-xl bg-white px-3 py-2 font-semibold text-slate-900',
+                        'ring-1 ring-black/5 shadow-[0_10px_25px_-20px_rgba(0,0,0,0.35)]',
+                        'transition-all duration-200',
+                        'hover:-translate-y-0.5 hover:bg-lime-50/60 hover:ring-lime-600/25 hover:shadow-[0_18px_45px_-28px_rgba(0,0,0,0.45)]',
+                        'focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-600/40',
+                      ].join(' ')}
                     >
-                      example@gmail.com
+                      <Mail className="h-4 w-4 text-lime-700 transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-3" />
+                      <span className="truncate">example@gmail.com</span>
                     </a>
-                  </li>
-                  <li>
-                    <a href="tel:+381234567899" className="text-slate-600 hover:text-slate-900">
-                      +38 123 456 7899
+
+                    <a
+                      href="tel:+381234567899"
+                      className={[
+                        'group flex items-center gap-2 rounded-xl bg-white px-3 py-2 font-semibold text-slate-900',
+                        'ring-1 ring-black/5 shadow-[0_10px_25px_-20px_rgba(0,0,0,0.35)]',
+                        'transition-all duration-200',
+                        'hover:-translate-y-0.5 hover:bg-lime-50/60 hover:ring-lime-600/25 hover:shadow-[0_18px_45px_-28px_rgba(0,0,0,0.45)]',
+                        'focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-600/40',
+                      ].join(' ')}
+                    >
+                      <Phone className="h-4 w-4 text-lime-700 transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-3" />
+                      <span className="truncate">+38 123 456 7899</span>
                     </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-black/5 bg-white p-5 md:px-5 md:pb-5 md:pt-0 shadow-[0_10px_30px_-20px_rgba(0,0,0,0.35)]">
-              <p className="text-sm font-semibold text-slate-900">Контакти</p>
-              <p className="mt-3 text-sm text-slate-600">
-                Напишіть або зателефонуйте — підкажемо по наявності та підбору.
-              </p>
-
-              <div className="mt-4 space-y-2 text-sm">
-                <a
-                  href="mailto:example@gmail.com"
-                  className="block rounded-2xl bg-slate-50 px-3 py-2 text-slate-700 ring-1 ring-black/5 transition hover:bg-black/5 hover:text-slate-900"
-                >
-                  example@gmail.com
-                </a>
-                <a
-                  href="tel:+381234567899"
-                  className="block rounded-2xl bg-slate-50 px-3 py-2 text-slate-700 ring-1 ring-black/5 transition hover:bg-black/5 hover:text-slate-900"
-                >
-                  +38 123 456 7899
-                </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
