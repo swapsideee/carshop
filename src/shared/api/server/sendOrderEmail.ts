@@ -3,7 +3,7 @@ import 'server-only';
 import nodemailer from 'nodemailer';
 
 import type { EmailCartItem, OrderEmailBody } from '@/shared/lib';
-import { generateClientEmailHtml, generateOwnerEmailHtml } from '@/shared/lib';
+import { generateClientEmailHtml, generateOwnerEmailHtml, sanitizeEmailHeader } from '@/shared/lib';
 
 type SendOrderEmailBody = OrderEmailBody & {
   name: string;
@@ -73,7 +73,7 @@ export async function sendOrderEmail(body: unknown): Promise<void> {
     transporter.sendMail({
       from: `"VadiAvto" <${emailUser}>`,
       to: ownerEmail,
-      subject: `🛒Нове замовлення від ${body.name || 'Клієнта'}`,
+      subject: `🛒Нове замовлення від ${sanitizeEmailHeader(body.name || 'Клієнта')}`,
       html: generateOwnerEmailHtml({ ...body, total }),
     }),
   ];

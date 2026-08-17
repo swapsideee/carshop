@@ -222,18 +222,17 @@ The application has one `app/(routes)/products/[slug]` route. A numeric `slug` i
 
 ### HTTP API
 
-| Method and path                 | Purpose                                                                |
-| ------------------------------- | ---------------------------------------------------------------------- |
-| `GET /api/products`             | Catalogue: `brand`, `q`, `sort`, `sort_by`, `page`, `limit`            |
-| `GET /api/products?forSelect=1` | Lightweight `id`, `name`, and `model` list for selectors               |
-| `GET /api/products/:id`         | Product, its images, and related products                              |
-| `GET /api/brands`               | All brands                                                             |
-| `GET /api/reviews`              | Review feed; `productId` switches to a product’s reviews               |
-| `POST /api/reviews`             | Create a review                                                        |
-| `POST /api/stripe/checkout`     | Create a Stripe Checkout Session                                       |
-| `GET /api/stripe/session`       | Verify a Stripe Session after redirect                                 |
-| `POST /api/stripe/webhook`      | Process `checkout.session.completed` and send emails                   |
-| `POST /api/send-order`          | Auxiliary email endpoint; the current checkout uses the Stripe webhook |
+| Method and path                 | Purpose                                                     |
+| ------------------------------- | ----------------------------------------------------------- |
+| `GET /api/products`             | Catalogue: `brand`, `q`, `sort`, `sort_by`, `page`, `limit` |
+| `GET /api/products?forSelect=1` | Lightweight `id`, `name`, and `model` list for selectors    |
+| `GET /api/products/:id`         | Product, its images, and related products                   |
+| `GET /api/brands`               | All brands                                                  |
+| `GET /api/reviews`              | Review feed; `productId` switches to a product’s reviews    |
+| `POST /api/reviews`             | Create a review                                             |
+| `POST /api/stripe/checkout`     | Create a Stripe Checkout Session                            |
+| `GET /api/stripe/session`       | Verify a Stripe Session after redirect                      |
+| `POST /api/stripe/webhook`      | Process `checkout.session.completed` and send emails        |
 
 The shared [`ErrorHandler`](./src/shared/lib/errorHandler.ts) turns Route Handler errors into `{ ok: false, message }` JSON responses and logs them on the server.
 
