@@ -13,12 +13,17 @@ export function ErrorHandler<TContext = unknown>(handler: RouteHandler<TContext>
     try {
       return await handler(request, context);
     } catch (err: unknown) {
-      const status = err instanceof HttpError ? err.status : 500;
-
-      const message = err instanceof Error ? err.message : 'Internal server error';
+      const isExpectedClientError =
+        err instanceof HttpError &&
+        Number.isInteger(err.status) &&
+        err.status >= 400 &&
+        err.status < 500;
+      const status = isExpectedClientError ? err.status : 500;
+      const loggedMessage = err instanceof Error ? err.message : 'Internal server error';
+      const message = isExpectedClientError ? err.message : 'Internal server error';
 
       console.error('API Error:', {
-        message,
+        message: loggedMessage,
         name: err instanceof Error ? err.name : 'UnknownError',
         status,
         stack: err instanceof Error ? err.stack : undefined,
