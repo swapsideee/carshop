@@ -14,6 +14,7 @@ import type {
 import {
   buildProductByIdQuery,
   buildProductImagesQuery,
+  buildProductsForCheckoutQuery,
   buildProductsForSelectQuery,
   buildProductsPagedQueries,
   buildRelatedProductsQuery,
@@ -24,6 +25,16 @@ type ProductRow = RowDataPacket & Product;
 type CountRow = RowDataPacket & { total?: number | string | null };
 type ImageRow = RowDataPacket & { image_url: string };
 type RelatedRow = RowDataPacket & RelatedProduct;
+
+export type CheckoutProduct = {
+  id: number;
+  name: string | null;
+  model: string | null;
+  price_pair: number | null;
+  price_set: number | null;
+};
+
+type CheckoutProductRow = RowDataPacket & CheckoutProduct;
 
 export type GetProductsPagedArgs = ProductsPagedQueryArgs;
 
@@ -85,6 +96,22 @@ export async function getProductDetailsById(id: number): Promise<ProductRow | nu
   }
 
   return product;
+}
+
+export async function getProductsForCheckout(productIds: number[]): Promise<CheckoutProduct[]> {
+  if (!productIds.length) return [];
+
+  const db = await getDB();
+  const { query, params } = buildProductsForCheckoutQuery(productIds);
+  const [rows] = await db.query<CheckoutProductRow[]>(query, params);
+
+  return rows.map((row) => ({
+    id: Number(row.id),
+    name: row.name ?? null,
+    model: row.model ?? null,
+    price_pair: row.price_pair == null ? null : Number(row.price_pair),
+    price_set: row.price_set == null ? null : Number(row.price_set),
+  }));
 }
 
 type ProductSelectRow = RowDataPacket & { id: number; name: string | null; model: string | null };

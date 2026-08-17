@@ -1,5 +1,9 @@
+export type CartOption = 'pair' | 'set';
+
 export type CartItem = {
   id: string;
+  productId: number;
+  option: CartOption;
   price: number;
   quantity?: number;
 

@@ -2,9 +2,7 @@
 
 import { toast } from 'react-hot-toast';
 
-import { useCartStore } from '@/features/cart';
-
-type SelectedOption = 'pair' | 'set';
+import { type CartOption, useCartStore } from '@/features/cart';
 
 type ProductForAddToCart = {
   id: string | number;
@@ -16,7 +14,7 @@ type ProductForAddToCart = {
 
 type AddToCartArgs = {
   product?: ProductForAddToCart | null;
-  selectedOption: SelectedOption;
+  selectedOption: CartOption;
 };
 
 export function useAddToCart() {
@@ -24,6 +22,12 @@ export function useAddToCart() {
 
   return ({ product, selectedOption }: AddToCartArgs) => {
     if (!product) return;
+
+    const productId = Number(product.id);
+    if (!Number.isSafeInteger(productId) || productId <= 0) {
+      toast.error('Некоректний товар');
+      return;
+    }
 
     const price = selectedOption === 'pair' ? product.price_pair : product.price_set;
 
@@ -33,7 +37,9 @@ export function useAddToCart() {
     }
 
     const cartItem = {
-      id: `${product.id}-${selectedOption}`,
+      id: `${productId}-${selectedOption}`,
+      productId,
+      option: selectedOption,
       name: `${product.model} (${selectedOption === 'pair' ? 'Пара' : 'Комплект'})`,
       price,
       image: product.image ?? undefined,
