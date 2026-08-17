@@ -77,6 +77,15 @@ export const buildProductImagesQuery = (productId: number) => ({
   params: [productId],
 });
 
+export const buildProductsForCheckoutQuery = (productIds: number[]) => ({
+  query: `
+    SELECT id, name, model, price_pair, price_set
+    FROM products
+    WHERE id IN (${productIds.map(() => '?').join(', ')})
+  `,
+  params: productIds,
+});
+
 export type RelatedProductsArgs = {
   brandId: number;
   modelDigits: string;
