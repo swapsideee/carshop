@@ -3,16 +3,20 @@ import 'server-only';
 import type { Pool } from 'mysql2/promise';
 import mysql from 'mysql2/promise';
 
+import { getDbEnv } from '@/shared/config/env';
+
 let pool: Pool | undefined;
 
 export async function getDB(): Promise<Pool> {
   if (!pool) {
+    const dbEnv = getDbEnv();
+
     pool = mysql.createPool({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      database: process.env.DB_NAME,
-      port: Number(process.env.DB_PORT) || 3306,
+      host: dbEnv.host,
+      user: dbEnv.user,
+      password: dbEnv.password,
+      database: dbEnv.name,
+      port: dbEnv.port,
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
