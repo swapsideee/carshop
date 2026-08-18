@@ -44,10 +44,10 @@ export function useOrderCheckout() {
         const orderData = {
           items: data.cartItems || [],
           total: data.total ?? 0,
-          name: data.metadata?.name || '',
-          phone: data.metadata?.phone || '',
+          name: data.customer?.name || '',
+          phone: data.customer?.phone || '',
           email: data.customer_email || '',
-          comment: data.metadata?.comment || '',
+          comment: data.customer?.comment || '',
           createdAt: new Date().toISOString(),
           paid: true,
           stripeSessionId: data.id,
