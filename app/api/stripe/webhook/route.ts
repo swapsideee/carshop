@@ -4,6 +4,7 @@ import type Stripe from 'stripe';
 import { sessionToEmailPayload } from '@/features/order/checkout/lib/stripeMappers';
 import { sendOrderEmail } from '@/shared/api/server';
 import { getStripe } from '@/shared/api/server/stripeClient';
+import { getStripeWebhookEnv } from '@/shared/config/env';
 import {
   claimStripeWebhookEvent,
   completeStripeWebhookEvent,
@@ -23,11 +24,10 @@ const handler = async (req: NextRequest) => {
   const signature = req.headers.get('stripe-signature');
   if (!signature) throw new HttpError(400, 'Missing stripe-signature header');
 
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (!webhookSecret) throw new Error('Missing STRIPE_WEBHOOK_SECRET env var');
+  const { secretKey, webhookSecret } = getStripeWebhookEnv();
 
   const rawBody = await req.text();
-  const stripe = getStripe();
+  const stripe = getStripe(secretKey);
 
   let event: Stripe.Event;
   try {

@@ -2,18 +2,14 @@ import 'server-only';
 
 import Stripe from 'stripe';
 
-let stripeClient: Stripe | undefined;
+const stripeClients = new Map<string, Stripe>();
 
-export function getStripe(): Stripe {
-  const secretKey = process.env.STRIPE_SECRET_KEY;
-  if (!secretKey) {
-    throw new Error('Missing STRIPE_SECRET_KEY env var');
-  }
+export function getStripe(secretKey: string): Stripe {
+  const existingClient = stripeClients.get(secretKey);
+  if (existingClient) return existingClient;
 
-  stripeClient ??= new Stripe(secretKey);
+  const stripeClient = new Stripe(secretKey);
+  stripeClients.set(secretKey, stripeClient);
+
   return stripeClient;
-}
-
-export function getAppUrl(): string {
-  return process.env.APP_URL || 'http://localhost:3000';
 }

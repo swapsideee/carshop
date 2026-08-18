@@ -12,7 +12,8 @@ import {
   serializeCheckoutSessionVerification,
 } from '@/features/order/checkout/lib/sessionVerification';
 import { cartItemsToLineItems } from '@/features/order/checkout/lib/stripeMappers';
-import { getAppUrl, getStripe } from '@/shared/api/server/stripeClient';
+import { getStripe } from '@/shared/api/server/stripeClient';
+import { getStripeCheckoutEnv } from '@/shared/config/env';
 import { ErrorHandler, HttpError } from '@/shared/lib';
 
 export const runtime = 'nodejs';
@@ -30,15 +31,16 @@ const handler = async (req: NextRequest) => {
     throw new HttpError(400, 'Один або кілька товарів більше недоступні');
   }
 
+  const checkoutEnv = getStripeCheckoutEnv();
   const verification = createCheckoutSessionVerification();
-  const stripe = getStripe();
+  const stripe = getStripe(checkoutEnv.secretKey);
 
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
     payment_method_types: ['card'],
     line_items: cartItemsToLineItems(cartItems, products),
-    success_url: `${getAppUrl()}/order?payment=success&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${getAppUrl()}/order?payment=cancel`,
+    success_url: `${checkoutEnv.appUrl}/order?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${checkoutEnv.appUrl}/order?payment=cancel`,
     customer_email: customer.email,
     metadata: {
       name: customer.name,
@@ -58,7 +60,7 @@ const handler = async (req: NextRequest) => {
     value: serializeCheckoutSessionVerification({ ...verification, sessionId: session.id }),
     httpOnly: true,
     sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
+    secure: checkoutEnv.isProduction,
     maxAge: 60 * 60,
     path: '/api/stripe/session',
   });

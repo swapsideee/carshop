@@ -8,6 +8,7 @@ import {
 } from '@/features/order/checkout/lib/sessionVerification';
 import { sessionToClientVerification } from '@/features/order/checkout/lib/stripeMappers';
 import { getStripe } from '@/shared/api/server/stripeClient';
+import { getStripeCheckoutEnv } from '@/shared/config/env';
 import { ErrorHandler, HttpError } from '@/shared/lib';
 
 export const runtime = 'nodejs';
@@ -26,7 +27,8 @@ const handler = async (req: NextRequest) => {
     throw new HttpError(403, 'Forbidden');
   }
 
-  const stripe = getStripe();
+  const { secretKey } = getStripeCheckoutEnv();
+  const stripe = getStripe(secretKey);
   const session = await stripe.checkout.sessions.retrieve(sessionId, {
     expand: ['line_items'],
   });

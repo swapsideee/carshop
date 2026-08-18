@@ -2,6 +2,7 @@ import 'server-only';
 
 import nodemailer from 'nodemailer';
 
+import { getEmailEnv } from '@/shared/config/env';
 import type { EmailCartItem, OrderEmailBody } from '@/shared/lib';
 import { generateClientEmailHtml, generateOwnerEmailHtml, sanitizeEmailHeader } from '@/shared/lib';
 
@@ -14,12 +15,7 @@ type SendOrderEmailBody = OrderEmailBody & {
 let transporter: nodemailer.Transporter | undefined;
 
 function getTransporter(): { transporter: nodemailer.Transporter; emailUser: string } {
-  const emailUser = process.env.EMAIL_USER;
-  const emailPass = process.env.EMAIL_PASS;
-
-  if (!emailUser || !emailPass) {
-    throw new Error('Missing EMAIL_USER / EMAIL_PASS env vars');
-  }
+  const { user: emailUser, password: emailPass } = getEmailEnv();
 
   transporter ??= nodemailer.createTransport({
     service: 'gmail',
@@ -71,10 +67,7 @@ export async function sendOrderEmail(body: unknown): Promise<void> {
   const total = typeof body.total === 'number' ? body.total : 0;
   const { transporter, emailUser } = getTransporter();
 
-  const ownerEmail = process.env.OWNER_EMAIL;
-  if (!ownerEmail) {
-    throw new Error('Missing OWNER_EMAIL env var');
-  }
+  const { ownerEmail } = getEmailEnv();
 
   const tasks: Promise<unknown>[] = [
     transporter.sendMail({
