@@ -12,7 +12,7 @@ import {
   serializeCheckoutSessionVerification,
 } from '@/features/order/checkout/lib/sessionVerification';
 import { cartItemsToLineItems } from '@/features/order/checkout/lib/stripeMappers';
-import { getAppUrl, stripe } from '@/shared/api/server/stripeClient';
+import { getAppUrl, getStripe } from '@/shared/api/server/stripeClient';
 import { ErrorHandler, HttpError } from '@/shared/lib';
 
 export const runtime = 'nodejs';
@@ -31,6 +31,7 @@ const handler = async (req: NextRequest) => {
   }
 
   const verification = createCheckoutSessionVerification();
+  const stripe = getStripe();
 
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
