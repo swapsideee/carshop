@@ -12,14 +12,19 @@ import {
 } from 'react';
 
 import { type BrandApiDTO, getBrands } from '@/entities/brand';
-import { getProducts, type ProductListItemApiDTO } from '@/entities/product';
+import {
+  getProducts,
+  normalizeProductListSortApiValue,
+  type ProductListItemApiDTO,
+  type ProductListSortApiValue,
+} from '@/entities/product';
 
 const catalogSearchParamKeys = ['page', 'brand', 'sort', 'q'] as const;
 
 export type CatalogSearchParamUpdates = {
   page?: number | null;
   brand?: string | null;
-  sort?: string | null;
+  sort?: ProductListSortApiValue | null;
   q?: string | null;
 };
 
@@ -30,7 +35,7 @@ export type CatalogUrlUpdateOptions = {
 export type UseProductsCatalogResult = {
   page: number;
   selectedBrand: string;
-  sort: string;
+  sort: ProductListSortApiValue;
   query: string;
   items: ProductListItemApiDTO[];
   brands: BrandApiDTO[];
@@ -61,7 +66,8 @@ export function useProductsCatalog(): UseProductsCatalogResult {
 
   const page = Math.max(Number(searchParams?.get('page')) || 1, 1);
   const selectedBrand = searchParams?.get('brand') || '';
-  const sort = searchParams?.get('sort') || '';
+  const rawSort = searchParams?.get('sort') ?? '';
+  const sort = normalizeProductListSortApiValue(rawSort);
   const query = searchParams?.get('q') || '';
 
   const [items, setItems] = useState<ProductListItemApiDTO[]>([]);
