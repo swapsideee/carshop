@@ -1,11 +1,11 @@
 import { fetchJson } from '@/shared/api';
 
-import type { BrandDTO } from '../../model/types';
+import type { BrandApiDTO } from '../../model/apiTypes';
 
 export type GetBrandsParams = {
   signal?: AbortSignal;
 };
 
-export async function getBrands({ signal }: GetBrandsParams = {}): Promise<BrandDTO[]> {
-  return fetchJson<BrandDTO[]>('/api/brands', { signal });
+export async function getBrands({ signal }: GetBrandsParams = {}): Promise<BrandApiDTO[]> {
+  return fetchJson<BrandApiDTO[]>('/api/brands', { signal });
 }

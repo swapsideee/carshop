@@ -8,4 +8,4 @@
  */
 
 export * from './api/client';
-export type { BrandDTO } from './model/types';
+export type { BrandApiDTO } from './model/apiTypes';
