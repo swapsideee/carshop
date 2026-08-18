@@ -11,20 +11,26 @@ type SendOrderEmailBody = OrderEmailBody & {
   cartItems: EmailCartItem[];
 };
 
-const emailUser = process.env.EMAIL_USER;
-const emailPass = process.env.EMAIL_PASS;
+let transporter: nodemailer.Transporter | undefined;
 
-if (!emailUser || !emailPass) {
-  throw new Error('Missing EMAIL_USER / EMAIL_PASS env vars');
+function getTransporter(): { transporter: nodemailer.Transporter; emailUser: string } {
+  const emailUser = process.env.EMAIL_USER;
+  const emailPass = process.env.EMAIL_PASS;
+
+  if (!emailUser || !emailPass) {
+    throw new Error('Missing EMAIL_USER / EMAIL_PASS env vars');
+  }
+
+  transporter ??= nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: emailUser,
+      pass: emailPass,
+    },
+  });
+
+  return { transporter, emailUser };
 }
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: emailUser,
-    pass: emailPass,
-  },
-});
 
 function validateRequestBody(body: unknown): asserts body is SendOrderEmailBody {
   if (typeof body !== 'object' || body === null) {
@@ -63,6 +69,7 @@ export async function sendOrderEmail(body: unknown): Promise<void> {
   validateRequestBody(body);
 
   const total = typeof body.total === 'number' ? body.total : 0;
+  const { transporter, emailUser } = getTransporter();
 
   const ownerEmail = process.env.OWNER_EMAIL;
   if (!ownerEmail) {

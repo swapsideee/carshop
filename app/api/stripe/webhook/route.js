@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { sessionToEmailPayload } from '@/features/order/checkout/lib/stripeMappers';
 import { sendOrderEmail } from '@/shared/api/server';
-import { stripe } from '@/shared/api/server/stripeClient';
+import { getStripe } from '@/shared/api/server/stripeClient';
 import { ErrorHandler, HttpError } from '@/shared/lib';
 
 export const runtime = 'nodejs';
@@ -16,6 +16,7 @@ const handler = async (req) => {
   if (!sig) throw new HttpError(400, 'Missing stripe-signature header');
 
   const rawBody = await req.text();
+  const stripe = getStripe();
 
   let event;
   try {
