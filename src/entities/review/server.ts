@@ -6,11 +6,19 @@
 
 import 'server-only';
 
-export { createReview, getReviewsByProduct, getReviewsFeed } from './api/server';
+export type { ReviewsRequest } from './api/server';
+export {
+  createReview,
+  getReviewsByProduct,
+  getReviewsFeed,
+  parseCreateReviewInput,
+  parseReviewsRequest,
+} from './api/server';
+export { toReviewsByProductApiResult, toReviewsFeedApiResult } from './api/server';
 export type {
   CreateReviewInput,
-  Review,
-  ReviewFeedItem,
-  ReviewsByProductResult,
-  ReviewsPageResult,
+  ReviewDTO,
+  ReviewFeedItemDTO,
+  ReviewsByProductResultDTO,
+  ReviewsPageResultDTO,
 } from './model/types';

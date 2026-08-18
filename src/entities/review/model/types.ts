@@ -1,25 +1,23 @@
-export type Review = {
+export type ReviewDTO = {
   id: number;
-  product_id: number;
+  productId: number;
   rating: number;
-  author_name: string;
+  authorName: string | null;
   comment: string;
-  created_at: string;
-  [key: string]: unknown;
+  createdAt: string | null;
 };
 
-export type ReviewFeedItem = {
+export type ReviewFeedItemDTO = {
   id: number;
   rating: number;
-  author_name: string;
+  authorName: string | null;
   comment: string;
-  created_at: string;
-  model?: string | null;
-  name?: string | null;
-  [key: string]: unknown;
+  createdAt: string | null;
+  productModel: string | null;
+  productName: string | null;
 };
 
-export type ReviewsPageResult<TItem = Review> = {
+export type ReviewsPageResultDTO<TItem> = {
   items: TItem[];
   total: number;
   totalPages: number;
@@ -27,13 +25,13 @@ export type ReviewsPageResult<TItem = Review> = {
   limit: number;
 };
 
-export type ReviewsByProductResult = ReviewsPageResult<Review> & {
+export type ReviewsByProductResultDTO = ReviewsPageResultDTO<ReviewDTO> & {
   avgRating: number;
 };
 
 export type CreateReviewInput = {
   productId: number;
   rating: number;
-  authorName: string;
+  authorName: string | null;
   comment: string;
 };

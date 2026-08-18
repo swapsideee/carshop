@@ -92,8 +92,14 @@ export default function ReviewForm({ onNewReview }) {
   }, []);
 
   const canSubmit = useMemo(() => {
-    return Boolean(productId) && Boolean(authorName.trim()) && rating > 0 && !isPosting;
-  }, [productId, authorName, rating, isPosting]);
+    return (
+      Boolean(productId) &&
+      Boolean(authorName.trim()) &&
+      Boolean(comment.trim()) &&
+      rating > 0 &&
+      !isPosting
+    );
+  }, [productId, authorName, comment, rating, isPosting]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -102,6 +108,8 @@ export default function ReviewForm({ onNewReview }) {
     if (!productId) return setError('Будь ласка, оберіть товар');
     if (!authorName.trim()) return setError("Будь ласка, введіть ім'я");
     if (rating === 0) return setError('Будь ласка, поставте оцiнку');
+
+    if (!comment.trim()) return setError('Будь ласка, введіть коментар');
 
     setIsPosting(true);
 
@@ -112,7 +120,7 @@ export default function ReviewForm({ onNewReview }) {
         body: JSON.stringify({
           productId,
           rating,
-          comment: comment.trim() || null,
+          comment: comment.trim(),
           authorName: authorName.trim(),
         }),
       });
@@ -206,12 +214,13 @@ export default function ReviewForm({ onNewReview }) {
 
         <div>
           <label className="block mb-1 text-sm text-gray-700 font-medium">
-            Коментар <span className="text-gray-400 font-normal">(необов&apos;язково)</span>
+            Коментар <span className="text-gray-400 font-normal">(обов&apos;язково)</span>
           </label>
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value.slice(0, MAX_COMMENT))}
             rows="4"
+            required
             placeholder="Ваш відгук"
             className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-600"
           />
