@@ -4,12 +4,15 @@ import { useEffect, useState } from 'react';
 
 import { getProductById } from '@/entities/product';
 
-import type { Product } from './types';
+import type { ProductDetailApiDTO } from './apiTypes';
 
-export function useProduct(productId: unknown): { product: Product | null; loading: boolean } {
+export function useProduct(productId: unknown): {
+  product: ProductDetailApiDTO | null;
+  loading: boolean;
+} {
   const id = Number(productId);
 
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<ProductDetailApiDTO | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

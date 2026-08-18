@@ -11,17 +11,24 @@
 
 import 'server-only';
 
-export type { CheckoutProduct, GetProductsPagedArgs } from './api/server';
+export type { GetProductsPagedArgs, ProductsRequest } from './api/server';
 export {
   getProductDetailsById,
   getProductsForCheckout,
   getProductsForSelect,
   getProductsPaged,
+  parseProductId,
+  parseProductsRequest,
+  toProductDetailApiDTO,
+  toProductsPagedApiResult,
 } from './api/server';
 export type {
-  Product,
+  CheckoutProduct,
+  ProductDetailDTO,
+  ProductListItemDTO,
+  ProductSelectItemDTO,
   ProductSortBy,
-  ProductsPagedResult,
-  RelatedProduct,
+  ProductsPagedResultDTO,
+  RelatedProductDTO,
   SortOrder,
 } from './model/types';

@@ -1,6 +1,6 @@
 import { fetchJson } from '@/shared/api';
 
-import type { Product } from '../../model/types';
+import type { ProductDetailApiDTO } from '../../model/apiTypes';
 
 export type GetProductByIdParams = {
   id: number;
@@ -10,7 +10,7 @@ export type GetProductByIdParams = {
 export async function getProductById({
   id,
   signal,
-}: GetProductByIdParams): Promise<Product | null> {
+}: GetProductByIdParams): Promise<ProductDetailApiDTO | null> {
   if (id == null) throw new Error('getProductById: id is required');
-  return fetchJson<Product | null>(`/api/products/${id}`, { signal });
+  return fetchJson<ProductDetailApiDTO | null>(`/api/products/${id}`, { signal });
 }

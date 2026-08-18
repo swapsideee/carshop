@@ -1,21 +1,14 @@
-import type { Product } from './types';
+import type { ProductDetailApiDTO } from './apiTypes';
 
 export function isProductSlug(slug: unknown): boolean {
   return !Number.isNaN(Number(slug));
 }
 
-export function getBrandSlug(product: Product | null | undefined): string {
-  return (
-    (product?.brand_slug as string | undefined) ||
-    (product?.brand as string | undefined) ||
-    (product?.brandName as string | undefined) ||
-    (product?.brand_name as string | undefined) ||
-    ((product?.brand as { slug?: string } | undefined)?.slug ?? '') ||
-    ''
-  );
+export function getBrandSlug(product: ProductDetailApiDTO | null | undefined): string {
+  return product?.brand_slug ?? '';
 }
 
-export function getProductImages(product: Product | null | undefined): string[] {
+export function getProductImages(product: ProductDetailApiDTO | null | undefined): string[] {
   const base = product?.image ? [String(product.image)] : [];
   const extra = Array.isArray(product?.images) ? product.images : [];
   return [...base, ...extra].filter(Boolean);
@@ -23,7 +16,7 @@ export function getProductImages(product: Product | null | undefined): string[] 
 
 export type ProductOption = 'pair' | 'set';
 
-export function getDefaultOption(product: Product | null | undefined): ProductOption {
+export function getDefaultOption(product: ProductDetailApiDTO | null | undefined): ProductOption {
   if (!product) return 'pair';
   const hasPair = product.price_pair !== null && product.price_pair !== undefined;
   const hasSet = product.price_set !== null && product.price_set !== undefined;
@@ -33,7 +26,10 @@ export function getDefaultOption(product: Product | null | undefined): ProductOp
   return 'pair';
 }
 
-export function getPriceState(product: Product | null | undefined, selectedOption: ProductOption) {
+export function getPriceState(
+  product: ProductDetailApiDTO | null | undefined,
+  selectedOption: ProductOption,
+) {
   const hasPair = product?.price_pair !== null && product?.price_pair !== undefined;
   const hasSet = product?.price_set !== null && product?.price_set !== undefined;
 

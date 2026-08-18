@@ -5,5 +5,6 @@ export * from './formatDateUA';
 export { HttpError } from './httpError';
 export { isOpenNow } from './isOpenNow';
 export { normalize } from './normalize';
+export { parseRequestSchema } from './parseRequestSchema';
 export { useSmartHeader } from './useSmartHeader';
 export { validateName, validatePhone } from './validator';
