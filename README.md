@@ -2,9 +2,9 @@
 
 > An auto-parts storefront with a catalogue, cart, reviews, and a demonstration payment flow.
 
-[![Status: frozen](https://img.shields.io/badge/status-frozen-6b7280?style=flat-square)](#status) [![License: MIT](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](./LICENSE) [![Next.js 16](https://img.shields.io/badge/Next.js-16.1.1-111111?style=flat-square&logo=next.js)](https://nextjs.org/) [![React 19](https://img.shields.io/badge/React-19.2.3-149eca?style=flat-square&logo=react)](https://react.dev/) [![TypeScript 5](https://img.shields.io/badge/TypeScript-5.9-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Status: refactoring](https://img.shields.io/badge/status-active_refactor-2563eb?style=flat-square)](#status) [![License: MIT](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](./LICENSE) [![Next.js 16](https://img.shields.io/badge/Next.js-16.3-111111?style=flat-square&logo=next.js)](https://nextjs.org/) [![React 19](https://img.shields.io/badge/React-19.2-149eca?style=flat-square&logo=react)](https://react.dev/) [![TypeScript 5](https://img.shields.io/badge/TypeScript-5.9-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
-[![MySQL 8](https://img.shields.io/badge/MySQL-8.0-4479a1?style=flat-square&logo=mysql&logoColor=white)](https://www.mysql.com/) [![Stripe](https://img.shields.io/badge/Stripe-20.2-635bff?style=flat-square&logo=stripe&logoColor=white)](https://stripe.com/) [![Zustand](https://img.shields.io/badge/Zustand-5.0-443e38?style=flat-square)](https://zustand.docs.pmnd.rs/) [![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4.1-06b6d4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![MySQL 8](https://img.shields.io/badge/MySQL-8.0-4479a1?style=flat-square&logo=mysql&logoColor=white)](https://www.mysql.com/) [![Stripe](https://img.shields.io/badge/Stripe-20.4-635bff?style=flat-square&logo=stripe&logoColor=white)](https://stripe.com/) [![Zustand](https://img.shields.io/badge/Zustand-5.0-443e38?style=flat-square)](https://zustand.docs.pmnd.rs/) [![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4.3-06b6d4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
 <a id="contents"></a>
 
@@ -30,7 +30,7 @@
 
 **PLAST-AVTO** is a web application for an automotive wheel-arch liner store. It was created as a foundation for a commercial website: users can browse and filter the catalogue, open product pages, add items to the cart, leave reviews, and proceed to payment through Stripe Checkout.
 
-The project was not launched as a production service and is now frozen. It is not a ready-to-use store for accepting real payments, but a codebase with a working domain model and interface that can serve as a demo, learning project, or starting point for further development.
+The project is under an active, incremental refactor from JavaScript/JSX to TypeScript/TSX. It is not a production-ready store for accepting real payments, but a codebase with a working domain model and interface that can serve as a demo, learning project, or starting point for further development.
 
 The application interface and copy are in Ukrainian; the configured contact details are placeholders.
 
@@ -38,9 +38,9 @@ The application interface and copy are in Ukrainian; the configured contact deta
 
 ## Status
 
-> **The project is on hold.** The latest work focused on a gradual migration from JavaScript/JSX to TypeScript/TSX: the `shared` layer, catalogue entities, reviews, cart, and selected UI components have been typed. The migration is incomplete, so JS/JSX and TS/TSX currently coexist in the repository.
+The server-side migration foundation is complete: database contracts and migrations, DTO/mappers, typed environment configuration, Stripe boundaries, and catalogue/review Route Handlers are in TypeScript. The next work is vertical client/UI migration, starting with the catalogue.
 
-At the time this README was updated, `src`, `app`, `pages`, and `tests` contain 96 JavaScript/JSX files and 62 TypeScript/TSX files. This mixed state is enabled by `allowJs` in [tsconfig.json](./tsconfig.json); TypeScript checking for existing JavaScript files is disabled with `checkJs: false`.
+JS/JSX and TS/TSX still coexist while the client is migrated incrementally. This mixed state is enabled by `allowJs` in [tsconfig.json](./tsconfig.json); TypeScript checking for remaining JavaScript files is disabled with `checkJs: false`.
 
 <a id="features"></a>
 
@@ -81,28 +81,30 @@ The repository is maintained with Bun. For a reproducible install, run:
 bun install --frozen-lockfile
 ```
 
-### 2. Start MySQL
+### 2. Configure MySQL and start Docker
 
-Copy the Docker configuration and enter your own values:
+Create a single local `.env` used by Docker and the database scripts. Start from `.env.example`, fill the `DB_*` application values, and add a strong `DB_ROOT_PASS` (it is required by Docker and `db:verify-empty`). Docker ignores the extra `DB_HOST` key.
 
 ```powershell
-Copy-Item .env.docker.example .env
-docker compose up -d mysql adminer
+Copy-Item .env.example .env
+# Add DB_ROOT_PASS=<a strong local password> to .env before continuing.
+docker compose up -d
 ```
 
 MySQL will be available at `localhost:${DB_PORT}` (default: `3306`); Adminer is available at [http://localhost:8080](http://localhost:8080).
 
-### 3. Configure the application environment
+### 3. Configure optional integrations
 
-```powershell
-Copy-Item .env.example .env.local
+For local Next.js-only overrides, create `.env.local` and add Stripe and email settings there. Keep database settings in `.env`, because the `db:*` scripts load that file directly. See the full list in [Environment variables](#environment).
+
+### 4. Prepare the database
+
+```bash
+bun run db:migrate
+bun run db:check
 ```
 
-Enter the connection settings for the same database and, if you need checkout, the Stripe and email variables. See the full list in [Environment variables](#environment).
-
-### 4. Prepare data
-
-Create the schema and import data manually. The repository includes **no** migrations, SQL dump, or seed script; expected tables are listed in [Database](#database).
+Migrations create and reconcile the canonical schema. They do not include catalogue content: load a compatible data-only dump or seed separately, then run `bun run db:check` again.
 
 ### 5. Run the application
 
@@ -116,20 +118,20 @@ Open [http://localhost:3000](http://localhost:3000). Use `bun run dev:host` to e
 
 ## Environment variables
 
-| Variable                    | Required for         | Notes                                                     |
-| --------------------------- | -------------------- | --------------------------------------------------------- |
-| `DB_HOST`                   | MySQL                | `127.0.0.1` for the Docker setup above                    |
-| `DB_PORT`                   | MySQL                | Application-to-database port, usually `3306`              |
-| `DB_USER` / `DB_PASS`       | MySQL                | Application credentials                                   |
-| `DB_NAME`                   | MySQL                | Database name                                             |
-| `DB_ROOT_PASS`              | Docker MySQL         | Required by `docker compose` only                         |
-| `STRIPE_SECRET_KEY`         | Stripe Checkout      | Required when calling the Stripe API                      |
-| `STRIPE_WEBHOOK_SECRET`     | Stripe webhook       | Verifies incoming events at `/api/stripe/webhook`         |
-| `APP_URL`                   | Stripe redirect URLs | For example, `http://localhost:3000`; this is the default |
-| `EMAIL_USER` / `EMAIL_PASS` | Nodemailer           | Gmail SMTP credentials; an app password is recommended    |
-| `OWNER_EMAIL`               | Order notification   | Store owner’s email address                               |
+| Variable                    | Required for         | Notes                                                                           |
+| --------------------------- | -------------------- | ------------------------------------------------------------------------------- |
+| `DB_HOST`                   | MySQL                | `127.0.0.1` for the Docker setup above                                          |
+| `DB_PORT`                   | MySQL                | Application-to-database port, usually `3306`                                    |
+| `DB_USER` / `DB_PASS`       | MySQL                | Application credentials                                                         |
+| `DB_NAME`                   | MySQL                | Database name                                                                   |
+| `DB_ROOT_PASS`              | Docker / DB smoke    | Required by Docker MySQL and `bun run db:verify-empty`                          |
+| `STRIPE_SECRET_KEY`         | Checkout and session | Required only when a Stripe checkout/session flow runs                          |
+| `STRIPE_WEBHOOK_SECRET`     | Stripe webhook       | Verifies incoming events at `/api/stripe/webhook`                               |
+| `APP_URL`                   | Checkout redirects   | Required in production; defaults to `http://localhost:3000` only in development |
+| `EMAIL_USER` / `EMAIL_PASS` | Nodemailer           | Gmail SMTP credentials; an app password is recommended                          |
+| `OWNER_EMAIL`               | Order notification   | Store owner’s email address                                                     |
 
-[.env.example](./.env.example) and [.env.docker.example](./.env.docker.example) contain only basic MySQL and email templates. Add the Stripe variables and `APP_URL` to `.env.local` manually; never commit secrets.
+[.env.example](./.env.example) and [.env.docker.example](./.env.docker.example) document the configuration with placeholders only. Put real secrets in local `.env`/`.env.local`; never commit them. Configuration is validated lazily: checkout/session use `STRIPE_SECRET_KEY`, with `APP_URL` required explicitly in production; webhook uses `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`; email is validated only when an order email is sent.
 
 For local webhook testing, configure Stripe CLI to forward events to `POST /api/stripe/webhook`, then store the issued signing secret in `STRIPE_WEBHOOK_SECRET`.
 
@@ -175,11 +177,12 @@ flowchart TB
 
 > The diagram shows the typical direction of UI composition and dependencies. It is not a mandatory call sequence for every screen or request.
 
-The current architecture has three key aspects:
+The current architecture has four key aspects:
 
 1. **UI composition:** `app/(routes)` selects an FSD page, which composes the required widgets, features, entities, and shared UI according to FSD dependency rules.
-2. **Current client data access:** the browser calls an `app/api` Route Handler; it delegates to an entity's server entry point, then to the shared MySQL client.
-3. **Checkout flow:** Route Handlers call Stripe; a completed Stripe webhook triggers the Nodemailer email flow.
+2. **Data contracts:** repositories map MySQL rows to internal DTOs. Route Handlers serialize these DTOs into the current legacy snake_case wire contracts, which client API modules consume.
+3. **Current client data access:** the browser calls an `app/api` Route Handler; it validates HTTP input, delegates to an entity's server entry point, then to the shared MySQL client.
+4. **Checkout flow:** Route Handlers obtain typed, lazy integration config; checkout/session and webhook pass their own validated Stripe secret key to the Stripe client. A completed Stripe webhook triggers the Nodemailer email flow.
 
 ### FSD layers
 
@@ -222,57 +225,68 @@ The application has one `app/(routes)/products/[slug]` route. A numeric `slug` i
 
 ### HTTP API
 
-| Method and path                 | Purpose                                                     |
-| ------------------------------- | ----------------------------------------------------------- |
-| `GET /api/products`             | Catalogue: `brand`, `q`, `sort`, `sort_by`, `page`, `limit` |
-| `GET /api/products?forSelect=1` | Lightweight `id`, `name`, and `model` list for selectors    |
-| `GET /api/products/:id`         | Product, its images, and related products                   |
-| `GET /api/brands`               | All brands                                                  |
-| `GET /api/reviews`              | Review feed; `productId` switches to a product’s reviews    |
-| `POST /api/reviews`             | Create a review                                             |
-| `POST /api/stripe/checkout`     | Create a Stripe Checkout Session                            |
-| `GET /api/stripe/session`       | Verify a Stripe Session after redirect                      |
-| `POST /api/stripe/webhook`      | Process `checkout.session.completed` and send emails        |
+| Method and path                 | Purpose                                                                 |
+| ------------------------------- | ----------------------------------------------------------------------- |
+| `GET /api/products`             | Catalogue: `brand`, `q`, `sort`, `sort_by`, `page`, `limit`             |
+| `GET /api/products?forSelect=1` | Lightweight `id`, `name`, and `model` list for selectors                |
+| `GET /api/products/:id`         | Product, images, and related products; `:id` is decimal only            |
+| `GET /api/brands`               | All brands                                                              |
+| `GET /api/reviews`              | Review feed; optional `productId`, `page`, and `limit`                  |
+| `POST /api/reviews`             | Create a review; non-empty `comment` is required, `authorName` nullable |
+| `POST /api/stripe/checkout`     | Create a Checkout Session from server-loaded product prices             |
+| `GET /api/stripe/session`       | Verify a Checkout Session using its HttpOnly ownership proof            |
+| `POST /api/stripe/webhook`      | Verify, deduplicate, and process Stripe payment events                  |
 
-The shared [`ErrorHandler`](./src/shared/lib/errorHandler.ts) turns Route Handler errors into `{ ok: false, message }` JSON responses and logs them on the server.
+The shared [`ErrorHandler`](./src/shared/lib/errorHandler.ts) turns expected 4xx Route Handler errors into `{ ok: false, message }` JSON responses. Unexpected failures are logged on the server and return a neutral 500 response.
 
 <a id="database"></a>
 
 ## Database
 
-The application connects to MySQL through the pool in [`src/shared/db/mysql.ts`](./src/shared/db/mysql.ts).
+The application connects to MySQL through the pool in [`src/shared/db/mysql.ts`](./src/shared/db/mysql.ts). The versioned schema is in [`db/migrations`](./db/migrations); it includes the catalogue, reviews, Stripe webhook idempotency, foreign keys, indexes, and the `reviews.rating` range constraint.
 
-> [!CAUTION]
-> **No database schema is provided.** The repository does not contain migrations, `CREATE TABLE` statements, an SQL dump, seed data, or an ORM schema. The Docker Compose configuration creates the MySQL service only — it does not initialise application tables or catalogue data.
+Apply it to a configured database with:
 
-The SQL queries imply this minimum set of tables and fields:
+```bash
+bun run db:migrate
+```
 
-| Table            | Usage                                                                   |
-| ---------------- | ----------------------------------------------------------------------- |
-| `products`       | Catalogue, product page, prices, `brand_id`, `brand_slug`, main image   |
-| `product_images` | Additional product images: `product_id`, `image_url`                    |
-| `brands`         | Brand list                                                              |
-| `reviews`        | Reviews: `product_id`, `rating`, `author_name`, `comment`, `created_at` |
+Use `bun run db:check` to validate both the schema and catalogue data integrity. `bun run db:check:schema` checks only the SQL contract. For a reproducibility check, `bun run db:verify-empty` creates and removes an isolated empty database, runs migrations as the application user, and executes catalogue/review smoke queries. This command is intended for local Docker MySQL and requires `DB_ROOT_PASS`; it never touches `DB_NAME`.
 
-This information is inferred from the code, not a complete database specification or a replacement for a schema. Before resuming development, create versioned migrations, define foreign keys and constraints, add search/filtering indexes, and provide development seed data.
+The canonical tables are:
+
+| Table                   | Usage                                                                   |
+| ----------------------- | ----------------------------------------------------------------------- |
+| `products`              | Catalogue, product page, prices, `brand_id`, `brand_slug`, main image   |
+| `product_images`        | Additional product images: `product_id`, `image_url`                    |
+| `brands`                | Brand list                                                              |
+| `reviews`               | Reviews: `product_id`, `rating`, `author_name`, `comment`, `created_at` |
+| `stripe_webhook_events` | Durable Stripe webhook idempotency records                              |
+| `schema_migrations`     | Applied migration identifiers                                           |
+
+Migrations create the structure, not catalogue content. A versioned development seed remains a separate task.
 
 <a id="commands"></a>
 
 ## Commands
 
-| Command                 | Action                                           |
-| ----------------------- | ------------------------------------------------ |
-| `bun run dev`           | Start Next.js in development mode with Turbopack |
-| `bun run dev:host`      | Start the development server on `0.0.0.0`        |
-| `bun run build`         | Build the production version                     |
-| `bun run start`         | Start the built application                      |
-| `bun run lint`          | Run ESLint                                       |
-| `bun run lint:fix`      | Apply available ESLint fixes                     |
-| `bun run format`        | Format files with Prettier                       |
-| `bun run check`         | Run ESLint, Prettier check, and `tsc --noEmit`   |
-| `bun run test`          | Start Vitest in watch mode                       |
-| `bun run test:run`      | Run tests once                                   |
-| `bun run test:coverage` | Generate a V8 coverage report                    |
+| Command                   | Action                                            |
+| ------------------------- | ------------------------------------------------- |
+| `bun run dev`             | Start Next.js in development mode with Turbopack  |
+| `bun run dev:host`        | Start the development server on `0.0.0.0`         |
+| `bun run build`           | Build the production version                      |
+| `bun run start`           | Start the built application                       |
+| `bun run lint`            | Run ESLint                                        |
+| `bun run lint:fix`        | Apply available ESLint fixes                      |
+| `bun run format`          | Format files with Prettier                        |
+| `bun run check`           | Run ESLint, Prettier check, and `tsc --noEmit`    |
+| `bun run test`            | Start Vitest in watch mode                        |
+| `bun run test:run`        | Run tests once                                    |
+| `bun run test:coverage`   | Generate a V8 coverage report                     |
+| `bun run db:migrate`      | Apply versioned database migrations               |
+| `bun run db:check`        | Validate the schema and catalogue data integrity  |
+| `bun run db:check:schema` | Validate only the canonical schema contract       |
+| `bun run db:verify-empty` | Rebuild and smoke-test an isolated empty database |
 
 <a id="testing"></a>
 
@@ -280,29 +294,28 @@ This information is inferred from the code, not a complete database specificatio
 
 The test infrastructure is configured: Vitest, jsdom, Testing Library, and V8 coverage. Its configuration is in [vitest.config.ts](./vitest.config.ts), with shared setup in [tests/setup.ts](./tests/setup.ts).
 
-However, automated testing does not yet cover product scenarios. The repository currently has only one unit-test file — [`formatDateUA.test.ts`](./src/shared/lib/__tests__/formatDateUA.test.ts) — with three date-formatting assertions. There are no tests for the API, database, cart, checkout, Stripe webhook, or end-to-end flows. `bun run test:run` currently passes.
+The suite includes focused tests for configuration boundaries, checkout schemas/mappers, session verification, DTO/serializer semantics, request validation, Stripe client isolation, and security helpers. Database schema reproducibility is checked separately by `bun run db:verify-empty`; broader API integration and end-to-end coverage remain future work.
 
 <a id="limitations"></a>
 
 ## Technical limitations and debt
 
-This is deliberately a candid list. It is more important than a polished storefront if the project is ever resumed.
+This is deliberately a candid list for the next refactoring and production-readiness phases.
 
-- **Frozen and incomplete TypeScript migration.** Strict TypeScript settings apply to TS code, but JavaScript files are not checked. New work should use TypeScript while the remaining modules are migrated incrementally.
+- **Incomplete TypeScript migration.** Strict TypeScript settings apply to TS code, but JavaScript files are not checked. The next vertical migrations are catalogue UI, reviews, cart, and checkout.
 - **The cart and “past orders” are local.** Zustand `persist` stores them in the browser; they are not synchronized across devices and disappear when browser storage is cleared.
-- **Stripe prices are client-provided.** `POST /api/stripe/checkout` turns browser-supplied `cartItems` into line items without reading prices from the database again. Before production, calculate the total server-side from product IDs and verify product availability.
-- **Webhook deduplication is temporary.** Processed Stripe event IDs are held in `globalThis` / process memory. The protection does not survive a restart or work across multiple instances; production needs a persistent idempotency store in a database or cache.
-- **There is no authentication, anti-spam protection, or rate limiting.** Reviews and the auxiliary email endpoint are public. Do not expose them in production without server-side protection, validation, and request-rate limits.
-- **No repeatable database provisioning.** A fresh environment cannot recreate the application schema and development data automatically. Add versioned migrations and reproducible seed data so local, test, and future deployment environments can be initialized consistently.
+- **Orders are not persisted.** Stripe webhook idempotency is durable, but checkout sessions and orders still lack an application-level order record. That also leaves the temporary one-active-session cookie limitation in place.
+- **There is no authentication, anti-spam protection, or rate limiting.** Review input has runtime validation, but the endpoint is still public. Do not expose it in production without request-rate limits and abuse protection.
+- **No repeatable catalogue seed.** A fresh environment can recreate the schema but not development catalogue data. Add a versioned, non-production seed when the data ownership policy is defined.
 - **Related products are selected heuristically.** The code extracts digits from `products.model`, searches for matches within the same brand, and limits the result to four products. A catalogue with stricter rules needs an explicit relationship.
 - **Contact details are placeholders.** Replace [`CONTACTS`](./src/shared/config/contacts.ts) and the map with real values before deployment.
-- **Payments and email depend on external configuration.** The UI explicitly targets Stripe test mode; checkout will not work without Stripe and Gmail credentials.
+- **Payments and email depend on external configuration.** Stripe checkout requires Stripe configuration, while order notification emails require Gmail/Nodemailer credentials. The current UI is intended for Stripe test mode.
 
-### Before resuming the project
+### Next engineering priorities
 
 1. Complete the TypeScript migration and either enable JS checking or remove the JS layer.
-2. Add migrations, seed data, indexes, and a database schema-management layer.
-3. Move order calculation server-side, and persist orders and Stripe event IDs in the database.
+2. Add a non-production catalogue seed and resolve any data-integrity findings reported by `bun run db:check`.
+3. Persist orders and checkout sessions in the database.
 4. Add authentication and protection for public endpoints, rate limiting, and observability.
 5. Cover critical paths with unit, integration, and end-to-end tests.
 6. Configure production settings, real contacts, domain, Stripe webhook, and secure email delivery.
