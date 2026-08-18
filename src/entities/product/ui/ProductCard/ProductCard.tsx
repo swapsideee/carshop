@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import type { Product } from '../../model/types';
+import type { ProductListItemApiDTO } from '../../model/apiTypes';
 
 type Props = {
-  product: Product;
+  product: ProductListItemApiDTO;
   clickable?: boolean;
   className?: string;
 };

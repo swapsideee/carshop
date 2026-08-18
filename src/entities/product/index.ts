@@ -9,13 +9,21 @@
  */
 
 export * from './api/client';
+export type {
+  ProductDetailApiDTO,
+  ProductListItemApiDTO,
+  ProductsPagedApiResult,
+  RelatedProductApiDTO,
+} from './model/apiTypes';
 export * from './model/selectors';
 export * as productSelectors from './model/selectors';
 export type {
-  Product,
+  ProductDetailDTO,
+  ProductListItemDTO,
+  ProductSelectItemDTO,
   ProductSortBy,
-  ProductsPagedResult,
-  RelatedProduct,
+  ProductsPagedResultDTO,
+  RelatedProductDTO,
   SortOrder,
 } from './model/types';
 export * from './model/useProduct';

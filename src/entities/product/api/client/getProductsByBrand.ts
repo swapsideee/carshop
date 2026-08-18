@@ -1,6 +1,7 @@
 import { fetchJson } from '@/shared/api';
 
-import type { ProductSortBy, ProductsPagedResult, SortOrder } from '../../model/types';
+import type { ProductsPagedApiResult } from '../../model/apiTypes';
+import type { ProductSortBy, SortOrder } from '../../model/types';
 
 export type GetProductsByBrandParams = {
   brand?: string;
@@ -18,7 +19,7 @@ export async function getProductsByBrand({
   sort,
   q,
   signal,
-}: GetProductsByBrandParams = {}): Promise<ProductsPagedResult> {
+}: GetProductsByBrandParams = {}): Promise<ProductsPagedApiResult> {
   const params = new URLSearchParams();
 
   if (brand) params.set('brand', String(brand));
@@ -30,5 +31,5 @@ export async function getProductsByBrand({
   const qs = params.toString();
   const url = qs ? `/api/products?${qs}` : '/api/products';
 
-  return fetchJson<ProductsPagedResult>(url, { signal });
+  return fetchJson<ProductsPagedApiResult>(url, { signal });
 }

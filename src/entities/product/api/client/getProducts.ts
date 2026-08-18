@@ -1,6 +1,7 @@
 import { fetchJson } from '@/shared/api';
 
-import type { ProductSortBy, ProductsPagedResult, SortOrder } from '../../model/types';
+import type { ProductsPagedApiResult } from '../../model/apiTypes';
+import type { ProductSortBy, SortOrder } from '../../model/types';
 
 export type GetProductsParams = {
   page?: number;
@@ -18,7 +19,7 @@ export async function getProducts({
   q,
   limit,
   signal,
-}: GetProductsParams = {}): Promise<ProductsPagedResult> {
+}: GetProductsParams = {}): Promise<ProductsPagedApiResult> {
   const params = new URLSearchParams();
 
   if (page != null) params.set('page', String(page));
@@ -30,5 +31,5 @@ export async function getProducts({
   const qs = params.toString();
   const url = qs ? `/api/products?${qs}` : '/api/products';
 
-  return fetchJson<ProductsPagedResult>(url, { signal, cache: 'no-store' });
+  return fetchJson<ProductsPagedApiResult>(url, { signal, cache: 'no-store' });
 }

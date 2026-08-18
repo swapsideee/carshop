@@ -8,11 +8,17 @@
  */
 
 export * from './api/client';
+export type {
+  ReviewApiDTO,
+  ReviewFeedItemApiDTO,
+  ReviewsByProductApiResult,
+  ReviewsPageApiResult,
+} from './model/apiTypes';
 export { avgRating, clampRating } from './model/selectors';
 export type {
   CreateReviewInput,
-  Review,
-  ReviewFeedItem,
-  ReviewsByProductResult,
-  ReviewsPageResult,
+  ReviewDTO,
+  ReviewFeedItemDTO,
+  ReviewsByProductResultDTO,
+  ReviewsPageResultDTO,
 } from './model/types';

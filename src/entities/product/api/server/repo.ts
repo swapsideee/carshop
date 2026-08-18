@@ -3,14 +3,26 @@ import 'server-only';
 import type { RowDataPacket } from 'mysql2/promise';
 
 import { getDB } from '@/shared/db';
+import type { ProductRow } from '@/shared/db/schema';
 
 import type {
-  Product,
+  CheckoutProduct,
+  ProductDetailDTO,
+  ProductSelectItemDTO,
   ProductSortBy,
-  ProductsPagedResult,
-  RelatedProduct,
+  ProductsPagedResultDTO,
   SortOrder,
 } from '../../model/types';
+import {
+  type CheckoutProductRow,
+  mapCheckoutProductRow,
+  mapProductDetail,
+  mapProductRow,
+  mapProductSelectRow,
+  type ProductImageUrlRow,
+  type ProductSelectRow,
+  type RelatedProductRow,
+} from './mappers';
 import {
   buildProductByIdQuery,
   buildProductImagesQuery,
@@ -21,20 +33,11 @@ import {
   type ProductsPagedQueryArgs,
 } from './queries';
 
-type ProductRow = RowDataPacket & Product;
 type CountRow = RowDataPacket & { total?: number | string | null };
-type ImageRow = RowDataPacket & { image_url: string };
-type RelatedRow = RowDataPacket & RelatedProduct;
-
-export type CheckoutProduct = {
-  id: number;
-  name: string | null;
-  model: string | null;
-  price_pair: number | null;
-  price_set: number | null;
-};
-
-type CheckoutProductRow = RowDataPacket & CheckoutProduct;
+type ImageRow = RowDataPacket & ProductImageUrlRow;
+type RelatedRow = RowDataPacket & RelatedProductRow;
+type CheckoutRow = RowDataPacket & CheckoutProductRow;
+type SelectRow = RowDataPacket & ProductSelectRow;
 
 export type GetProductsPagedArgs = ProductsPagedQueryArgs;
 
@@ -45,7 +48,7 @@ export async function getProductsPaged({
   sortOrder = 'ASC',
   limit = 24,
   page = 1,
-}: GetProductsPagedArgs = {}): Promise<ProductsPagedResult> {
+}: GetProductsPagedArgs = {}): Promise<ProductsPagedResultDTO> {
   const db = await getDB();
 
   const { itemsQuery, itemsParams, countQuery, countParams } = buildProductsPagedQueries({
@@ -63,10 +66,10 @@ export async function getProductsPaged({
 
   const [items] = await db.query<ProductRow[]>(itemsQuery, itemsParams);
 
-  return { items, page: Number(page), total, totalPages };
+  return { items: items.map(mapProductRow), page: Number(page), total, totalPages };
 }
 
-export async function getProductDetailsById(id: number): Promise<ProductRow | null> {
+export async function getProductDetailsById(id: number): Promise<ProductDetailDTO | null> {
   const db = await getDB();
 
   const { query, params } = buildProductByIdQuery(id);
@@ -77,7 +80,6 @@ export async function getProductDetailsById(id: number): Promise<ProductRow | nu
 
   const { query: imagesQuery, params: imagesParams } = buildProductImagesQuery(id);
   const [imageRows] = await db.query<ImageRow[]>(imagesQuery, imagesParams);
-  product.images = (imageRows || []).map((row) => row.image_url);
 
   const baseDigits = String(product.model ?? '').match(/\d+/)?.[0] || '';
   const brandId = Number(product.brand_id);
@@ -90,12 +92,10 @@ export async function getProductDetailsById(id: number): Promise<ProductRow | nu
     });
 
     const [relatedRows] = await db.query<RelatedRow[]>(relatedQuery, relatedParams);
-    product.related = relatedRows || [];
-  } else {
-    product.related = [];
+    return mapProductDetail(product, imageRows, relatedRows);
   }
 
-  return product;
+  return mapProductDetail(product, imageRows, []);
 }
 
 export async function getProductsForCheckout(productIds: number[]): Promise<CheckoutProduct[]> {
@@ -103,18 +103,10 @@ export async function getProductsForCheckout(productIds: number[]): Promise<Chec
 
   const db = await getDB();
   const { query, params } = buildProductsForCheckoutQuery(productIds);
-  const [rows] = await db.query<CheckoutProductRow[]>(query, params);
+  const [rows] = await db.query<CheckoutRow[]>(query, params);
 
-  return rows.map((row) => ({
-    id: Number(row.id),
-    name: row.name ?? null,
-    model: row.model ?? null,
-    price_pair: row.price_pair == null ? null : Number(row.price_pair),
-    price_set: row.price_set == null ? null : Number(row.price_set),
-  }));
+  return rows.map(mapCheckoutProductRow);
 }
-
-type ProductSelectRow = RowDataPacket & { id: number; name: string | null; model: string | null };
 
 export async function getProductsForSelect({
   brand,
@@ -124,15 +116,11 @@ export async function getProductsForSelect({
   brand?: string;
   q?: string;
   limit?: number;
-} = {}): Promise<Array<{ id: number; name: string | null; model: string | null }>> {
+} = {}): Promise<ProductSelectItemDTO[]> {
   const db = await getDB();
 
   const { query, params } = buildProductsForSelectQuery({ brand, q, limit });
-  const [rows] = await db.query<ProductSelectRow[]>(query, params);
+  const [rows] = await db.query<SelectRow[]>(query, params);
 
-  return rows.map((r) => ({
-    id: Number(r.id),
-    name: r.name ?? null,
-    model: r.model ?? null,
-  }));
+  return rows.map(mapProductSelectRow);
 }

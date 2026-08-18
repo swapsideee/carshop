@@ -3,14 +3,15 @@ import 'server-only';
 import type { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
 import { getDB } from '@/shared/db';
+import type { ReviewRow } from '@/shared/db/schema';
 
 import type {
   CreateReviewInput,
-  Review,
-  ReviewFeedItem,
-  ReviewsByProductResult,
-  ReviewsPageResult,
+  ReviewFeedItemDTO,
+  ReviewsByProductResultDTO,
+  ReviewsPageResultDTO,
 } from '../../model/types';
+import { mapReviewFeedRow, mapReviewRow, type ReviewFeedRow } from './mappers';
 import {
   getReviewsAvgByProductQuery,
   getReviewsCountByProductQuery,
@@ -22,8 +23,7 @@ import {
 
 type CountRow = RowDataPacket & { total?: number | string | null };
 type AvgRow = RowDataPacket & { avgRating?: number | string | null };
-type ReviewRow = RowDataPacket & Review;
-type ReviewFeedRow = RowDataPacket & ReviewFeedItem;
+type FeedRow = RowDataPacket & ReviewFeedRow;
 
 export async function createReview({
   productId,
@@ -45,7 +45,7 @@ export async function getReviewsByProduct({
   productId,
   page = 1,
   limit = 10,
-}: GetReviewsByProductArgs): Promise<ReviewsByProductResult> {
+}: GetReviewsByProductArgs): Promise<ReviewsByProductResultDTO> {
   const db = await getDB();
 
   const safePage = Math.max(Number(page) || 1, 1);
@@ -66,7 +66,14 @@ export async function getReviewsByProduct({
     offset,
   ]);
 
-  return { items, total, totalPages, page: safePage, limit: safeLimit, avgRating };
+  return {
+    items: items.map(mapReviewRow),
+    total,
+    totalPages,
+    page: safePage,
+    limit: safeLimit,
+    avgRating,
+  };
 }
 
 export type GetReviewsFeedArgs = {
@@ -75,7 +82,7 @@ export type GetReviewsFeedArgs = {
 };
 
 export async function getReviewsFeed({ page = 1, limit = 10 }: GetReviewsFeedArgs = {}): Promise<
-  ReviewsPageResult<ReviewFeedItem>
+  ReviewsPageResultDTO<ReviewFeedItemDTO>
 > {
   const db = await getDB();
 
@@ -88,7 +95,13 @@ export async function getReviewsFeed({ page = 1, limit = 10 }: GetReviewsFeedArg
   const total = Number(countRow?.total) || 0;
   const totalPages = Math.max(Math.ceil(total / safeLimit), 1);
 
-  const [items] = await db.query<ReviewFeedRow[]>(getReviewsPageQuery, [offset, safeLimit]);
+  const [items] = await db.query<FeedRow[]>(getReviewsPageQuery, [offset, safeLimit]);
 
-  return { items, total, totalPages, page: safePage, limit: safeLimit };
+  return {
+    items: items.map(mapReviewFeedRow),
+    total,
+    totalPages,
+    page: safePage,
+    limit: safeLimit,
+  };
 }

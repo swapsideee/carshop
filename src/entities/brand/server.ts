@@ -7,4 +7,4 @@
 import 'server-only';
 
 export { getAllBrands } from './api/server';
-export type { Brand } from './model/types';
+export type { BrandDTO } from './model/types';

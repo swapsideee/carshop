@@ -1,6 +1,6 @@
 import { fetchJson } from '@/shared/api';
 
-import type { ReviewsByProductResult } from '../../model/types';
+import type { ReviewsByProductApiResult } from '../../model/apiTypes';
 
 export const REVIEWS_LIMIT_DEFAULT = 10;
 
@@ -16,11 +16,11 @@ export async function getReviews({
   page = 1,
   limit = REVIEWS_LIMIT_DEFAULT,
   signal,
-}: GetReviewsParams): Promise<ReviewsByProductResult> {
+}: GetReviewsParams): Promise<ReviewsByProductApiResult> {
   const params = new URLSearchParams();
   params.set('productId', String(productId));
   params.set('page', String(page));
   params.set('limit', String(limit));
 
-  return fetchJson<ReviewsByProductResult>(`/api/reviews?${params.toString()}`, { signal });
+  return fetchJson<ReviewsByProductApiResult>(`/api/reviews?${params.toString()}`, { signal });
 }
