@@ -17,22 +17,17 @@ export default function ProductsCatalog() {
     selectedBrand,
     sort,
     query,
-
     items,
     brands,
     totalPages,
     total,
-
     showMobileFilters,
     setShowMobileFilters,
-
     isPending,
     isLoadingMore,
     isBootSkeleton,
     isEmpty,
-
     loadedTo,
-
     updateParams,
     resetFilters,
     onLoadMore,
@@ -49,12 +44,12 @@ export default function ProductsCatalog() {
         <div className="lg:sticky lg:top-24">
           <FiltersPanel
             query={query}
-            setQuery={(v) => updateParams({ q: v })}
+            setQuery={(value: string) => updateParams({ q: value })}
             brands={brands}
             selectedBrand={selectedBrand}
-            setSelectedBrand={(v) => updateParams({ brand: v })}
+            setSelectedBrand={(value: string) => updateParams({ brand: value })}
             sort={sort}
-            setSort={(v) => updateParams({ sort: v })}
+            setSort={(value: string) => updateParams({ sort: value })}
             resetFilters={resetFilters}
             total={total}
             shown={items.length}
@@ -65,7 +60,7 @@ export default function ProductsCatalog() {
 
       <div className="mb-4 w-full lg:hidden">
         <button
-          onClick={() => setShowMobileFilters((v) => !v)}
+          onClick={() => setShowMobileFilters((value) => !value)}
           className="flex w-full items-center justify-center gap-2 rounded-md bg-gray-900 px-4 py-2 text-white"
         >
           Фільтри
@@ -83,12 +78,12 @@ export default function ProductsCatalog() {
             >
               <FiltersPanel
                 query={query}
-                setQuery={(v) => updateParams({ q: v })}
+                setQuery={(value: string) => updateParams({ q: value })}
                 brands={brands}
                 selectedBrand={selectedBrand}
-                setSelectedBrand={(v) => updateParams({ brand: v })}
+                setSelectedBrand={(value: string) => updateParams({ brand: value })}
                 sort={sort}
-                setSort={(v) => updateParams({ sort: v })}
+                setSort={(value: string) => updateParams({ sort: value })}
                 resetFilters={resetFilters}
                 total={total}
                 shown={items.length}
@@ -103,8 +98,8 @@ export default function ProductsCatalog() {
         <main>
           {isBootSkeleton ? (
             <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
-              {Array.from({ length: 12 }).map((_, i) => (
-                <SkeletonCard key={i} />
+              {Array.from({ length: 12 }).map((_, index) => (
+                <SkeletonCard key={index} />
               ))}
             </div>
           ) : isEmpty ? (
@@ -144,7 +139,7 @@ export default function ProductsCatalog() {
                   page={page}
                   totalPages={totalPages}
                   loadedTo={Math.max(page, loadedTo)}
-                  onChange={(p) => updateParams({ page: p }, { scrollTop: true })}
+                  onChange={(nextPage) => updateParams({ page: nextPage }, { scrollTop: true })}
                 />
               </div>
             </>
