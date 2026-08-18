@@ -14,7 +14,10 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "node ./node_modules/vitest/vitest.mjs run --coverage",
-    "db:migrate": "bun scripts/migrate.ts"
+    "db:migrate": "bun scripts/migrate.ts",
+    "db:check": "bun scripts/checkDatabase.ts",
+    "db:check:schema": "bun scripts/checkDatabase.ts --schema-only",
+    "db:verify-empty": "bun scripts/verifyEmptyDatabase.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
