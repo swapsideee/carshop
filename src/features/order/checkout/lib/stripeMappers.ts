@@ -100,13 +100,19 @@ export function sessionToEmailPayload(session: Stripe.Checkout.Session) {
 }
 
 export function sessionToClientVerification(session: Stripe.Checkout.Session) {
+  const metadata = session.metadata || {};
+
   return {
     paid: session.payment_status === 'paid',
     id: session.id,
     currency: session.currency,
     payment_status: session.payment_status,
     customer_email: session.customer_details?.email || session.customer_email || null,
-    metadata: session.metadata || {},
+    customer: {
+      name: metadata.name || session.customer_details?.name || '',
+      phone: metadata.phone || '',
+      comment: metadata.comment || '',
+    },
     cartItems: sessionToCartItems(session),
     total: sessionToTotal(session),
   };
