@@ -49,7 +49,7 @@ export default function ProductsCatalog() {
             selectedBrand={selectedBrand}
             setSelectedBrand={(value: string) => updateParams({ brand: value })}
             sort={sort}
-            setSort={(value: string) => updateParams({ sort: value })}
+            setSort={(value) => updateParams({ sort: value })}
             resetFilters={resetFilters}
             total={total}
             shown={items.length}
@@ -83,7 +83,7 @@ export default function ProductsCatalog() {
                 selectedBrand={selectedBrand}
                 setSelectedBrand={(value: string) => updateParams({ brand: value })}
                 sort={sort}
-                setSort={(value: string) => updateParams({ sort: value })}
+                setSort={(value) => updateParams({ sort: value })}
                 resetFilters={resetFilters}
                 total={total}
                 shown={items.length}

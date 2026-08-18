@@ -1,3 +1,13 @@
+export type ProductListSortApiValue = '' | 'asc' | 'desc';
+
+export function isProductListSortApiValue(value: string): value is ProductListSortApiValue {
+  return value === '' || value === 'asc' || value === 'desc';
+}
+
+export function normalizeProductListSortApiValue(value: string): ProductListSortApiValue {
+  return isProductListSortApiValue(value) ? value : '';
+}
+
 export type ProductListItemApiDTO = {
   id: number;
   name: string | null;

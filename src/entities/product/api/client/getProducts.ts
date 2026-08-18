@@ -1,12 +1,11 @@
 import { fetchJson } from '@/shared/api';
 
-import type { ProductsPagedApiResult } from '../../model/apiTypes';
-import type { ProductSortBy, SortOrder } from '../../model/types';
+import type { ProductListSortApiValue, ProductsPagedApiResult } from '../../model/apiTypes';
 
 export type GetProductsParams = {
   page?: number;
   brand?: string;
-  sort?: ProductSortBy | `${ProductSortBy}:${SortOrder}` | string;
+  sort?: ProductListSortApiValue;
   q?: string;
   limit?: number;
   signal?: AbortSignal;

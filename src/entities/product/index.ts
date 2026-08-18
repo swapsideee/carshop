@@ -12,9 +12,11 @@ export * from './api/client';
 export type {
   ProductDetailApiDTO,
   ProductListItemApiDTO,
+  ProductListSortApiValue,
   ProductsPagedApiResult,
   RelatedProductApiDTO,
 } from './model/apiTypes';
+export { isProductListSortApiValue, normalizeProductListSortApiValue } from './model/apiTypes';
 export * from './model/selectors';
 export * as productSelectors from './model/selectors';
 export type {

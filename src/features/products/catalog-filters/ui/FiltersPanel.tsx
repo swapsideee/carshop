@@ -1,9 +1,36 @@
-'use client';
-
 import { X } from 'lucide-react';
-import { useEffect, useMemo, useRef } from 'react';
+import {
+  type ChangeEvent,
+  type KeyboardEvent,
+  type ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 
-function Chip({ children, onRemove }) {
+import { type BrandApiDTO } from '@/entities/brand';
+import { isProductListSortApiValue, type ProductListSortApiValue } from '@/entities/product';
+
+type ChipProps = {
+  children: ReactNode;
+  onRemove: () => void;
+};
+
+type FiltersPanelProps = {
+  query: string;
+  setQuery: (query: string) => void;
+  sort: ProductListSortApiValue;
+  setSort: (sort: ProductListSortApiValue) => void;
+  selectedBrand: string;
+  setSelectedBrand: (brand: string) => void;
+  brands: BrandApiDTO[];
+  resetFilters: () => void;
+  total?: number;
+  shown?: number;
+  page?: number;
+};
+
+function Chip({ children, onRemove }: ChipProps) {
   return (
     <span className="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white px-3 py-1 text-sm font-medium text-gray-800 shadow-sm">
       <span className="truncate">{children}</span>
@@ -31,35 +58,53 @@ export default function FiltersPanel({
   total = 0,
   shown = 0,
   page = 1,
-}) {
-  const inputKey = useMemo(() => `${query ?? ''}`, [query]);
-  const timerRef = useRef(null);
+}: FiltersPanelProps) {
+  const inputKey = useMemo(() => query, [query]);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const sortLabel =
     sort === 'asc' ? 'Від дешевих до дорогих' : sort === 'desc' ? 'Від дорогих до дешевих' : '';
 
   const brandName = useMemo(() => {
     if (!selectedBrand) return '';
-    const b = brands.find((x) => x.slug === selectedBrand);
-    return b?.name ?? selectedBrand;
+    const brand = brands.find((item) => item.slug === selectedBrand);
+    return brand?.name ?? selectedBrand;
   }, [brands, selectedBrand]);
 
-  const hasAny = Boolean((query && query.trim()) || selectedBrand || sort);
+  const hasAny = Boolean(query.trim() || selectedBrand || sort);
 
-  const scheduleQuery = (val) => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => setQuery(val), 350);
+  const scheduleQuery = (value: string): void => {
+    if (timerRef.current !== null) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => setQuery(value), 350);
   };
 
-  const flushQuery = (val) => {
-    if (timerRef.current) clearTimeout(timerRef.current);
+  const flushQuery = (value: string): void => {
+    if (timerRef.current !== null) clearTimeout(timerRef.current);
     timerRef.current = null;
-    setQuery(val);
+    setQuery(value);
+  };
+
+  const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    scheduleQuery(event.target.value);
+  };
+
+  const handleQueryKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
+    if (event.key === 'Enter') flushQuery(event.currentTarget.value);
+  };
+
+  const handleSortChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+    const value = event.target.value;
+
+    if (isProductListSortApiValue(value)) setSort(value);
+  };
+
+  const handleBrandChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+    setSelectedBrand(event.target.value);
   };
 
   useEffect(() => {
     return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
+      if (timerRef.current !== null) clearTimeout(timerRef.current);
     };
   }, []);
 
@@ -90,7 +135,7 @@ export default function FiltersPanel({
         {hasAny && (
           <div className="mt-4">
             <div className="flex flex-wrap gap-2">
-              {query?.trim() ? (
+              {query.trim() ? (
                 <Chip onRemove={() => setQuery('')}>{`Пошук: ${query.trim()}`}</Chip>
               ) : null}
 
@@ -121,11 +166,9 @@ export default function FiltersPanel({
             <input
               key={inputKey}
               type="text"
-              defaultValue={query ?? ''}
-              onChange={(e) => scheduleQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') flushQuery(e.currentTarget.value);
-              }}
+              defaultValue={query}
+              onChange={handleQueryChange}
+              onKeyDown={handleQueryKeyDown}
               placeholder="Введіть назву або модель"
               className="
                 w-full px-3 py-2 rounded-md
@@ -140,7 +183,7 @@ export default function FiltersPanel({
             <label className="block mb-1 text-sm font-medium text-gray-700">Сортування</label>
             <select
               value={sort}
-              onChange={(e) => setSort(e.target.value)}
+              onChange={handleSortChange}
               className="
                 w-full px-3 py-2 rounded-md cursor-pointer
                 border border-gray-300 bg-white text-gray-900
@@ -158,7 +201,7 @@ export default function FiltersPanel({
             <label className="block mb-1 text-sm font-medium text-gray-700">Марка</label>
             <select
               value={selectedBrand}
-              onChange={(e) => setSelectedBrand(e.target.value)}
+              onChange={handleBrandChange}
               className="
                 w-full px-3 py-2 rounded-md cursor-pointer
                 border border-gray-300 bg-white text-gray-900
@@ -167,9 +210,9 @@ export default function FiltersPanel({
               "
             >
               <option value="">Усі марки</option>
-              {brands.map((b) => (
-                <option key={b.id} value={b.slug}>
-                  {b.name}
+              {brands.map((brand) => (
+                <option key={brand.id} value={brand.slug ?? ''}>
+                  {brand.name}
                 </option>
               ))}
             </select>
