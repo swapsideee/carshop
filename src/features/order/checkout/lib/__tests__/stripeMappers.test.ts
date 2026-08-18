@@ -9,8 +9,8 @@ const product: CheckoutProduct = {
   id: 42,
   name: 'Brake pads',
   model: 'Model X',
-  price_pair: 1250,
-  price_set: 2400,
+  pricePair: 1250,
+  priceSet: 2400,
 };
 
 describe('cartItemsToLineItems', () => {
@@ -29,7 +29,7 @@ describe('cartItemsToLineItems', () => {
     expect(() =>
       cartItemsToLineItems(
         [{ productId: 42, option: 'set', quantity: 1 }],
-        [{ ...product, price_set: null }],
+        [{ ...product, priceSet: null }],
       ),
     ).toThrow(HttpError);
 

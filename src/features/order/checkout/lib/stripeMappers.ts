@@ -1,3 +1,5 @@
+import 'server-only';
+
 import type Stripe from 'stripe';
 
 import type { CheckoutProduct } from '@/entities/product/server';
@@ -26,7 +28,7 @@ function getProductName(product: CheckoutProduct, option: CheckoutCartItem['opti
 }
 
 function getOptionPrice(product: CheckoutProduct, option: CheckoutCartItem['option']): number {
-  const price = option === 'pair' ? product.price_pair : product.price_set;
+  const price = option === 'pair' ? product.pricePair : product.priceSet;
 
   if (price == null || !Number.isFinite(price) || price <= 0) {
     throw new HttpError(400, 'Обраний варіант товару недоступний');
