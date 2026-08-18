@@ -1,5 +1,6 @@
-export type Brand = {
+export type BrandDTO = {
   id: number;
-  name: string;
-  [key: string]: unknown;
+  name: string | null;
+  slug: string | null;
+  image: string | null;
 };
