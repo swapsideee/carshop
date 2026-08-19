@@ -3,14 +3,24 @@
 import { ShoppingCart } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { getDefaultOption, getPriceState, getProductImages } from '@/entities/product';
+import {
+  getDefaultOption,
+  getPriceState,
+  getProductImages,
+  type ProductDetailApiDTO,
+  type ProductOption,
+} from '@/entities/product';
 import { useAddToCart } from '@/features/cart';
 import { cx } from '@/shared/lib';
 import { PriceSelector, ProductGallery } from '@/shared/ui';
 
-export default function ProductDetails({ product }) {
+type ProductDetailsProps = {
+  product: ProductDetailApiDTO;
+};
+
+export default function ProductDetails({ product }: ProductDetailsProps) {
   const defaultOption = useMemo(() => getDefaultOption(product), [product]);
-  const [selectedOption, setSelectedOption] = useState(defaultOption);
+  const [selectedOption, setSelectedOption] = useState<ProductOption>(defaultOption);
 
   useEffect(() => {
     setSelectedOption(defaultOption);
@@ -23,6 +33,19 @@ export default function ProductDetails({ product }) {
   );
 
   const add = useAddToCart();
+
+  const handleAddToCart = (): void => {
+    add({
+      product: {
+        id: product.id,
+        model: String(product.model),
+        image: product.image,
+        price_pair: product.price_pair,
+        price_set: product.price_set,
+      },
+      selectedOption,
+    });
+  };
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 overflow-hidden rounded-2xl bg-white p-4 shadow-2xl ring-1 ring-gray-100 md:flex-row md:p-8">
@@ -141,7 +164,7 @@ export default function ProductDetails({ product }) {
 
         <div className="mt-auto flex items-center gap-2">
           <button
-            onClick={() => add({ product, selectedOption })}
+            onClick={handleAddToCart}
             disabled={noPrice}
             className={cx(
               'flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold shadow-md md:px-6 md:py-4 md:text-base',
