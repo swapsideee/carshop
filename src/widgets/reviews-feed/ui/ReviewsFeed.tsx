@@ -11,8 +11,8 @@ export default function ReviewsFeed() {
     limit: 5,
   });
 
-  const handleNewReview = useCallback(() => {
-    refresh();
+  const handleNewReview = useCallback((): void => {
+    void refresh();
   }, [refresh]);
 
   return (

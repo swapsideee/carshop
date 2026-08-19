@@ -1,15 +1,24 @@
-'use client';
-
 import { useMemo } from 'react';
 
+import type { ReviewFeedItemApiDTO } from '@/entities/review';
 import { LoadMoreButton, Stars } from '@/shared/ui';
 
 import ReviewSkeleton from './ReviewSkeleton';
 
-function getModelLabel(r) {
-  const name = r?.name;
-  const model = r?.model;
+type ReviewListProps = {
+  items: ReviewFeedItemApiDTO[];
+  total: number;
+  loading: boolean;
+  loadingMore: boolean;
+  canLoadMore: boolean;
+  onLoadMore: () => void;
+};
+
+function getModelLabel(review: ReviewFeedItemApiDTO): string {
+  const { name, model } = review;
+
   if (name && model && name !== model) return `${name} ${model}`;
+
   return model || name || '';
 }
 
@@ -20,12 +29,13 @@ export default function ReviewList({
   loadingMore,
   canLoadMore,
   onLoadMore,
-}) {
-  const shown = items?.length || 0;
+}: ReviewListProps) {
+  const shown = items.length;
 
   const headerText = useMemo(() => {
     if (loading) return 'Завантаження…';
     if (!shown) return 'Відгуків ще немає';
+
     return `Показано ${shown} з ${Number(total) || 0}`;
   }, [loading, shown, total]);
 
@@ -38,8 +48,8 @@ export default function ReviewList({
 
       {loading ? (
         <div className="space-y-4">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <ReviewSkeleton key={i} />
+          {Array.from({ length: 5 }).map((_, index) => (
+            <ReviewSkeleton key={index} />
           ))}
         </div>
       ) : shown === 0 ? (
@@ -47,26 +57,29 @@ export default function ReviewList({
       ) : (
         <>
           <div className="space-y-4">
-            {items.map((r) => {
-              const rating = Math.max(1, Math.min(5, Number(r?.rating) || 0));
+            {items.map((review) => {
+              const rating = Math.max(1, Math.min(5, Number(review.rating) || 0));
+
               return (
                 <div
-                  key={r.id}
+                  key={review.id}
                   className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition"
                 >
                   <div className="mb-3 flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <div className="text-gray-900 font-semibold wrap-break-word">
-                        {getModelLabel(r)}
+                        {getModelLabel(review)}
                       </div>
                     </div>
 
                     <div className="shrink-0 text-right text-sm text-gray-500 leading-tight">
-                      {r.author_name ? (
-                        <div className="font-medium text-gray-700">{r.author_name}</div>
+                      {review.author_name ? (
+                        <div className="font-medium text-gray-700">{review.author_name}</div>
                       ) : null}
                       <div>
-                        {r.created_at ? new Date(r.created_at).toLocaleDateString('uk-UA') : ''}
+                        {review.created_at
+                          ? new Date(review.created_at).toLocaleDateString('uk-UA')
+                          : ''}
                       </div>
                     </div>
                   </div>
@@ -76,9 +89,9 @@ export default function ReviewList({
                     <span className="text-sm text-gray-600">{rating} / 5</span>
                   </div>
 
-                  {r.comment ? (
+                  {review.comment ? (
                     <p className="text-gray-700 leading-relaxed wrap-break-word whitespace-pre-wrap">
-                      {r.comment}
+                      {review.comment}
                     </p>
                   ) : null}
                 </div>
