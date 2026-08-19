@@ -2,22 +2,30 @@
 
 import { useRef } from 'react';
 
-import { ProductCard } from '@/entities/product';
+import { ProductCard, type ProductListItemApiDTO } from '@/entities/product';
 import { cx } from '@/shared/lib';
 
-export default function RelatedRow({ title, items, loading }) {
-  const ref = useRef(null);
+type RelatedRowProps = {
+  title: string;
+  items: ProductListItemApiDTO[];
+  loading: boolean;
+};
+
+type ScrollDirection = -1 | 1;
+
+export default function RelatedRow({ title, items, loading }: RelatedRowProps) {
+  const ref = useRef<HTMLDivElement | null>(null);
   const canShow = Array.isArray(items) && items.length > 0;
 
-  const scrollByCards = (dir) => {
-    const el = ref.current;
-    if (!el) return;
+  const scrollByCards = (direction: ScrollDirection): void => {
+    const element = ref.current;
+    if (!element) return;
 
-    const first = el.querySelector('[data-card="1"]');
-    const cardW = first?.getBoundingClientRect?.().width || 260;
+    const firstCard = element.querySelector<HTMLElement>('[data-card="1"]');
+    const cardWidth = firstCard?.getBoundingClientRect().width || 260;
     const gap = 12;
 
-    el.scrollBy({ left: dir * (cardW + gap) * 2, behavior: 'smooth' });
+    element.scrollBy({ left: direction * (cardWidth + gap) * 2, behavior: 'smooth' });
   };
 
   return (
@@ -69,13 +77,13 @@ export default function RelatedRow({ title, items, loading }) {
               'snap-x snap-proximity',
             )}
           >
-            {items.slice(0, 16).map((p, idx) => (
+            {items.slice(0, 16).map((item, index) => (
               <div
-                key={p.id}
-                data-card={idx === 0 ? '1' : undefined}
+                key={item.id}
+                data-card={index === 0 ? '1' : undefined}
                 className="w-[70%] shrink-0 snap-start sm:w-[44%] md:w-[32%] xl:w-[24%]"
               >
-                <ProductCard product={p} clickable />
+                <ProductCard product={item} clickable />
               </div>
             ))}
           </div>
