@@ -1,13 +1,48 @@
-'use client';
+import { type ChangeEvent, type FormEvent, useEffect, useMemo, useState } from 'react';
 
-import { useEffect, useMemo, useState } from 'react';
+import type { ProductSelectApiDTO, ProductSelectApiResult } from '@/entities/product';
+import type { CreateReviewApiInput } from '@/entities/review';
 
-function RatingStar({ filled, onClick, onMouseEnter, size = 20, title }) {
+const MAX_COMMENT = 500;
+const RATING_VALUES = [1, 2, 3, 4, 5] as const;
+
+type RatingValue = (typeof RATING_VALUES)[number];
+type Rating = 0 | RatingValue;
+
+type RatingStarProps = {
+  filled: boolean;
+  onClick: () => void;
+  onMouseEnter: () => void;
+  size?: number;
+  title: string;
+};
+
+type ReviewFormProps = {
+  onNewReview?: () => void;
+};
+
+function getProductLabel(product: ProductSelectApiDTO): string {
+  const { name, model } = product;
+
+  if (name && name !== model) return `${name} ${model}`;
+
+  return model ?? '';
+}
+
+function getLegacyTotalPages(response: ProductSelectApiResult | null): number {
+  if (response === null || !('totalPages' in response)) return 1;
+
+  return Number(response.totalPages) || 1;
+}
+
+function RatingStar({ filled, onClick, onMouseEnter, size = 20, title }: RatingStarProps) {
+  const titleAttributes = { title };
+
   return (
     <svg
+      {...titleAttributes}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
-      title={title}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill={filled ? '#84cc16' : 'none'}
@@ -19,21 +54,19 @@ function RatingStar({ filled, onClick, onMouseEnter, size = 20, title }) {
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.208 3.708a1 1 0 00.95.69h3.905c.969 0 1.371 1.24.588 1.81l-3.158 2.294a1 1 0 00-.363 1.118l1.208 3.708c.3.921-.755 1.688-1.538 1.118L12 13.347l-3.158 2.294c-.783.57-1.838-.197-1.538-1.118l1.208-3.708a1 1 0 00-.363-1.118L4.99 9.135c-.783-.57-.38-1.81.588-1.81h3.905a1 1 0 00.95-.69l1.208-3.708z"
+        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.208 3.708a1 1 0 00.95.69h3.905c.969 0 1.371 1.24.588 1.81l-3.158 2.294a1 1 0 00-.363 1.118l1.208 3.708c.3.921-.755 1.688-1.538 1.118L12 13.347l-3.158 2.294c-.783.57-1.838-.197-1.538-1.118l1.208-3.708a1 1 0 00-.363-1.118L4.99 9.135c-.783-.57-.38-1.81.588-1.81h3.905c.426 0 .802-.274.95-.69l1.208-3.708z"
       />
     </svg>
   );
 }
 
-export default function ReviewForm({ onNewReview }) {
-  const MAX_COMMENT = 500;
-
-  const [products, setProducts] = useState([]);
+export default function ReviewForm({ onNewReview }: ReviewFormProps) {
+  const [products, setProducts] = useState<ProductSelectApiDTO[]>([]);
   const [productId, setProductId] = useState('');
   const [authorName, setAuthorName] = useState('');
 
-  const [rating, setRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
+  const [rating, setRating] = useState<Rating>(0);
+  const [hoverRating, setHoverRating] = useState<Rating>(0);
 
   const [comment, setComment] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -58,23 +91,22 @@ export default function ReviewForm({ onNewReview }) {
   useEffect(() => {
     let cancelled = false;
 
-    (async () => {
+    const loadProducts = async (): Promise<void> => {
       try {
-        const LIMIT = 200;
         let page = 1;
         let totalPages = 1;
-        const all = [];
+        const all: ProductSelectApiDTO[] = [];
 
         while (!cancelled && page <= totalPages) {
-          const res = await fetch('/api/products?forSelect=1', { cache: 'no-store' });
-          if (!res.ok) break;
+          const response = await fetch('/api/products?forSelect=1', { cache: 'no-store' });
+          if (!response.ok) break;
 
-          const data = await res.json();
-
+          const data: ProductSelectApiResult | null = await response.json();
           const items = Array.isArray(data?.items) ? data.items : [];
+
           all.push(...items);
 
-          totalPages = Number(data?.totalPages) || 1;
+          totalPages = getLegacyTotalPages(data);
           page += 1;
 
           if (page > 100) break;
@@ -84,7 +116,9 @@ export default function ReviewForm({ onNewReview }) {
       } catch {
         if (!cancelled) setProducts([]);
       }
-    })();
+    };
+
+    void loadProducts();
 
     return () => {
       cancelled = true;
@@ -101,8 +135,24 @@ export default function ReviewForm({ onNewReview }) {
     );
   }, [productId, authorName, comment, rating, isPosting]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleAuthorNameChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setAuthorName(event.target.value);
+  };
+
+  const handleProductChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+    setProductId(event.target.value);
+  };
+
+  const handleCommentChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
+    setComment(event.target.value.slice(0, MAX_COMMENT));
+  };
+
+  const handleRatingMouseLeave = (): void => {
+    setHoverRating(0);
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault();
     setError('');
 
     if (!productId) return setError('Будь ласка, оберіть товар');
@@ -114,18 +164,19 @@ export default function ReviewForm({ onNewReview }) {
     setIsPosting(true);
 
     try {
-      const res = await fetch('/api/reviews', {
+      const requestBody: CreateReviewApiInput = {
+        productId,
+        rating,
+        comment: comment.trim(),
+        authorName: authorName.trim(),
+      };
+      const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          productId,
-          rating,
-          comment: comment.trim(),
-          authorName: authorName.trim(),
-        }),
+        body: JSON.stringify(requestBody),
       });
 
-      if (!res.ok) throw new Error(`POST /api/reviews failed: ${res.status}`);
+      if (!response.ok) throw new Error(`POST /api/reviews failed: ${response.status}`);
 
       setProductId('');
       setAuthorName('');
@@ -136,8 +187,8 @@ export default function ReviewForm({ onNewReview }) {
 
       onNewReview?.();
       setTimeout(() => setSubmitted(false), 2500);
-    } catch (err) {
-      console.error(err);
+    } catch (caughtError: unknown) {
+      console.error(caughtError);
       setError('Сталася помилка під час надсилання відгуку.');
       setTimeout(() => setError(''), 3000);
     } finally {
@@ -159,7 +210,7 @@ export default function ReviewForm({ onNewReview }) {
           <label className="block mb-1 text-sm text-gray-700 font-medium">Ваше ім&apos;я</label>
           <input
             value={authorName}
-            onChange={(e) => setAuthorName(e.target.value)}
+            onChange={handleAuthorNameChange}
             placeholder="Наприклад, Ірина"
             className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-600"
           />
@@ -169,15 +220,15 @@ export default function ReviewForm({ onNewReview }) {
           <label className="block mb-1 text-sm text-gray-700 font-medium">Товар</label>
           <select
             value={productId}
-            onChange={(e) => setProductId(e.target.value)}
+            onChange={handleProductChange}
             className="w-full cursor-pointer rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-600"
           >
             <option value="">Оберіть товар</option>
 
-            {products.map((p) => {
-              const label = p.name && p.name !== p.model ? `${p.name} ${p.model}` : p.model;
+            {products.map((product) => {
+              const label = getProductLabel(product);
               return (
-                <option key={p.id} value={p.id} title={label}>
+                <option key={product.id} value={product.id} title={label}>
                   {label.length > 42 ? label.slice(0, 42) + '...' : label}
                 </option>
               );
@@ -189,14 +240,14 @@ export default function ReviewForm({ onNewReview }) {
           <label className="block mb-1 text-sm text-gray-700 font-medium">Оцінка</label>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1" onMouseLeave={() => setHoverRating(0)}>
-              {[1, 2, 3, 4, 5].map((num) => (
+            <div className="flex items-center gap-1" onMouseLeave={handleRatingMouseLeave}>
+              {RATING_VALUES.map((value) => (
                 <RatingStar
-                  key={num}
-                  filled={num <= activeRating}
-                  onMouseEnter={() => setHoverRating(num)}
-                  onClick={() => setRating(num)}
-                  title={`${num} / 5`}
+                  key={value}
+                  filled={value <= activeRating}
+                  onMouseEnter={() => setHoverRating(value)}
+                  onClick={() => setRating(value)}
+                  title={`${value} / 5`}
                 />
               ))}
             </div>
@@ -218,8 +269,8 @@ export default function ReviewForm({ onNewReview }) {
           </label>
           <textarea
             value={comment}
-            onChange={(e) => setComment(e.target.value.slice(0, MAX_COMMENT))}
-            rows="4"
+            onChange={handleCommentChange}
+            rows={4}
             required
             placeholder="Ваш відгук"
             className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-600"
