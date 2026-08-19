@@ -1,9 +1,12 @@
-'use client';
-
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-export default function CartSummary({ total, onClear }) {
+type CartSummaryProps = {
+  total: number;
+  onClear: () => void;
+};
+
+export default function CartSummary({ total, onClear }: CartSummaryProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}

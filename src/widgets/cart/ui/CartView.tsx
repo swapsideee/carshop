@@ -14,17 +14,17 @@ export default function CartView() {
   const cartItems = useCartStore(selectCartItems);
   const total = useCartStore(selectCartTotal);
 
-  const pastOrders = useCartStore((s) => s.pastOrders);
-  const increment = useCartStore((s) => s.increment);
-  const decrement = useCartStore((s) => s.decrement);
-  const removeFromCart = useCartStore((s) => s.removeFromCart);
-  const clearCart = useCartStore((s) => s.clearCart);
+  const pastOrders = useCartStore((state) => state.pastOrders);
+  const increment = useCartStore((state) => state.increment);
+  const decrement = useCartStore((state) => state.decrement);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const clearCart = useCartStore((state) => state.clearCart);
 
   const { errorItemId, errorText, showLineError } = useCartLineError({ timeoutMs: 3000 });
 
-  const onIncrement = (id) => {
-    const res = increment(id);
-    if (!res?.ok) showLineError(id, res?.message);
+  const onIncrement = (id: string): void => {
+    const result = increment(id);
+    if (!result.ok) showLineError(id, result.message);
   };
 
   return (

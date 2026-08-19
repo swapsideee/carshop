@@ -1,8 +1,17 @@
-'use client';
-
 import { motion } from 'framer-motion';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
+
+import type { CartItem } from '@/features/cart';
+
+type CartItemRowProps = {
+  item: CartItem;
+  onIncrement: () => void;
+  onDecrement: () => void;
+  onRemove: () => void;
+  errorText: string;
+  hasError: boolean;
+};
 
 export default function CartItemRow({
   item,
@@ -11,7 +20,9 @@ export default function CartItemRow({
   onRemove,
   errorText,
   hasError,
-}) {
+}: CartItemRowProps) {
+  const lineTotal = Number(item.price) * Number(item.quantity);
+
   return (
     <motion.div
       key={item.id}
@@ -62,9 +73,7 @@ export default function CartItemRow({
 
           {hasError ? <p className="text-sm text-red-600 mt-2 mb-2">{errorText}</p> : null}
 
-          <p className="text-lg font-semibold text-gray-800">
-            Цiна: {item.price * item.quantity} ₴
-          </p>
+          <p className="text-lg font-semibold text-gray-800">Цiна: {lineTotal} ₴</p>
         </div>
 
         <button
