@@ -5,6 +5,7 @@ import {
   getProductsForSelect,
   getProductsPaged,
   parseProductsRequest,
+  toProductSelectApiResult,
   toProductsPagedApiResult,
 } from '@/entities/product/server';
 import { ErrorHandler } from '@/shared/lib';
@@ -15,7 +16,7 @@ export const GET = ErrorHandler(async (request: NextRequest) => {
   if (query.kind === 'select') {
     const items = await getProductsForSelect(query);
 
-    return NextResponse.json({ items });
+    return NextResponse.json(toProductSelectApiResult(items));
   }
 
   const products = await getProductsPaged(query);

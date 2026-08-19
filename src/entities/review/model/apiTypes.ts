@@ -17,6 +17,13 @@ export type ReviewFeedItemApiDTO = {
   name: string | null;
 };
 
+export type CreateReviewApiInput = {
+  productId: string;
+  rating: number;
+  comment: string;
+  authorName: string;
+};
+
 export type ReviewsPageApiResult<TItem> = {
   items: TItem[];
   total: number;

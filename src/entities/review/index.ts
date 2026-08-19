@@ -9,6 +9,7 @@
 
 export * from './api/client';
 export type {
+  CreateReviewApiInput,
   ReviewApiDTO,
   ReviewFeedItemApiDTO,
   ReviewsByProductApiResult,

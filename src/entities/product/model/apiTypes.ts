@@ -20,6 +20,16 @@ export type ProductListItemApiDTO = {
   brand_id: number | null;
 };
 
+export type ProductSelectApiDTO = {
+  id: number;
+  name: string | null;
+  model: string | null;
+};
+
+export type ProductSelectApiResult = {
+  items: ProductSelectApiDTO[];
+};
+
 export type RelatedProductApiDTO = {
   id: number;
   model: string | null;

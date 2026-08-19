@@ -20,6 +20,7 @@ export {
   parseProductId,
   parseProductsRequest,
   toProductDetailApiDTO,
+  toProductSelectApiResult,
   toProductsPagedApiResult,
 } from './api/server';
 export type {
