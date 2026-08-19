@@ -1,8 +1,17 @@
-'use client';
-
 import { AnimatePresence } from 'framer-motion';
 
+import type { CartItem } from '@/features/cart';
+
 import CartItemRow from './CartItemRow';
+
+type CartItemsListProps = {
+  items: CartItem[];
+  onIncrement: (id: string) => void;
+  onDecrement: (id: string) => void;
+  onRemove: (id: string) => void;
+  errorItemId: string | null;
+  errorText: string;
+};
 
 export default function CartItemsList({
   items,
@@ -11,7 +20,7 @@ export default function CartItemsList({
   onRemove,
   errorItemId,
   errorText,
-}) {
+}: CartItemsListProps) {
   return (
     <AnimatePresence>
       {items.map((item) => (

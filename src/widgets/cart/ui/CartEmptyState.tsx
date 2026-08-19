@@ -1,10 +1,13 @@
-'use client';
-
 import { motion } from 'framer-motion';
 
+import type { PastOrder } from '@/features/cart';
 import PastOrders from '@/widgets/past-orders';
 
-export default function CartEmptyState({ pastOrders }) {
+type CartEmptyStateProps = {
+  pastOrders: PastOrder[];
+};
+
+export default function CartEmptyState({ pastOrders }: CartEmptyStateProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -12,7 +15,7 @@ export default function CartEmptyState({ pastOrders }) {
       className="text-center text-xl text-gray-900 space-y-6"
     >
       <p className="mb-30 text-gray-400 text-normal font-semibold">Кошик порожній</p>
-      {pastOrders?.length > 0 && <PastOrders orders={pastOrders} />}
+      {pastOrders.length > 0 && <PastOrders orders={pastOrders} />}
     </motion.div>
   );
 }
