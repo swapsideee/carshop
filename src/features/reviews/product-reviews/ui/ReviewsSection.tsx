@@ -1,13 +1,17 @@
 'use client';
 
-import { clampRating } from '@/entities/review';
+import { clampRating, type ReviewApiDTO } from '@/entities/review';
 import { formatDateUA } from '@/shared/lib';
 import { LoadMoreButton, Stars } from '@/shared/ui';
 
 import { useProductReviews } from '../model/useProductReviews';
 import ReviewSkeleton from './ProductReviewsSkeleton';
 
-export default function ReviewsSection({ productId }) {
+type ReviewsSectionProps = {
+  productId: number;
+};
+
+export default function ReviewsSection({ productId }: ReviewsSectionProps) {
   const { items, loading, loadingMore, total, avgRating, hasMore, loadMore } = useProductReviews({
     productId,
     enabled: true,
@@ -55,22 +59,22 @@ export default function ReviewsSection({ productId }) {
       ) : (
         <>
           <div className="grid gap-3 sm:grid-cols-2">
-            {items.map((r) => {
-              const ratingRaw = clampRating(Number(r.rating) || 0);
+            {items.map((review: ReviewApiDTO) => {
+              const ratingRaw = clampRating(Number(review.rating) || 0);
               const ratingInt = Math.round(ratingRaw);
 
               return (
                 <div
-                  key={r.id}
+                  key={review.id}
                   className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-200 transition hover:shadow-md"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold text-gray-900">
-                        {r.author_name || 'Анонім'}
+                        {review.author_name || 'Анонім'}
                       </p>
                       <p className="mt-1 text-xs text-gray-500">
-                        {r.created_at ? formatDateUA(r.created_at) : ''}
+                        {review.created_at ? formatDateUA(review.created_at) : ''}
                       </p>
                     </div>
 
@@ -83,7 +87,7 @@ export default function ReviewsSection({ productId }) {
                   <div className="mt-4 h-px w-full bg-gray-100" />
 
                   <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-gray-800">
-                    {r.comment}
+                    {review.comment}
                   </p>
                 </div>
               );
