@@ -1,5 +1,3 @@
-'use client';
-
 export default function ReviewSkeleton() {
   return (
     <div className="rounded-2xl border border-gray-200 p-5 bg-white shadow-sm">
@@ -8,8 +6,8 @@ export default function ReviewSkeleton() {
         <div className="h-3 w-24 bg-gray-100 rounded animate-pulse" />
       </div>
       <div className="flex items-center gap-1 mb-3">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="h-5 w-5 bg-gray-100 rounded animate-pulse" />
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div key={index} className="h-5 w-5 bg-gray-100 rounded animate-pulse" />
         ))}
       </div>
       <div className="space-y-2">

@@ -1,5 +1,3 @@
-'use client';
-
 import ReviewsFeed from '@/widgets/reviews-feed';
 
 export default function ReviewsPage() {
