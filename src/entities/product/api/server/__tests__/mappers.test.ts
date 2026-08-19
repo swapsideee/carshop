@@ -2,8 +2,17 @@ import { describe, expect, it } from 'vitest';
 
 import type { ProductRow } from '@/shared/db/schema';
 
-import { mapCheckoutProductRow, mapProductDetail, mapProductRow } from '../mappers';
-import { toProductDetailApiDTO, toProductsPagedApiResult } from '../serializers';
+import {
+  mapCheckoutProductRow,
+  mapProductDetail,
+  mapProductRow,
+  mapProductSelectRow,
+} from '../mappers';
+import {
+  toProductDetailApiDTO,
+  toProductSelectApiResult,
+  toProductsPagedApiResult,
+} from '../serializers';
 
 const productRow = {
   id: 42,
@@ -50,6 +59,22 @@ describe('product database mappers', () => {
       slug: 'model-x',
       brand_slug: 'brakes',
       brand_id: 7,
+    });
+  });
+
+  it('keeps the product-select API contract separate from the domain DTO', () => {
+    const result = toProductSelectApiResult([
+      mapProductSelectRow({ ...productRow, name: null, model: null } as ProductRow),
+    ]);
+
+    expect(result).toEqual({
+      items: [
+        {
+          id: 42,
+          name: null,
+          model: null,
+        },
+      ],
     });
   });
 

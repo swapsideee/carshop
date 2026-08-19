@@ -13,6 +13,8 @@ export type {
   ProductDetailApiDTO,
   ProductListItemApiDTO,
   ProductListSortApiValue,
+  ProductSelectApiDTO,
+  ProductSelectApiResult,
   ProductsPagedApiResult,
   RelatedProductApiDTO,
 } from './model/apiTypes';

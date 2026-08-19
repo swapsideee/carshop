@@ -9,4 +9,8 @@ export {
 } from './repo';
 export type { ProductsRequest } from './requestSchemas';
 export { parseProductId, parseProductsRequest } from './requestSchemas';
-export { toProductDetailApiDTO, toProductsPagedApiResult } from './serializers';
+export {
+  toProductDetailApiDTO,
+  toProductSelectApiResult,
+  toProductsPagedApiResult,
+} from './serializers';
