@@ -16,6 +16,10 @@ export default function DescriptionBlock() {
 У нашому інтернет-магазині ви можете придбати підкрилки від ТМ "Mega Locker" — якісні, доступні та практичні вироби, що стануть надійним захистом вашого авто.
 `;
 
+  const handleExpandedToggle = (): void => {
+    setExpanded((previousValue) => !previousValue);
+  };
+
   return (
     <div className="relative rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
       <h2 className="mb-4 text-xl font-semibold text-gray-900">Опис товару</h2>
@@ -36,7 +40,7 @@ export default function DescriptionBlock() {
       </div>
 
       <button
-        onClick={() => setExpanded((prev) => !prev)}
+        onClick={handleExpandedToggle}
         className="mt-3 cursor-pointer text-sm font-bold text-lime-700 transition-colors hover:text-lime-600 focus:outline-none"
       >
         {expanded ? 'Згорнути' : 'Розгорнути повнiстю'}
