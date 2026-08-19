@@ -8,7 +8,11 @@ import DescriptionBlock from '@/widgets/product-description';
 import ProductDetails from '@/widgets/product-details';
 import RelatedByBrand from '@/widgets/related-products';
 
-export default function ProductView({ productId }) {
+type ProductViewProps = {
+  productId: number;
+};
+
+export default function ProductView({ productId }: ProductViewProps) {
   const { product, loading } = useProduct(productId);
 
   if (loading) {
