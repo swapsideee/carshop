@@ -1,17 +1,22 @@
-'use client';
-
 import { Clock } from 'lucide-react';
 
-export default function PastOrders({ orders }) {
-  const formatDate = (date) =>
-    new Date(date).toLocaleString('uk-UA', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+import type { PastOrder } from '@/features/cart';
 
+type PastOrdersProps = {
+  orders: PastOrder[];
+};
+
+function formatDate(date: string): string {
+  return new Date(date).toLocaleString('uk-UA', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+export default function PastOrders({ orders }: PastOrdersProps) {
   return (
     <div className="text-left max-w-2xl mx-auto">
       <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2 text-gray-800">
@@ -52,8 +57,11 @@ export default function PastOrders({ orders }) {
               )}
 
               <ul className="text-sm text-gray-900 space-y-1 border-t border-gray-400 pt-2">
-                {order.items.map((item, idx) => (
-                  <li key={item.id + idx} className="grid grid-cols-[1fr_auto] gap-4 items-start">
+                {order.items.map((item, itemIndex) => (
+                  <li
+                    key={item.id + itemIndex}
+                    className="grid grid-cols-[1fr_auto] gap-4 items-start"
+                  >
                     <span>
                       {item.name} {item.quantity} шт.
                     </span>
