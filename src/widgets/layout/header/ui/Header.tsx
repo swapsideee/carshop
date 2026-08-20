@@ -1,5 +1,3 @@
-'use client';
-
 import { AnimatePresence, motion } from 'framer-motion';
 import { Car, Menu, ShoppingCart, X } from 'lucide-react';
 import Link from 'next/link';
@@ -9,7 +7,16 @@ import { useMemo, useState } from 'react';
 import { selectCartCount, useCartStore } from '@/features/cart';
 import { cx, useSmartHeader } from '@/shared/lib';
 
-const NAV = [
+type NavigationItem = {
+  href: string;
+  label: string;
+};
+
+type HeaderInnerProps = {
+  pathname: ReturnType<typeof usePathname>;
+};
+
+const NAV: NavigationItem[] = [
   { href: '/products', label: 'Каталог' },
   { href: '/contacts', label: "Зв'язок" },
   { href: '/reviews', label: 'Відгуки' },
@@ -20,14 +27,14 @@ export default function Header() {
   return <HeaderInner key={pathname} pathname={pathname} />;
 }
 
-function HeaderInner({ pathname }) {
+function HeaderInner({ pathname }: HeaderInnerProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { hidden, scrolled } = useSmartHeader(menuOpen);
 
   const cartCount = useCartStore(selectCartCount);
 
   const isActive = useMemo(
-    () => (href) => (href === '/' ? pathname === '/' : pathname?.startsWith(href)),
+    () => (href: string) => (href === '/' ? pathname === '/' : pathname?.startsWith(href)),
     [pathname],
   );
 
