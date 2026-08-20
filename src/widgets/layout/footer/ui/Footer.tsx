@@ -1,5 +1,3 @@
-'use client';
-
 import { CreditCard, Mail, Phone, ShieldCheck, Truck } from 'lucide-react';
 import Link from 'next/link';
 
