@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import type { CartActionResult, CartItem, CartStore } from './types';
+import type { CartActionResult, CartItem, CartStore, PastOrder, SaveOrderInput } from './types';
 
 const generateOrderId = (): string =>
   (globalThis.crypto?.randomUUID?.() as string | undefined) ?? String(Date.now());
@@ -92,9 +92,9 @@ const useCartStore = create<CartStore>()(
         return ok();
       },
 
-      saveOrder: (orderData: Record<string, unknown>) => {
+      saveOrder: (orderData: SaveOrderInput) => {
         const { pastOrders } = get();
-        const newOrder = { ...orderData, id: generateOrderId() };
+        const newOrder: PastOrder = { ...orderData, id: generateOrderId() };
         set({ pastOrders: [...pastOrders, newOrder] });
         return ok({ orderId: String(newOrder.id) });
       },

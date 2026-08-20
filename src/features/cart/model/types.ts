@@ -13,10 +13,26 @@ export type CartItem = {
   [key: string]: unknown;
 };
 
-export type PastOrder = {
+export type PastOrderItem = {
   id: string;
-  [key: string]: unknown;
+  name: string;
+  quantity: number;
+  price: number;
 };
+
+export type SaveOrderInput = {
+  items: PastOrderItem[];
+  total: number;
+  name: string;
+  phone: string;
+  email: string;
+  comment: string;
+  createdAt: string;
+  paid: true;
+  stripeSessionId: string;
+};
+
+export type PastOrder = SaveOrderInput & { id: string };
 
 export type CartActionResultOk = { ok: true } & Record<string, unknown>;
 export type CartActionResultFail = { ok: false; message: string } & Record<string, unknown>;
@@ -31,5 +47,5 @@ export type CartStore = {
   decrement: (id: string) => CartActionResult;
   removeFromCart: (id: string) => CartActionResult;
   clearCart: () => CartActionResult;
-  saveOrder: (orderData: Record<string, unknown>) => CartActionResult;
+  saveOrder: (orderData: SaveOrderInput) => CartActionResult;
 };
