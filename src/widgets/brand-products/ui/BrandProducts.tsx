@@ -1,10 +1,12 @@
-'use client';
-
 import { ProductCard } from '@/entities/product';
 
 import { useBrandProducts } from '../model/useBrandProducts';
 
-export default function BrandProducts({ brand }) {
+type BrandProductsProps = {
+  brand: string | null | undefined;
+};
+
+export default function BrandProducts({ brand }: BrandProductsProps) {
   const brandName = String(brand || '').toUpperCase();
   const { items, loading } = useBrandProducts(brand);
 
@@ -35,9 +37,9 @@ export default function BrandProducts({ brand }) {
           ) : (
             <div className="mx-auto w-full max-w-6xl">
               <div className="grid grid-cols-2 justify-items-center gap-3 sm:grid-cols-2 sm:gap-6 md:grid-cols-3 xl:grid-cols-4">
-                {items.map((p) => (
-                  <div key={p.id} className="w-full">
-                    <ProductCard product={p} clickable />
+                {items.map((product) => (
+                  <div key={product.id} className="w-full">
+                    <ProductCard product={product} clickable />
                   </div>
                 ))}
               </div>
