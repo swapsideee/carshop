@@ -1,12 +1,20 @@
-'use client';
-
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { getBrands } from '@/entities/brand';
+import { type BrandApiDTO, getBrands } from '@/entities/brand';
 import { LoadMoreButton } from '@/shared/ui';
+
+type RenderableBrand = BrandApiDTO & {
+  name: string;
+  slug: string;
+  image: string;
+};
+
+function isRenderableBrand(brand: BrandApiDTO): brand is RenderableBrand {
+  return brand.name !== null && brand.slug !== null && brand.image !== null;
+}
 
 function SkeletonCard() {
   return (
@@ -22,7 +30,7 @@ function SkeletonCard() {
 const CHIPS = ['30+ брендів', '250+ товарів', 'Самовивіз Харків'];
 
 export default function Banner() {
-  const [brands, setBrands] = useState([]);
+  const [brands, setBrands] = useState<BrandApiDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(8);
 
@@ -40,7 +48,7 @@ export default function Banner() {
 
         if (myReqId !== reqIdRef.current) return;
 
-        const safe = Array.isArray(data) ? data : [];
+        const safe: BrandApiDTO[] = Array.isArray(data) ? data : [];
 
         const sorted = [...safe].sort((a, b) => {
           const aName = a?.name || '';
@@ -56,9 +64,9 @@ export default function Banner() {
 
         setBrands(sorted);
         setVisibleCount(8);
-      } catch (err) {
+      } catch (error: unknown) {
         if (controller.signal.aborted) return;
-        console.error('Error loading brands:', err);
+        console.error('Error loading brands:', error);
         if (myReqId === reqIdRef.current) setBrands([]);
       } finally {
         if (myReqId === reqIdRef.current) setLoading(false);
@@ -123,47 +131,51 @@ export default function Banner() {
 
               <AnimatePresence initial={false}>
                 {!loading &&
-                  shownBrands.map((brand) => (
-                    <motion.div
-                      key={brand.id}
-                      initial={itemInitial}
-                      animate={itemAnimate}
-                      exit={itemExit}
-                      transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-                      layout
-                    >
-                      <Link
-                        href={`/products/${brand.slug}`}
-                        className="group relative block w-full aspect-square rounded-2xl border border-gray-200 bg-white/85 backdrop-blur supports-backdrop-filter:bg-white/70 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5 hover:border-lime-600/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
+                  shownBrands.map((brand) => {
+                    if (!isRenderableBrand(brand)) return null;
+
+                    return (
+                      <motion.div
+                        key={brand.id}
+                        initial={itemInitial}
+                        animate={itemAnimate}
+                        exit={itemExit}
+                        transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+                        layout
                       >
-                        <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-gray-100 blur-2xl" />
-                        </div>
-
-                        <div className="h-full w-full p-6 flex flex-col items-center justify-center">
-                          <div className="relative w-full aspect-3/2">
-                            <Image
-                              src={brand.image}
-                              alt={brand.name}
-                              fill
-                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                              className="object-contain"
-                            />
+                        <Link
+                          href={`/products/${brand.slug}`}
+                          className="group relative block w-full aspect-square rounded-2xl border border-gray-200 bg-white/85 backdrop-blur supports-backdrop-filter:bg-white/70 overflow-hidden transition hover:shadow-lg hover:-translate-y-0.5 hover:border-lime-600/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
+                        >
+                          <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-gray-100 blur-2xl" />
                           </div>
 
-                          <div className="mt-4 text-center">
-                            <h3 className="text-sm sm:text-base font-semibold text-slate-900 line-clamp-1">
-                              <span className="sm:hidden">{brand.name}</span>
-                              <span className="hidden sm:inline">Підкрилки для {brand.name}</span>
-                            </h3>
-                            <p className="mt-1 text-xs text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                              Перейти →
-                            </p>
+                          <div className="h-full w-full p-6 flex flex-col items-center justify-center">
+                            <div className="relative w-full aspect-3/2">
+                              <Image
+                                src={brand.image}
+                                alt={brand.name}
+                                fill
+                                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                className="object-contain"
+                              />
+                            </div>
+
+                            <div className="mt-4 text-center">
+                              <h3 className="text-sm sm:text-base font-semibold text-slate-900 line-clamp-1">
+                                <span className="sm:hidden">{brand.name}</span>
+                                <span className="hidden sm:inline">Підкрилки для {brand.name}</span>
+                              </h3>
+                              <p className="mt-1 text-xs text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                                Перейти →
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      </Link>
-                    </motion.div>
-                  ))}
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
               </AnimatePresence>
             </div>
 
