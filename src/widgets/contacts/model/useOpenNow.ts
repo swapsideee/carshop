@@ -1,10 +1,8 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 
 import { isOpenNow } from '@/shared/lib';
 
-export function useOpenNow() {
+export function useOpenNow(): boolean {
   const [openNow, setOpenNow] = useState(isOpenNow());
 
   useEffect(() => {
@@ -14,8 +12,8 @@ export function useOpenNow() {
     const now = new Date();
     const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
 
-    let intervalId;
-    const timeoutId = setTimeout(() => {
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+    const timeoutId: ReturnType<typeof setTimeout> = setTimeout(() => {
       update();
       intervalId = setInterval(update, 60_000);
     }, msToNextMinute);
