@@ -37,7 +37,7 @@ const handler = async (req: NextRequest) => {
     throw new HttpError(403, 'Forbidden');
   }
 
-  return NextResponse.json({ ok: true, ...sessionToClientVerification(session) });
+  return NextResponse.json(sessionToClientVerification(session));
 };
 
 export const GET = ErrorHandler(handler);

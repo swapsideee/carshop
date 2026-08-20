@@ -5,6 +5,7 @@ import type Stripe from 'stripe';
 import type { CheckoutProduct } from '@/entities/product/server';
 import { HttpError } from '@/shared/lib';
 
+import type { StripeSessionVerificationApiResult } from '../model/apiTypes';
 import type { CheckoutCartItem } from './schemas';
 
 const OPTION_LABELS = {
@@ -101,10 +102,13 @@ export function sessionToEmailPayload(session: Stripe.Checkout.Session) {
   };
 }
 
-export function sessionToClientVerification(session: Stripe.Checkout.Session) {
+export function sessionToClientVerification(
+  session: Stripe.Checkout.Session,
+): StripeSessionVerificationApiResult {
   const metadata = session.metadata || {};
 
   return {
+    ok: true,
     paid: session.payment_status === 'paid',
     id: session.id,
     currency: session.currency,

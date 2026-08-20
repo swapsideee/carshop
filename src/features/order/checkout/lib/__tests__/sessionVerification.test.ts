@@ -42,6 +42,7 @@ describe('checkout session verification', () => {
 
     const response = sessionToClientVerification(session);
 
+    expect(response.ok).toBe(true);
     expect(response.customer).toEqual({
       name: 'Ivan Petrenko',
       phone: '+380501234567',
