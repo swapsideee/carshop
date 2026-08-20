@@ -16,7 +16,7 @@ export default function ContactsView() {
   const openNow = useOpenNow();
   const { copiedKey, setCopiedKey } = useCopiedKey(1400);
 
-  const copyToClipboard = async (text, key) => {
+  const copyToClipboard = async (text: string, key: string): Promise<void> => {
     try {
       await navigator.clipboard.writeText(text);
       setCopiedKey(key);
@@ -145,7 +145,7 @@ export default function ContactsView() {
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
-                allowFullScreen=""
+                allowFullScreen
                 loading="lazy"
                 className="h-full w-full"
                 referrerPolicy="no-referrer-when-downgrade"

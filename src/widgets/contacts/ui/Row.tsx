@@ -1,8 +1,17 @@
-'use client';
+import type { LucideIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
 
 import { cx } from '@/shared/lib';
 
-export default function Row({ icon: Icon, label, value, href, trailing }) {
+type RowProps = {
+  icon: LucideIcon;
+  label: ReactNode;
+  value: ReactNode;
+  href?: string;
+  trailing?: ReactNode;
+};
+
+export default function Row({ icon: Icon, label, value, href, trailing }: RowProps) {
   const base = cx(
     'group rounded-xl border border-gray-200/80 bg-white/70 p-4 shadow-sm transition',
     'hover:-translate-y-0.5 hover:shadow-md hover:bg-white',

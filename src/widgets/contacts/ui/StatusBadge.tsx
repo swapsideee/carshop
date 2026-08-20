@@ -1,8 +1,11 @@
-'use client';
-
 import { cx } from '@/shared/lib';
 
-export default function StatusBadge({ open, title }) {
+type StatusBadgeProps = {
+  open: boolean;
+  title?: string;
+};
+
+export default function StatusBadge({ open, title }: StatusBadgeProps) {
   return (
     <div
       className={cx(
