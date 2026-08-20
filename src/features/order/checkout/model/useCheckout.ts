@@ -10,6 +10,17 @@ import { type CheckoutForm, validateOrderForm } from '../lib/validation';
 
 const LEGACY_CART_ITEM_ID = /^(?<productId>\d+)-(?<option>pair|set)$/;
 
+export type CheckoutSubmitResult = { ok: true } | { ok: false; message: string };
+
+export type UseCheckoutResult = {
+  cartItems: CartItem[];
+  total: number;
+  form: CheckoutForm;
+  onChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  isSubmitting: boolean;
+  submit: (event?: FormEvent<HTMLFormElement>) => Promise<CheckoutSubmitResult>;
+};
+
 function toCheckoutCartItem(item: CartItem): CheckoutCartItem | null {
   const productId = Number(item.productId);
   const option = item.option;
@@ -33,7 +44,7 @@ function toCheckoutCartItem(item: CartItem): CheckoutCartItem | null {
   return null;
 }
 
-export function useCheckout() {
+export function useCheckout(): UseCheckoutResult {
   const { cartItems } = useCartStore();
 
   const total = useMemo(
@@ -49,7 +60,7 @@ export function useCheckout() {
     setForm((previous) => ({ ...previous, [name]: value }));
   };
 
-  const submit = async (event?: FormEvent<HTMLFormElement>) => {
+  const submit = async (event?: FormEvent<HTMLFormElement>): Promise<CheckoutSubmitResult> => {
     event?.preventDefault();
 
     const validation = validateOrderForm(form);

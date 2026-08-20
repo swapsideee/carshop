@@ -1,5 +1,3 @@
-'use client';
-
 import { Suspense } from 'react';
 
 import OrderCheckout from '@/widgets/order-checkout';

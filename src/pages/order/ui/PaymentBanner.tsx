@@ -3,8 +3,8 @@
 import { useSearchParams } from 'next/navigation';
 
 export default function PaymentBanner() {
-  const sp = useSearchParams();
-  const payment = sp.get('payment');
+  const searchParams = useSearchParams();
+  const payment = searchParams?.get('payment');
 
   if (!payment) return null;
 

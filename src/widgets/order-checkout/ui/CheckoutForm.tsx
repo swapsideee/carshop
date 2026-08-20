@@ -1,8 +1,23 @@
-'use client';
-
 import { motion } from 'framer-motion';
+import type { FormEvent } from 'react';
 
-export default function CheckoutForm({ cartItems, total, form, onChange, onSubmit, isSubmitting }) {
+import type { UseCheckoutResult } from '@/features/order/checkout';
+
+type CheckoutFormProps = Pick<
+  UseCheckoutResult,
+  'cartItems' | 'total' | 'form' | 'onChange' | 'isSubmitting'
+> & {
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void | Promise<void>;
+};
+
+export default function CheckoutForm({
+  cartItems,
+  total,
+  form,
+  onChange,
+  onSubmit,
+  isSubmitting,
+}: CheckoutFormProps) {
   const safeItems = Array.isArray(cartItems) ? cartItems : [];
 
   return (
