@@ -1,11 +1,13 @@
-'use client';
-
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-export default function CheckoutSuccess({ order }) {
-  if (!order) return null;
+import type { SaveOrderInput } from '@/features/cart';
 
+type CheckoutSuccessProps = {
+  order: SaveOrderInput;
+};
+
+export default function CheckoutSuccess({ order }: CheckoutSuccessProps) {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-2xl bg-white rounded-md shadow-2xl p-6 space-y-6 text-gray-800">

@@ -1,19 +1,36 @@
-'use client';
+import { type FormEvent, useEffect, useMemo, useState } from 'react';
 
-import { useEffect, useMemo, useState } from 'react';
+import { type SaveOrderInput, useCartStore } from '@/features/cart';
+import {
+  getStripeSessionVerification,
+  useCheckout,
+  type UseCheckoutResult,
+} from '@/features/order/checkout';
 
-import { useCartStore } from '@/features/cart';
-import { useCheckout } from '@/features/order/checkout';
+type StripeReturn = {
+  payment: string | null;
+  sessionId: string | null;
+};
 
-export function useOrderCheckout() {
+export type UseOrderCheckoutResult = Pick<
+  UseCheckoutResult,
+  'cartItems' | 'total' | 'form' | 'onChange' | 'isSubmitting'
+> & {
+  verifying: boolean;
+  submittedOrder: SaveOrderInput | null;
+  onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
+};
+
+export function useOrderCheckout(): UseOrderCheckoutResult {
   const { cartItems, total, form, onChange, submit, isSubmitting } = useCheckout();
   const { clearCart, saveOrder } = useCartStore();
 
-  const [submittedOrder, setSubmittedOrder] = useState(null);
+  const [submittedOrder, setSubmittedOrder] = useState<SaveOrderInput | null>(null);
   const [verifying, setVerifying] = useState(false);
 
-  const stripeReturn = useMemo(() => {
+  const stripeReturn = useMemo<StripeReturn>(() => {
     if (typeof window === 'undefined') return { payment: null, sessionId: null };
+
     const params = new URLSearchParams(window.location.search);
     return {
       payment: params.get('payment'),
@@ -27,21 +44,18 @@ export function useOrderCheckout() {
 
     let cancelled = false;
 
-    (async () => {
+    void (async () => {
       try {
         setVerifying(true);
 
-        const res = await fetch(`/api/stripe/session?session_id=${encodeURIComponent(sessionId)}`);
-        const data = await res.json().catch(() => null);
-
-        if (!res.ok || !data) throw new Error(data?.message || 'Failed to verify payment');
+        const data = await getStripeSessionVerification(sessionId);
 
         if (!data.paid) {
           alert('Оплата не підтверджена. Якщо гроші списались — зверніться до менеджера.');
           return;
         }
 
-        const orderData = {
+        const orderData: SaveOrderInput = {
           items: data.cartItems || [],
           total: data.total ?? 0,
           name: data.customer?.name || '',
@@ -56,14 +70,12 @@ export function useOrderCheckout() {
         if (cancelled) return;
 
         saveOrder(orderData);
-
         clearCart();
-
         setSubmittedOrder(orderData);
 
         window.history.replaceState({}, '', '/order');
-      } catch (e) {
-        console.error(e);
+      } catch (error: unknown) {
+        console.error(error);
         alert('Не вдалося підтвердити оплату. Спробуйте оновити сторінку.');
       } finally {
         if (!cancelled) setVerifying(false);
@@ -75,9 +87,9 @@ export function useOrderCheckout() {
     };
   }, [stripeReturn, clearCart, saveOrder]);
 
-  const onSubmit = async (e) => {
-    const res = await submit(e);
-    if (!res?.ok) alert(res?.message || 'Помилка');
+  const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    const result = await submit(event);
+    if (!result.ok) alert(result.message || 'Помилка');
   };
 
   return {
@@ -86,10 +98,8 @@ export function useOrderCheckout() {
     form,
     onChange,
     isSubmitting,
-
     verifying,
     submittedOrder,
-
     onSubmit,
   };
 }
