@@ -21,6 +21,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "node ./node_modules/vitest/vitest.mjs run --coverage",
+    "test:e2e": "playwright test",
     "db:migrate": "bun scripts/migrate.ts",
     "db:check": "bun scripts/checkDatabase.ts",
     "db:check:schema": "bun scripts/checkDatabase.ts --schema-only",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.6",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/jest-dom": "^6.10.0",
