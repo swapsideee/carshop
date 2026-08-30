@@ -4,3 +4,4 @@ export type { GetProductsParams } from './getProducts';
 export { getProducts } from './getProducts';
 export type { GetProductsByBrandParams } from './getProductsByBrand';
 export { getProductsByBrand } from './getProductsByBrand';
+export { getProductsForSelect } from './getProductsForSelect';

@@ -1,13 +1,10 @@
-import { type ChangeEvent, type FormEvent, useEffect, useMemo, useState } from 'react';
+import { type ChangeEvent } from 'react';
 
-import type { ProductSelectApiDTO, ProductSelectApiResult } from '@/entities/product';
-import type { CreateReviewApiInput } from '@/entities/review';
+import type { ProductSelectApiDTO } from '@/entities/product';
 
-const MAX_COMMENT = 500;
+import { REVIEW_FORM_MAX_COMMENT, useReviewForm } from '../model/useReviewForm';
+
 const RATING_VALUES = [1, 2, 3, 4, 5] as const;
-
-type RatingValue = (typeof RATING_VALUES)[number];
-type Rating = 0 | RatingValue;
 
 type RatingStarProps = {
   filled: boolean;
@@ -27,12 +24,6 @@ function getProductLabel(product: ProductSelectApiDTO): string {
   if (name && name !== model) return `${name} ${model}`;
 
   return model ?? '';
-}
-
-function getLegacyTotalPages(response: ProductSelectApiResult | null): number {
-  if (response === null || !('totalPages' in response)) return 1;
-
-  return Number(response.totalPages) || 1;
 }
 
 function RatingStar({ filled, onClick, onMouseEnter, size = 20, title }: RatingStarProps) {
@@ -61,19 +52,24 @@ function RatingStar({ filled, onClick, onMouseEnter, size = 20, title }: RatingS
 }
 
 export default function ReviewForm({ onNewReview }: ReviewFormProps) {
-  const [products, setProducts] = useState<ProductSelectApiDTO[]>([]);
-  const [productId, setProductId] = useState('');
-  const [authorName, setAuthorName] = useState('');
-
-  const [rating, setRating] = useState<Rating>(0);
-  const [hoverRating, setHoverRating] = useState<Rating>(0);
-
-  const [comment, setComment] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState('');
-  const [isPosting, setIsPosting] = useState(false);
-
-  const activeRating = hoverRating || rating;
+  const {
+    products,
+    productId,
+    authorName,
+    comment,
+    submitted,
+    error,
+    isPosting,
+    activeRating,
+    canSubmit,
+    setProductId,
+    setAuthorName,
+    setRating,
+    setHoverRating,
+    setComment,
+    clearHoverRating,
+    submit,
+  } = useReviewForm({ onNewReview });
 
   const ratingLabel =
     activeRating === 1
@@ -88,53 +84,6 @@ export default function ReviewForm({ onNewReview }: ReviewFormProps) {
               ? 'Чудово'
               : '';
 
-  useEffect(() => {
-    let cancelled = false;
-
-    const loadProducts = async (): Promise<void> => {
-      try {
-        let page = 1;
-        let totalPages = 1;
-        const all: ProductSelectApiDTO[] = [];
-
-        while (!cancelled && page <= totalPages) {
-          const response = await fetch('/api/products?forSelect=1', { cache: 'no-store' });
-          if (!response.ok) break;
-
-          const data: ProductSelectApiResult | null = await response.json();
-          const items = Array.isArray(data?.items) ? data.items : [];
-
-          all.push(...items);
-
-          totalPages = getLegacyTotalPages(data);
-          page += 1;
-
-          if (page > 100) break;
-        }
-
-        if (!cancelled) setProducts(all);
-      } catch {
-        if (!cancelled) setProducts([]);
-      }
-    };
-
-    void loadProducts();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const canSubmit = useMemo(() => {
-    return (
-      Boolean(productId) &&
-      Boolean(authorName.trim()) &&
-      Boolean(comment.trim()) &&
-      rating > 0 &&
-      !isPosting
-    );
-  }, [productId, authorName, comment, rating, isPosting]);
-
   const handleAuthorNameChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setAuthorName(event.target.value);
   };
@@ -144,56 +93,7 @@ export default function ReviewForm({ onNewReview }: ReviewFormProps) {
   };
 
   const handleCommentChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
-    setComment(event.target.value.slice(0, MAX_COMMENT));
-  };
-
-  const handleRatingMouseLeave = (): void => {
-    setHoverRating(0);
-  };
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
-    event.preventDefault();
-    setError('');
-
-    if (!productId) return setError('Будь ласка, оберіть товар');
-    if (!authorName.trim()) return setError("Будь ласка, введіть ім'я");
-    if (rating === 0) return setError('Будь ласка, поставте оцiнку');
-
-    if (!comment.trim()) return setError('Будь ласка, введіть коментар');
-
-    setIsPosting(true);
-
-    try {
-      const requestBody: CreateReviewApiInput = {
-        productId,
-        rating,
-        comment: comment.trim(),
-        authorName: authorName.trim(),
-      };
-      const response = await fetch('/api/reviews', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (!response.ok) throw new Error(`POST /api/reviews failed: ${response.status}`);
-
-      setProductId('');
-      setAuthorName('');
-      setRating(0);
-      setHoverRating(0);
-      setComment('');
-      setSubmitted(true);
-
-      onNewReview?.();
-      setTimeout(() => setSubmitted(false), 2500);
-    } catch (caughtError: unknown) {
-      console.error(caughtError);
-      setError('Сталася помилка під час надсилання відгуку.');
-      setTimeout(() => setError(''), 3000);
-    } finally {
-      setIsPosting(false);
-    }
+    setComment(event.target.value);
   };
 
   return (
@@ -205,7 +105,7 @@ export default function ReviewForm({ onNewReview }: ReviewFormProps) {
         </p>
       </div>
 
-      <form className="space-y-5" onSubmit={handleSubmit}>
+      <form className="space-y-5" onSubmit={submit}>
         <div>
           <label className="block mb-1 text-sm text-gray-700 font-medium">Ваше ім&apos;я</label>
           <input
@@ -240,7 +140,7 @@ export default function ReviewForm({ onNewReview }: ReviewFormProps) {
           <label className="block mb-1 text-sm text-gray-700 font-medium">Оцінка</label>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1" onMouseLeave={handleRatingMouseLeave}>
+            <div className="flex items-center gap-1" onMouseLeave={clearHoverRating}>
               {RATING_VALUES.map((value) => (
                 <RatingStar
                   key={value}
@@ -276,7 +176,7 @@ export default function ReviewForm({ onNewReview }: ReviewFormProps) {
             className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-600"
           />
           <div className="mt-1 text-xs text-gray-500 text-right">
-            {comment.length}/{MAX_COMMENT}
+            {comment.length}/{REVIEW_FORM_MAX_COMMENT}
           </div>
         </div>
 
