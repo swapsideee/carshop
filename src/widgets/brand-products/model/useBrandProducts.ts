@@ -15,30 +15,30 @@ function isAbortError(error: unknown): boolean {
 
 export function useBrandProducts(brand: string | null | undefined): UseBrandProductsResult {
   const normalizedBrand = String(brand || '');
+  const canLoad = normalizedBrand.length > 0;
 
   const [items, setItems] = useState<ProductListItemApiDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!normalizedBrand) {
-      setItems([]);
-      setLoading(false);
-      return;
-    }
+    if (!canLoad) return;
 
     const controller = new AbortController();
 
     void (async () => {
       try {
         setLoading(true);
+
         const data = await getProductsByBrand({
           brand: normalizedBrand,
           signal: controller.signal,
         });
+
         const next: ProductListItemApiDTO[] = Array.isArray(data?.items) ? data.items : [];
         setItems(next);
       } catch (error: unknown) {
         if (isAbortError(error)) return;
+
         setItems([]);
       } finally {
         setLoading(false);
@@ -46,7 +46,7 @@ export function useBrandProducts(brand: string | null | undefined): UseBrandProd
     })();
 
     return () => controller.abort();
-  }, [normalizedBrand]);
+  }, [canLoad, normalizedBrand]);
 
-  return { items, loading };
+  return canLoad ? { items, loading } : { items: [], loading: false };
 }

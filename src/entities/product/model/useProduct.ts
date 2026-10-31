@@ -11,20 +11,17 @@ export function useProduct(productId: unknown): {
   loading: boolean;
 } {
   const id = Number(productId);
+  const isValidId = Number.isFinite(id) && id > 0;
 
   const [product, setProduct] = useState<ProductDetailApiDTO | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!Number.isFinite(id) || id <= 0) {
-      setProduct(null);
-      setLoading(false);
-      return;
-    }
+    if (!isValidId) return;
 
     const controller = new AbortController();
 
-    (async () => {
+    void (async () => {
       try {
         setLoading(true);
         const data = await getProductById({ id, signal: controller.signal });
@@ -37,6 +34,7 @@ export function useProduct(productId: unknown): {
           (e as { name?: string }).name === 'AbortError'
         )
           return;
+
         setProduct(null);
       } finally {
         setLoading(false);
@@ -44,7 +42,7 @@ export function useProduct(productId: unknown): {
     })();
 
     return () => controller.abort();
-  }, [id]);
+  }, [id, isValidId]);
 
-  return { product, loading };
+  return isValidId ? { product, loading } : { product: null, loading: false };
 }

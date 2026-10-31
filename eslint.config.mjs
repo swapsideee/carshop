@@ -33,10 +33,6 @@ export default defineConfig([
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
       'sort-imports': 'off',
-
-      // TODO: adopt React Hooks 7.1 rules in a dedicated refactor.
-      'react-hooks/set-state-in-effect': 'off',
-      'react-hooks/refs': 'off',
     },
   },
 ]);
