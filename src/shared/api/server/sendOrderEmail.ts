@@ -1,6 +1,6 @@
 import 'server-only';
 
-import nodemailer from 'nodemailer';
+import nodemailer, { type Transporter } from 'nodemailer';
 
 import { getEmailEnv } from '@/shared/config/env';
 import type { EmailCartItem, OrderEmailBody } from '@/shared/lib';
@@ -12,9 +12,9 @@ type SendOrderEmailBody = OrderEmailBody & {
   cartItems: EmailCartItem[];
 };
 
-let transporter: nodemailer.Transporter | undefined;
+let transporter: Transporter | undefined;
 
-function getTransporter(): { transporter: nodemailer.Transporter; emailUser: string } {
+function getTransporter(): { transporter: Transporter; emailUser: string } {
   const { user: emailUser, password: emailPass } = getEmailEnv();
 
   transporter ??= nodemailer.createTransport({
