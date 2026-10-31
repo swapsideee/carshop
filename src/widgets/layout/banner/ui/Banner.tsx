@@ -1,10 +1,11 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { type BrandApiDTO, getBrands } from '@/entities/brand';
+import type { BrandApiDTO } from '@/entities/brand';
 import { LoadMoreButton } from '@/shared/ui';
+
+import { useBrandBanner } from '../model/useBrandBanner';
 
 type RenderableBrand = BrandApiDTO & {
   name: string;
@@ -30,61 +31,9 @@ function SkeletonCard() {
 const CHIPS = ['30+ брендів', '250+ товарів', 'Самовивіз Харків'];
 
 export default function Banner() {
-  const [brands, setBrands] = useState<BrandApiDTO[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(8);
+  const { shownBrands, loading, canLoadMore, loadMore } = useBrandBanner();
 
-  const reqIdRef = useRef(0);
   const reduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const myReqId = ++reqIdRef.current;
-
-    const loadBrands = async () => {
-      setLoading(true);
-      try {
-        const data = await getBrands({ signal: controller.signal });
-
-        if (myReqId !== reqIdRef.current) return;
-
-        const safe: BrandApiDTO[] = Array.isArray(data) ? data : [];
-
-        const sorted = [...safe].sort((a, b) => {
-          const aName = a?.name || '';
-          const bName = b?.name || '';
-
-          const aCyr = /[А-Яа-яІіЇїЄє]/.test(aName);
-          const bCyr = /[А-Яа-яІіЇїЄє]/.test(bName);
-
-          if (aCyr !== bCyr) return aCyr ? 1 : -1;
-
-          return aName.localeCompare(bName, 'uk', { sensitivity: 'base' });
-        });
-
-        setBrands(sorted);
-        setVisibleCount(8);
-      } catch (error: unknown) {
-        if (controller.signal.aborted) return;
-        console.error('Error loading brands:', error);
-        if (myReqId === reqIdRef.current) setBrands([]);
-      } finally {
-        if (myReqId === reqIdRef.current) setLoading(false);
-      }
-    };
-
-    loadBrands();
-    return () => controller.abort();
-  }, []);
-
-  const shownBrands = useMemo(() => brands.slice(0, visibleCount), [brands, visibleCount]);
-
-  const step = 6;
-  const canLoadMore = !loading && visibleCount < brands.length;
-
-  const onLoadMore = () => {
-    setVisibleCount((prev) => Math.min(prev + step, brands.length));
-  };
 
   const itemInitial = reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 };
   const itemAnimate = reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
@@ -101,15 +50,16 @@ export default function Banner() {
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
                 Оберіть марку авто
               </h2>
+
               <p className="mt-2 text-slate-600">Підберемо підкрилки під вашу модель.</p>
 
               <div className="mt-4 flex flex-wrap gap-2 justify-start sm:justify-center">
-                {CHIPS.map((t) => (
+                {CHIPS.map((chip) => (
                   <span
-                    key={t}
+                    key={chip}
                     className="rounded-full border border-black/10 bg-white/70 px-3 py-1 text-xs font-semibold text-slate-700"
                   >
-                    {t}
+                    {chip}
                   </span>
                 ))}
               </div>
@@ -127,7 +77,7 @@ export default function Banner() {
             <div className="mt-6 h-px w-full bg-linear-to-r from-transparent via-black/10 to-transparent" />
 
             <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {loading && Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
+              {loading && Array.from({ length: 8 }).map((_, index) => <SkeletonCard key={index} />)}
 
               <AnimatePresence initial={false}>
                 {!loading &&
@@ -140,7 +90,10 @@ export default function Banner() {
                         initial={itemInitial}
                         animate={itemAnimate}
                         exit={itemExit}
-                        transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+                        transition={{
+                          duration: 0.35,
+                          ease: [0.4, 0, 0.2, 1],
+                        }}
                         layout
                       >
                         <Link
@@ -167,6 +120,7 @@ export default function Banner() {
                                 <span className="sm:hidden">{brand.name}</span>
                                 <span className="hidden sm:inline">Підкрилки для {brand.name}</span>
                               </h3>
+
                               <p className="mt-1 text-xs text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">
                                 Перейти →
                               </p>
@@ -181,7 +135,7 @@ export default function Banner() {
 
             {!loading && (
               <div className="mt-6 flex justify-start sm:justify-center">
-                <LoadMoreButton onClick={onLoadMore} disabled={!canLoadMore}>
+                <LoadMoreButton onClick={loadMore} disabled={!canLoadMore}>
                   {canLoadMore ? 'Показати ще' : 'Усі бренди показані'}
                 </LoadMoreButton>
               </div>
