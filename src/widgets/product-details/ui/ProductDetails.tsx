@@ -1,7 +1,7 @@
 'use client';
 
 import { ShoppingCart } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
   getDefaultOption,
@@ -21,11 +21,6 @@ type ProductDetailsProps = {
 export default function ProductDetails({ product }: ProductDetailsProps) {
   const defaultOption = useMemo(() => getDefaultOption(product), [product]);
   const [selectedOption, setSelectedOption] = useState<ProductOption>(defaultOption);
-
-  useEffect(() => {
-    setSelectedOption(defaultOption);
-  }, [defaultOption]);
-
   const images = useMemo(() => getProductImages(product), [product]);
   const { bothPricesAvailable, onlyPair, onlySet, noPrice, currentPrice, selectedLabel } = useMemo(
     () => getPriceState(product, selectedOption),

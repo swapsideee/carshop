@@ -60,7 +60,7 @@ export function useProductReviews({
 
   const abortRef = useRef<AbortController | null>(null);
 
-  const hasMore = page < totalPages;
+  const hasMore = canRun && page < totalPages;
 
   const reset = useCallback((): void => {
     setItems([]);
@@ -77,6 +77,7 @@ export function useProductReviews({
       if (!canRun) return;
 
       abortRef.current?.abort();
+
       const controller = new AbortController();
       abortRef.current = controller;
 
@@ -93,6 +94,8 @@ export function useProductReviews({
           limit,
           signal: controller.signal,
         });
+
+        if (controller.signal.aborted || abortRef.current !== controller) return;
 
         const nextItems = Array.isArray(data?.items) ? data.items : [];
         const nextTotalPages = Number(data?.totalPages) || 1;
@@ -117,7 +120,7 @@ export function useProductReviews({
       } catch (error: unknown) {
         if (isAbortError(error)) return;
 
-        if (!append) {
+        if (!append && abortRef.current === controller) {
           setItems([]);
           setTotalPages(1);
           setTotal(0);
@@ -125,43 +128,105 @@ export function useProductReviews({
           setPage(1);
         }
       } finally {
-        if (append) {
-          setLoadingMore(false);
-        } else {
-          setLoading(false);
+        if (abortRef.current === controller) {
+          if (append) {
+            setLoadingMore(false);
+          } else {
+            setLoading(false);
+          }
         }
       }
     },
     [canRun, parsedProductId, limit],
   );
 
-  const reload = useCallback((): Promise<void> => {
+  const reload = useCallback(async (): Promise<void> => {
     reset();
 
-    return loadPage({ nextPage: 1, append: false });
+    await loadPage({
+      nextPage: 1,
+      append: false,
+    });
   }, [reset, loadPage]);
 
   const loadMore = useCallback((): Promise<void> | undefined => {
     if (!canRun || loading || loadingMore || !hasMore) return;
 
-    return loadPage({ nextPage: page + 1, append: true });
+    return loadPage({
+      nextPage: page + 1,
+      append: true,
+    });
   }, [canRun, loading, loadingMore, hasMore, loadPage, page]);
 
   useEffect(() => {
     if (!canRun) {
-      reset();
+      abortRef.current?.abort();
       return;
     }
 
-    void reload();
+    const controller = new AbortController();
+
+    abortRef.current?.abort();
+    abortRef.current = controller;
+
+    void getReviews({
+      productId: parsedProductId,
+      page: 1,
+      limit,
+      signal: controller.signal,
+    })
+      .then((data) => {
+        if (controller.signal.aborted || abortRef.current !== controller) return;
+
+        const nextItems = Array.isArray(data?.items) ? data.items : [];
+
+        setItems(nextItems);
+        setPage(1);
+        setTotalPages(Number(data?.totalPages) || 1);
+        setTotal(Number(data?.total) || 0);
+        setAvgRating(clampRating(Number(data?.avgRating) || 0));
+      })
+      .catch((error: unknown) => {
+        if (isAbortError(error) || abortRef.current !== controller) return;
+
+        setItems([]);
+        setPage(1);
+        setTotalPages(1);
+        setTotal(0);
+        setAvgRating(0);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted && abortRef.current === controller) {
+          setLoading(false);
+        }
+      });
 
     return () => {
-      abortRef.current?.abort();
-    };
-  }, [parsedProductId, limit, enabled, canRun, reload, reset]);
+      controller.abort();
 
-  return useMemo(
-    () => ({
+      if (abortRef.current === controller) {
+        abortRef.current = null;
+      }
+    };
+  }, [canRun, parsedProductId, limit]);
+
+  return useMemo(() => {
+    if (!canRun) {
+      return {
+        items: [],
+        loading: false,
+        loadingMore: false,
+        page: 1,
+        totalPages: 1,
+        total: 0,
+        avgRating: 0,
+        hasMore: false,
+        loadMore,
+        reload,
+      };
+    }
+
+    return {
       items,
       loading,
       loadingMore,
@@ -172,7 +237,18 @@ export function useProductReviews({
       hasMore,
       loadMore,
       reload,
-    }),
-    [items, loading, loadingMore, page, totalPages, total, avgRating, hasMore, loadMore, reload],
-  );
+    };
+  }, [
+    canRun,
+    items,
+    loading,
+    loadingMore,
+    page,
+    totalPages,
+    total,
+    avgRating,
+    hasMore,
+    loadMore,
+    reload,
+  ]);
 }

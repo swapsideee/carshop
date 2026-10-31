@@ -23,29 +23,32 @@ function isAbortError(error: unknown): boolean {
 export function useRelatedByBrand(
   product: ProductDetailApiDTO | null | undefined,
 ): UseRelatedByBrandResult {
+  const brand = getBrandSlug(product);
+  const productId = product?.id;
+  const canLoad = Boolean(brand);
+
   const [items, setItems] = useState<ProductListItemApiDTO[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const brand = getBrandSlug(product);
-    const productId = product?.id;
-
-    if (!brand) {
-      setItems([]);
-      setLoading(false);
-      return;
-    }
+    if (!brand) return;
 
     const controller = new AbortController();
 
     void (async () => {
       try {
         setLoading(true);
-        const data = await getProductsByBrand({ brand, signal: controller.signal });
+
+        const data = await getProductsByBrand({
+          brand,
+          signal: controller.signal,
+        });
+
         const list: ProductListItemApiDTO[] = Array.isArray(data?.items) ? data.items : [];
         setItems(list.filter((item) => item.id !== productId));
       } catch (error: unknown) {
         if (isAbortError(error)) return;
+
         setItems([]);
       } finally {
         setLoading(false);
@@ -53,7 +56,7 @@ export function useRelatedByBrand(
     })();
 
     return () => controller.abort();
-  }, [product]);
+  }, [brand, productId]);
 
-  return { items, loading };
+  return canLoad ? { items, loading } : { items: [], loading: false };
 }

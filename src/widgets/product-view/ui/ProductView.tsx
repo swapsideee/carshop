@@ -44,7 +44,7 @@ export default function ProductView({ productId }: ProductViewProps) {
 
   return (
     <div className="min-h-screen space-y-16 px-4 py-10">
-      <ProductDetails product={product} />
+      <ProductDetails key={product.id} product={product} />
 
       <div className="mx-auto w-full max-w-6xl">
         <DescriptionBlock />

@@ -47,14 +47,16 @@ export function useCatalogData({
   const [total, setTotal] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const abortRef = useRef<AbortController | null>(null);
-  const bootFetchedRef = useRef(false);
+  const [hasBootFetched, setHasBootFetched] = useState(false);
   const [loadedTo, setLoadedTo] = useState(page);
+
+  const abortRef = useRef<AbortController | null>(null);
 
   const filtersKey = useMemo(() => {
     const brand = selectedBrand || '';
     const selectedSort = sort || '';
     const trimmedQuery = (query || '').trim();
+
     return `${brand}__${selectedSort}__${trimmedQuery}`;
   }, [selectedBrand, sort, query]);
 
@@ -64,7 +66,11 @@ export function useCatalogData({
     const controller = new AbortController();
 
     getBrands({ signal: controller.signal })
-      .then((data) => setBrands(Array.isArray(data) ? data : []))
+      .then((data) => {
+        if (controller.signal.aborted) return;
+
+        setBrands(Array.isArray(data) ? data : []);
+      })
       .catch(() => {});
 
     return () => controller.abort();
@@ -72,10 +78,9 @@ export function useCatalogData({
 
   useEffect(() => {
     abortRef.current?.abort();
+
     const controller = new AbortController();
     abortRef.current = controller;
-
-    setLoadedTo(page);
 
     getProducts({
       page,
@@ -85,31 +90,40 @@ export function useCatalogData({
       signal: controller.signal,
     })
       .then((data) => {
-        if (controller.signal.aborted) return;
+        if (controller.signal.aborted || abortRef.current !== controller) return;
 
         const nextItems = Array.isArray(data.items) ? data.items : [];
+
         setItems(nextItems);
         setTotalPages(Number(data.totalPages) || 1);
         setTotal(Number(data.total) || 0);
-
-        bootFetchedRef.current = true;
+        setLoadedTo(page);
+        setHasBootFetched(true);
         setIsLoadingMore(false);
       })
       .catch((error: unknown) => {
-        if (isAbortError(error)) return;
+        if (isAbortError(error) || controller.signal.aborted || abortRef.current !== controller) {
+          return;
+        }
 
         setItems([]);
         setTotalPages(1);
         setTotal(0);
-
-        bootFetchedRef.current = true;
+        setLoadedTo(page);
+        setHasBootFetched(true);
         setIsLoadingMore(false);
       });
 
-    return () => controller.abort();
+    return () => {
+      controller.abort();
+
+      if (abortRef.current === controller) {
+        abortRef.current = null;
+      }
+    };
   }, [page, filtersKey, selectedBrand, sort, query]);
 
-  const isBootSkeleton = !bootFetchedRef.current && items.length === 0;
+  const isBootSkeleton = !hasBootFetched && items.length === 0;
   const isEmpty = !isBootSkeleton && items.length === 0;
   const canLoadMore = !isBootSkeleton && !isLoadingMore && loadedTo < totalPages;
 
@@ -117,6 +131,7 @@ export function useCatalogData({
     if (!canLoadMore) return;
 
     const nextPage = loadedTo + 1;
+
     setIsLoadingMore(true);
 
     try {
@@ -126,6 +141,7 @@ export function useCatalogData({
         sort: sort || undefined,
         q: query || undefined,
       });
+
       const chunk = Array.isArray(data.items) ? data.items : [];
 
       setLoadedTo(nextPage);

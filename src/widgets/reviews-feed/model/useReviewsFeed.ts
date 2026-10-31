@@ -38,6 +38,23 @@ function isAbortError(error: unknown): boolean {
   );
 }
 
+async function requestReviewsPage(
+  page: number,
+  limit: number,
+  signal: AbortSignal,
+): Promise<ReviewsPageApiResult<ReviewFeedItemApiDTO>> {
+  const response = await fetch(`/api/reviews?page=${page}&limit=${limit}`, {
+    cache: 'no-store',
+    signal,
+  });
+
+  if (!response.ok) {
+    throw new Error(`GET /api/reviews failed: ${response.status}`);
+  }
+
+  return response.json();
+}
+
 export function useReviewsFeed({
   limit = LIMIT_DEFAULT,
 }: UseReviewsFeedOptions = {}): UseReviewsFeedResult {
@@ -46,11 +63,14 @@ export function useReviewsFeed({
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
 
-  const [loading, setLoading] = useState(true);
+  const [settledLimit, setSettledLimit] = useState<number | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
 
   const abortRef = useRef<AbortController | null>(null);
   const refreshNonceRef = useRef(0);
+
+  const loading = settledLimit !== limit || refreshing;
 
   const fetchPage = useCallback(
     async (nextPage: number, { append = false }: FetchPageOptions = {}): Promise<void> => {
@@ -59,16 +79,10 @@ export function useReviewsFeed({
       const controller = new AbortController();
       abortRef.current = controller;
 
-      const response = await fetch(`/api/reviews?page=${nextPage}&limit=${limit}`, {
-        cache: 'no-store',
-        signal: controller.signal,
-      });
+      const data = await requestReviewsPage(nextPage, limit, controller.signal);
 
-      if (!response.ok) {
-        throw new Error(`GET /api/reviews failed: ${response.status}`);
-      }
+      if (controller.signal.aborted || abortRef.current !== controller) return;
 
-      const data: ReviewsPageApiResult<ReviewFeedItemApiDTO> = await response.json();
       const nextItems = Array.isArray(data?.items) ? data.items : [];
       const nextTotalPages = Number(data?.totalPages) || 1;
 
@@ -84,7 +98,7 @@ export function useReviewsFeed({
     refreshNonceRef.current += 1;
     const nonce = refreshNonceRef.current;
 
-    setLoading(true);
+    setRefreshing(true);
 
     try {
       await fetchPage(1, { append: false });
@@ -95,23 +109,58 @@ export function useReviewsFeed({
 
       if (nonce === refreshNonceRef.current) {
         setItems([]);
+        setPage(1);
         setTotalPages(1);
         setTotal(0);
       }
     } finally {
       if (nonce === refreshNonceRef.current) {
-        setLoading(false);
+        setRefreshing(false);
       }
     }
   }, [fetchPage]);
 
   useEffect(() => {
-    void refresh();
+    abortRef.current?.abort();
+
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    void requestReviewsPage(1, limit, controller.signal)
+      .then((data) => {
+        if (controller.signal.aborted || abortRef.current !== controller) return;
+
+        const nextItems = Array.isArray(data?.items) ? data.items : [];
+
+        setItems(nextItems);
+        setPage(1);
+        setTotalPages(Number(data?.totalPages) || 1);
+        setTotal(Number(data?.total) || 0);
+      })
+      .catch((error: unknown) => {
+        if (isAbortError(error) || abortRef.current !== controller) return;
+
+        console.error(error);
+
+        setItems([]);
+        setPage(1);
+        setTotalPages(1);
+        setTotal(0);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted && abortRef.current === controller) {
+          setSettledLimit(limit);
+        }
+      });
 
     return () => {
-      abortRef.current?.abort();
+      controller.abort();
+
+      if (abortRef.current === controller) {
+        abortRef.current = null;
+      }
     };
-  }, [refresh]);
+  }, [limit]);
 
   const canLoadMore = !loading && !loadingMore && page < totalPages;
 
