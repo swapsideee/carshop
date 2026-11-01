@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto';
 
 import mysql, { type RowDataPacket } from 'mysql2/promise';
 
+import { seedDevelopmentCatalog } from './lib/catalogSeed';
 import {
   getApplicationDatabaseConfig,
   getRootDatabaseConfig,
@@ -58,6 +59,8 @@ try {
   });
 
   await runMigrations(applicationConnection);
+  await seedDevelopmentCatalog(applicationConnection);
+  await seedDevelopmentCatalog(applicationConnection);
 
   const schemaErrors = await checkCatalogSchema(applicationConnection);
   const dataErrors = await checkCatalogDataIntegrity(applicationConnection);
@@ -67,7 +70,7 @@ try {
   }
 
   await runCatalogSmokeQueries(applicationConnection);
-  console.log('Empty database migration and catalogue smoke check passed');
+  console.log('Empty database migration, catalogue seed, and smoke check passed');
 } catch (error) {
   verificationError = error;
   throw error;

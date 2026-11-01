@@ -43,6 +43,7 @@ The JavaScript-to-TypeScript migration is complete. Application source is mainta
 The server and client foundations have also been split into clearer boundaries:
 
 - database contracts and versioned migrations;
+- repeatable non-production catalogue seed data;
 - typed environment configuration;
 - entity DTOs, mappers, repositories, and server entry points;
 - client-side entity APIs;
@@ -50,9 +51,10 @@ The server and client foundations have also been split into clearer boundaries:
 - Stripe checkout, session verification, and webhook boundaries;
 - isolated catalogue URL/data lifecycles;
 - extracted review-form lifecycle and transport;
-- extracted home brand-banner loading, sorting, pagination, and request lifecycle.
+- extracted home brand-banner loading, sorting, pagination, and request lifecycle;
+- stricter React Hooks lint rules with affected client lifecycles migrated away from synchronous effect state resets and render-time ref reads.
 
-The current phase is focused on reducing remaining lifecycle and state-management debt, improving reproducible development data, persisting application-level orders, and strengthening production-facing protections and test coverage.
+The current phase is focused on persisting application-level orders and checkout sessions, protecting public endpoints, expanding integration and browser-level coverage, and strengthening production observability and deployment configuration.
 
 <a id="features"></a>
 
@@ -122,14 +124,21 @@ See the full list in [Environment variables](#environment).
 
 ### 4. Prepare the database
 
+Apply the versioned schema migrations:
+
 ```bash
 bun run db:migrate
-bun run db:check
 ```
 
-Migrations create and reconcile the canonical schema. They do not currently include catalogue content.
+For local development, populate the catalogue with the repository-managed development seed:
 
-Until a versioned development seed is added, load a compatible data-only dump or seed separately and then run:
+```bash
+bun run db:seed
+```
+
+The development seed is repeatable and updates its owned catalogue records without duplicating them.
+
+Validate the resulting schema and catalogue data integrity:
 
 ```bash
 bun run db:check
@@ -260,7 +269,8 @@ Examples include:
 
 - catalogue URL/navigation and data loading as separate lifecycles;
 - review form loading and submission outside the UI component;
-- brand banner loading, abort/stale-response protection, sorting, and pagination outside its presentation layer.
+- brand banner loading, abort/stale-response protection, sorting, and pagination outside its presentation layer;
+- product/review/catalogue request lifecycles compatible with the stricter React Hooks lint rules.
 
 This keeps request behavior independently testable and reduces coupling between rendering and transport logic.
 
@@ -346,6 +356,14 @@ Apply migrations to a configured database with:
 bun run db:migrate
 ```
 
+Populate or refresh the deterministic development catalogue seed with:
+
+```bash
+bun run db:seed
+```
+
+The seed is intended for non-production environments, is safe to run repeatedly, and preserves the identities of its managed product records.
+
 Use:
 
 ```bash
@@ -368,7 +386,7 @@ For a reproducibility check:
 bun run db:verify-empty
 ```
 
-creates and removes an isolated empty database, runs migrations as the application user, and executes catalogue/review smoke queries.
+creates and removes an isolated empty database, runs the full migration chain, applies the development catalogue seed twice to verify repeatability, validates the database contract, and executes catalogue/review smoke queries.
 
 This command is intended for local Docker MySQL and requires `DB_ROOT_PASS`. It never touches `DB_NAME`.
 
@@ -383,33 +401,32 @@ The canonical tables are:
 | `stripe_webhook_events` | Durable Stripe webhook idempotency records                              |
 | `schema_migrations`     | Applied migration identifiers                                           |
 
-Migrations create the structure, not catalogue content.
-
-A versioned, repeatable development catalogue seed remains a separate engineering task.
+Migrations create the database structure; `db:seed` provides deterministic non-production catalogue content.
 
 <a id="commands"></a>
 
 ## Commands
 
-| Command                   | Action                                            |
-| ------------------------- | ------------------------------------------------- |
-| `bun run dev`             | Start Next.js development mode with Turbopack     |
-| `bun run dev:host`        | Start the development server on `0.0.0.0`         |
-| `bun run build`           | Build the production application                  |
-| `bun run start`           | Start the built application                       |
-| `bun run lint`            | Run ESLint                                        |
-| `bun run lint:fix`        | Apply available ESLint fixes                      |
-| `bun run format`          | Format files with Prettier                        |
-| `bun run check`           | Run ESLint, Prettier check, and `tsc --noEmit`    |
-| `bun run audit:prod`      | Audit production dependencies                     |
-| `bun run test`            | Start Vitest in watch mode                        |
-| `bun run test:run`        | Run the Vitest suite once                         |
-| `bun run test:coverage`   | Generate a V8 coverage report                     |
-| `bun run test:e2e`        | Run Playwright end-to-end tests                   |
-| `bun run db:migrate`      | Apply versioned database migrations               |
-| `bun run db:check`        | Validate schema and catalogue data integrity      |
-| `bun run db:check:schema` | Validate only the canonical schema contract       |
-| `bun run db:verify-empty` | Rebuild and smoke-test an isolated empty database |
+| Command                   | Action                                                   |
+| ------------------------- | -------------------------------------------------------- |
+| `bun run dev`             | Start Next.js development mode with Turbopack            |
+| `bun run dev:host`        | Start the development server on `0.0.0.0`                |
+| `bun run build`           | Build the production application                         |
+| `bun run start`           | Start the built application                              |
+| `bun run lint`            | Run ESLint                                               |
+| `bun run lint:fix`        | Apply available ESLint fixes                             |
+| `bun run format`          | Format files with Prettier                               |
+| `bun run check`           | Run ESLint, Prettier check, and `tsc --noEmit`           |
+| `bun run audit:prod`      | Audit production dependencies                            |
+| `bun run test`            | Start Vitest in watch mode                               |
+| `bun run test:run`        | Run the Vitest suite once                                |
+| `bun run test:coverage`   | Generate a V8 coverage report                            |
+| `bun run test:e2e`        | Run Playwright end-to-end tests                          |
+| `bun run db:migrate`      | Apply versioned database migrations                      |
+| `bun run db:seed`         | Apply the repeatable development catalogue seed          |
+| `bun run db:check`        | Validate schema and catalogue data integrity             |
+| `bun run db:check:schema` | Validate only the canonical schema contract              |
+| `bun run db:verify-empty` | Rebuild, seed, and smoke-test an isolated empty database |
 
 <a id="testing"></a>
 
@@ -473,7 +490,7 @@ A separate MySQL-backed database job runs:
 bun run db:verify-empty
 ```
 
-against a clean database to verify that migrations can recreate the expected schema and support catalogue/review smoke queries.
+against an isolated clean database to verify the full migration chain, repeatable catalogue seeding, database integrity, and catalogue/review smoke queries.
 
 CI currently uses Bun `1.4.2`.
 
@@ -483,15 +500,11 @@ CI currently uses Bun `1.4.2`.
 
 This is deliberately a candid list for the next refactoring and production-readiness phases.
 
-- **React Hooks 7.1 lint adoption is not complete.** The project uses the current Next.js ESLint stack, but `react-hooks/set-state-in-effect` and `react-hooks/refs` are temporarily disabled while existing lifecycle patterns are migrated deliberately with characterization coverage.
-
 - **The cart and “past orders” are local.** Zustand `persist` stores them in the browser; they are not synchronized across devices and disappear when browser storage is cleared.
 
 - **Orders are not persisted.** Stripe webhook idempotency is durable, but checkout sessions and orders still lack an application-level order record. That also leaves the temporary one-active-session cookie limitation in place.
 
 - **There is no authentication, anti-spam protection, or rate limiting.** Review input has runtime validation, but the endpoint remains public. Do not expose it as a production service without request-rate limits and abuse protection.
-
-- **There is no repeatable catalogue seed.** A fresh environment can recreate the schema but cannot yet recreate development catalogue content from the repository alone.
 
 - **End-to-end coverage is intentionally small.** The project has a Playwright smoke path, but checkout, reviews, catalogue interactions, and failure scenarios need broader browser-level coverage before production use.
 
@@ -503,13 +516,11 @@ This is deliberately a candid list for the next refactoring and production-readi
 
 ### Next engineering priorities
 
-1. Adopt the stricter React Hooks 7.1 lint rules and refactor the remaining affected state/effect lifecycles.
-2. Add a versioned, non-production catalogue seed and resolve any data-integrity findings reported by `bun run db:check`.
-3. Persist orders and checkout sessions in the database.
-4. Add authentication and protection for public endpoints, including rate limiting and abuse controls.
-5. Expand API integration and Playwright end-to-end coverage for critical user flows.
-6. Add production observability and operational error reporting.
-7. Configure production contacts, domain settings, Stripe webhook delivery, and secure email delivery.
+1. Persist orders and checkout sessions in the database.
+2. Add authentication and protection for public endpoints, including rate limiting and abuse controls.
+3. Expand API integration and Playwright end-to-end coverage for critical user flows.
+4. Add production observability and operational error reporting.
+5. Configure production contacts, domain settings, Stripe webhook delivery, and secure email delivery.
 
 <a id="license"></a>
 
